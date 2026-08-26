@@ -702,5 +702,62 @@ const PIECES = [
     ]
   }
 
+  ,
+
+  {
+    id: "014",
+    designation: "52 / 014",
+    name: "THE JOCKEY",
+    subtitle: "Cast Aluminum Lawn Jockey · Full Restoration · 4 ft",
+    status: "AVAILABLE",
+    type: "RESTORED",
+    era: "c. 1960s",
+    found: "Saratoga Springs, NY",
+    materials: ["Cast Aluminum Body", "Automotive Filler", "Primer", "Enamel Paint", "Lacquered Wood Base"],
+    dimensions: '18"W × 12"D × 48"H · 40 lbs',
+    edition: "ONE OF ONE",
+    restored: "2026",
+    restorationTime: "Est. 18 hrs",
+    price: "$1,400",
+
+    story: "Found in Saratoga Springs, which is the right place to find something like this. The Saratoga Race Course has been running since 1863 — the oldest sporting venue in the country. This is a four-foot, forty-pound cast aluminum lawn jockey in blue and white checkered silks, arm raised. It has weight to it. Literal and otherwise. These figures stood outside homes and estates for decades. This one is getting a second life.",
+
+    restorationDesc: "Full surface restoration. The cast aluminum body was stripped, filled with automotive body filler where the surface had pitted and corroded, then block-sanded smooth in stages from 80 to 400 grit. Primed, finish-coated in enamel, and detailed by hand — silks, boots, face, and base. The lacquered wood base was cleaned and refinished. This is the most labor-intensive restoration in the archive.",
+
+    preserved: [
+      "Original cast aluminum body — structural integrity intact",
+      "Original form and proportion — all detail preserved",
+      "Lacquered wood base — original, refinished"
+    ],
+    rebuilt: [
+      "Surface — stripped, filled, block-sanded 80–400 grit",
+      "Primer coat — full body",
+      "Enamel finish — full repaint",
+      "Hand-detailed — silks, face, boots, base",
+      "Base — cleaned and refinished"
+    ],
+
+    makersNote: "Forty pounds of aluminum. Four feet tall. Arm in the air like it just crossed the wire. Saratoga is horse country — this piece never left. It just needed someone to bring it back.",
+
+    restorationMaterials: ["Automotive body filler", "Sandpaper 80–400 grit", "Tack cloth", "Self-etching primer", "Enamel paint — white, blue, black, brown, green", "Clear coat", "Wood stain", "Lacquer"],
+
+    objectHistory: [
+      { year: "c. 1960s", event: "Cast — American aluminum foundry, origin unknown" },
+      { year: "1960s–2020s", event: "Lawn display — private estate, Saratoga Springs, NY" },
+      { year: "2026", event: "Acquired by OBJ.52 — Saratoga Springs, NY" },
+      { year: "2026", event: "Full surface restoration — strip, fill, sand, prime, paint" },
+      { year: "2026", event: "Entered archive" }
+    ],
+
+    folder: "SARATOGAJOCKEY",
+    images: [
+      "IMG_3294.jpeg",
+      "IMG_3295.jpeg",
+      "IMG_3296.jpeg",
+      "IMG_3297.jpeg",
+      "IMG_3298.jpeg"
+    ]
+  }
+
   /* ── ADD NEW PIECES ABOVE THIS LINE ─── */
 ];

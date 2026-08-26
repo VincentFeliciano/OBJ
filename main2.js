@@ -106,20 +106,25 @@ function renderGallery(filter) {
     return;
   }
 
-  /* Split: even-indexed → col0 (left), odd-indexed → col1 (right).
-     No piece ever appears in both columns.                          */
-  const groups = [
-    visiblePieces.filter((_, i) => i % 2 === 0),
-    visiblePieces.filter((_, i) => i % 2 === 1),
-  ];
+  /* On mobile use a single column; on desktop split even→col0, odd→col1 */
+  const isMobile = window.innerWidth <= 767;
+  const groups = isMobile
+    ? [visiblePieces, []]
+    : [
+        visiblePieces.filter((_, i) => i % 2 === 0),
+        visiblePieces.filter((_, i) => i % 2 === 1),
+      ];
 
   [col0El, col1El].forEach((colEl, ci) => {
     const pieces = groups[ci];
     if (!pieces || pieces.length === 0) return;
 
-    /* Render originals with random spacing (100–250px, steps of 10) and random width */
-    /* Width: 50% full, 30% medium, 20% small */
-    const pickWidth = () => { const r = Math.random(); return r < 0.5 ? '100%' : r < 0.8 ? '75%' : '50%'; };
+    /* Width: 50% full, 30% medium, 20% small (desktop only — mobile always 100%) */
+    const pickWidth = () => {
+      if (isMobile) return '100%';
+      const r = Math.random();
+      return r < 0.5 ? '100%' : r < 0.8 ? '75%' : '50%';
+    };
     const originals = pieces.map(p => {
       const item = buildItem(p);
       item.style.marginBottom = `${Math.floor(Math.random() * 16) * 10 + 100}px`;
@@ -664,6 +669,7 @@ function openMenu() {
       </nav>
       <div class="menu-card-divider"></div>
       <nav class="menu-card-nav">
+        <button class="menu-about-btn" id="menuAboutBtn">ABOUT</button>
         <a href="restore.html">RESTORATION REQUEST</a>
         <a href="mailto:hello@obj52.com">CONTACT</a>
       </nav>
@@ -684,6 +690,12 @@ function openMenu() {
     });
   });
 
+  /* About button inside menu */
+  document.getElementById('menuAboutBtn').addEventListener('click', () => {
+    closeMenu();
+    openAbout();
+  });
+
   /* Center the card vertically in the viewport */
   requestAnimationFrame(() => {
     const offset = Math.max(0, (window.innerHeight - card.offsetHeight) / 2);
@@ -701,7 +713,112 @@ function closeMenu() {
 
 menuBtn.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); });
 
+/* ── ABOUT PANEL ──────────────────────────── */
+
+function initAbout() {
+  const panel = document.createElement('div');
+  panel.className = 'about-panel';
+  panel.id = 'aboutPanel';
+  panel.innerHTML = `
+    <div class="about-panel-header">
+      <span class="about-panel-title">ABOUT</span>
+      <button class="about-panel-close" id="aboutPanelClose">CLOSE ×</button>
+    </div>
+    <div class="about-panel-body">
+      <div class="about-eyebrow">OBJ.52 — SARATOGA SPRINGS, NY</div>
+      <h2 class="about-headline">A restoration<br>and design<br>studio.</h2>
+
+      <div class="about-body">
+        <p>
+          OBJ.52 is the work of a single person who has spent years learning how to make things —
+          and how to bring things back.
+        </p>
+        <p>
+          The studio finds objects that have been forgotten. Furniture from estate sales, workshops,
+          and private collections. Things built with care that ended up in the wrong place.
+          Each piece is assessed, documented, and restored — not to look new, but to look like
+          what it actually is: something made to last, that did.
+        </p>
+        <p>
+          Every entry in the archive is a one-of-one. Each has a recorded history, a restoration
+          log, and a maker's note. The goal is permanence — a documented record of objects
+          worth keeping.
+        </p>
+      </div>
+
+      <div class="about-divider"></div>
+
+      <div class="about-portrait-row">
+        <img class="about-portrait" src="ARTIST.jpeg" alt="Vincent Feliciano">
+        <div>
+          <div class="about-eyebrow" style="margin-bottom:4px">THE MAKER</div>
+          <div class="about-maker-name">Vincent Feliciano</div>
+        </div>
+      </div>
+      <div class="about-body">
+        <p>
+          The background doesn't fit neatly into one category. Front-end development, graphic
+          design, product thinking, woodworking, automotive restoration, 3D fabrication,
+          illustration, writing. The common thread isn't the medium.
+        </p>
+        <p>
+          It's the process: take something rough or unfinished, understand what it wants to be,
+          and make it that. Whether it's a piece of furniture, a brand, a digital product,
+          or an object that no longer has a name for what it is.
+        </p>
+        <p>
+          OBJ.52 exists because restoration is one of the few things that uses all of it at once.
+          The eye for design. The patience to work slowly. The ability to see what something
+          could be before it is. And the discipline to stop before you do too much.
+        </p>
+      </div>
+
+      <div class="about-divider"></div>
+
+      <div class="about-skills">
+        <span class="about-skill-tag">FURNITURE RESTORATION</span>
+        <span class="about-skill-tag">FRONT-END DEVELOPMENT</span>
+        <span class="about-skill-tag">GRAPHIC DESIGN</span>
+        <span class="about-skill-tag">3D FABRICATION</span>
+        <span class="about-skill-tag">PRODUCT DESIGN</span>
+        <span class="about-skill-tag">ILLUSTRATION</span>
+        <span class="about-skill-tag">AUTOMOTIVE</span>
+        <span class="about-skill-tag">WOODWORKING</span>
+        <span class="about-skill-tag">BRANDING</span>
+        <span class="about-skill-tag">WRITING</span>
+      </div>
+
+      <div class="about-contact-line">
+        INQUIRIES &amp; COMMISSIONS<br>
+        <a href="mailto:hello@obj52.com">hello@obj52.com</a>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(panel);
+  document.getElementById('aboutPanelClose').addEventListener('click', closeAbout);
+  panel.addEventListener('click', e => { if (e.target === panel) closeAbout(); });
+}
+
+function openAbout() {
+  document.getElementById('aboutPanel').classList.add('open');
+  isHovered = true;
+}
+
+function closeAbout() {
+  document.getElementById('aboutPanel').classList.remove('open');
+  isHovered = false;
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAbout(); });
+
 /* ── INIT ─────────────────────────────────── */
 
 initCart();
+initAbout();
 renderGallery('all');
+
+/* Re-render on orientation/resize so column count stays correct */
+window.addEventListener('resize', () => {
+  clearTimeout(window._resizeTimer);
+  window._resizeTimer = setTimeout(() => renderGallery(currentFilter), 200);
+});

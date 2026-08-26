@@ -282,9 +282,9 @@
       background: none;
       border: none;
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 0.12em;
-      color: var(--gray-400);
+      color: var(--gray-600);
       cursor: pointer;
       padding: 0;
       transition: color 0.14s;
@@ -451,6 +451,148 @@
     }
 
     .cart-checkout-btn:hover { background: #1a1a1a; }
+
+    /* ─── ABOUT PANEL ────────────────────────────── */
+    .about-panel {
+      position: fixed;
+      top: 0;
+      left: -520px;
+      width: 480px;
+      max-width: 100vw;
+      height: 100%;
+      background: var(--black);
+      color: var(--gray-100);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 40px rgba(0,0,0,0.4);
+      transition: left 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .about-panel.open { left: 0; }
+
+    .about-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 28px;
+      border-bottom: 1px solid #1e1e1e;
+      flex-shrink: 0;
+    }
+
+    .about-panel-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--gray-100);
+    }
+
+    .about-panel-close {
+      background: none;
+      border: none;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      color: var(--gray-400);
+      cursor: pointer;
+      transition: color 0.14s;
+    }
+    .about-panel-close:hover { color: var(--gray-100); }
+
+    .about-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 36px 28px 48px;
+    }
+
+    .about-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--gray-600);
+      margin-bottom: 20px;
+    }
+
+    .about-headline {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 28px;
+      color: var(--gray-100);
+    }
+
+    .about-body p {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+
+    .about-body p:last-child { margin-bottom: 0; }
+
+    .about-divider {
+      height: 1px;
+      background: #1e1e1e;
+      margin: 28px 0;
+    }
+
+    .about-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .about-skill-tag {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: var(--gray-600);
+      border: 1px solid #1e1e1e;
+      padding: 5px 10px;
+      border-radius: 2px;
+    }
+
+    .about-contact-line {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--gray-600);
+      line-height: 1.8;
+    }
+
+    .about-contact-line a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.14s;
+    }
+    .about-contact-line a:hover { color: var(--gray-100); }
+
+    .about-portrait-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .about-portrait {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 1px solid #2a2a2a;
+      flex-shrink: 0;
+    }
+
+    .about-maker-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--gray-100);
+    }
 
     /* Text blocks */
     .dt-name {
@@ -659,9 +801,9 @@
       background: none;
       border: none;
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 0.18em;
-      color: var(--gray-400);
+      color: var(--gray-600);
       cursor: pointer;
       padding: 0;
       transition: color 0.14s;
@@ -729,6 +871,25 @@
 
     .menu-card-nav a:hover { color: var(--gray-400); }
 
+    .menu-about-btn {
+      background: none;
+      border: none;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--black);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0;
+      line-height: 1.15;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: color 0.14s;
+    }
+
+    .menu-about-btn:hover { color: var(--gray-400); }
+
     .menu-card-section-label {
       font-family: var(--mono);
       font-size: 8px;
@@ -775,6 +936,55 @@
       letter-spacing: 0.1em;
       color: var(--gray-400);
       margin-top: auto;
+    }
+    /* ══════════════════════════════════════════
+       MOBILE  (≤ 767px)
+       ══════════════════════════════════════════ */
+    @media (max-width: 767px) {
+
+      /* Single column — centred, nearly full width */
+      #col0 { left: 5vw; width: 90vw; }
+      #col1 { display: none; }
+
+      /* Tighter top-left buttons */
+      .g2-topcorner { top: 14px; left: 14px; gap: 10px; }
+
+      /* ── Detail view: stacked (image top, text scrolls below) ── */
+      .detail-view { flex-direction: column; }
+
+      .detail-image {
+        flex: 0 0 38vh;
+        width: 100%;
+      }
+
+      .detail-image img { padding: 20px; }
+
+      .detail-close { top: 12px; right: 14px; }
+
+      .detail-text {
+        flex: 1;
+        min-height: 0;
+      }
+
+      .dt-pinned-top  { padding: 16px 18px 12px; }
+      .dt-body-scroll { padding: 14px 18px 10px; }
+      .dt-pinned-bot  { padding: 12px 18px 18px; }
+
+      /* Thumbnails in detail — smaller on mobile */
+      .modal-thumbs, .dt-thumbs { gap: 6px; }
+      .dt-thumb { width: 44px; height: 44px; }
+
+      /* Cart panel — full width on mobile */
+      .cart-panel { width: 100%; right: -100%; }
+
+      /* About panel — full width on mobile */
+      .about-panel { width: 100%; left: -100%; }
+
+      /* Menu card — taller, wider */
+      .menu-card { aspect-ratio: auto; min-height: 65vh; }
+
+      /* Wordmark smaller */
+      .bg-wordmark { font-size: clamp(60px, 22vw, 120px); }
     }
   </style>
 </head>
