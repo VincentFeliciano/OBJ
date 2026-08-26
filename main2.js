@@ -37,6 +37,7 @@ let isDragging     = false;
 let hasDragged     = false;
 let menuOpen       = false;
 let lastClickedItem= null; /* remembered for the close reverse animation */
+let lastHeroColor  = '#E8E8E5'; /* edge-sampled color reused on close    */
 
 /* ── SHUFFLE ──────────────────────────────── */
 
@@ -47,6 +48,33 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+/* ── SAMPLE EDGE COLOR ────────────────────── */
+
+/* Draws the already-loaded img element onto a small canvas and averages
+   the four corner pixels to get the image's background/edge colour.
+   Works on any HTTP server (incl. GitHub Pages). Falls back to off-white
+   when run directly from the filesystem (file:// blocks canvas reads).  */
+function sampleEdgeColor(imgEl) {
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(imgEl, 0, 0, 64, 64);
+    const corners = [
+      ctx.getImageData(0,  0,  1, 1).data,
+      ctx.getImageData(63, 0,  1, 1).data,
+      ctx.getImageData(0,  63, 1, 1).data,
+      ctx.getImageData(63, 63, 1, 1).data,
+    ];
+    const [r, g, b] = corners
+      .reduce((a, px) => [a[0]+px[0], a[1]+px[1], a[2]+px[2]], [0,0,0])
+      .map(v => Math.round(v / corners.length));
+    return `rgb(${r},${g},${b})`;
+  } catch {
+    return '#E8E8E5';
+  }
 }
 
 /* ── BUILD ITEM ───────────────────────────── */
@@ -504,11 +532,22 @@ function openDetail(piece, clickedItem) {
     const fromRect = clickedItem.getBoundingClientRect();
     const toRect   = detailImage.getBoundingClientRect();
 
-    /* Hero: a fixed clone that travels from the card to the image panel */
+    /* Sample the edge colour of the clicked image and store for close */
+    lastHeroColor = sampleEdgeColor(clickedItem.querySelector('img'));
+
+    /* Hero: a fixed clone that travels from the card to the image panel.
+       Phase 1 — image moves and grows to fit the content area (inside padding).
+       Phase 2 — border expands outward in the image's own edge colour.         */
+    const PAD = 60;
+    const innerLeft   = toRect.left   + PAD;
+    const innerTop    = toRect.top    + PAD;
+    const innerWidth  = toRect.width  - PAD * 2;
+    const innerHeight = toRect.height - PAD * 2;
+
     const hero = document.createElement('div');
     hero.style.cssText = `position:fixed;left:${fromRect.left}px;top:${fromRect.top}px;`
       + `width:${fromRect.width}px;height:${fromRect.height}px;`
-      + `overflow:hidden;z-index:300;background:#E8E8E5;pointer-events:none;`;
+      + `overflow:hidden;z-index:300;background:transparent;pointer-events:none;`;
     const heroImg = document.createElement('img');
     heroImg.src = clickedItem.querySelector('img').src;
     heroImg.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;padding:0px;';
@@ -518,12 +557,16 @@ function openDetail(piece, clickedItem) {
     const tl = gsap.timeline({
       onComplete: () => {
         hero.remove();
+        detailImage.style.background = lastHeroColor;
         gsap.set(detailImage, { opacity: 1 });
         gsap.to(detailText, { opacity: 1, duration: 0.25 });
       },
     });
-    tl.to(hero,    { left: toRect.left, top: toRect.top, width: toRect.width, height: toRect.height, duration: 0.55, ease: 'power2.inOut' }, 0)
-      .to(heroImg, { padding: 60, duration: 0.55, ease: 'power2.inOut' }, 0);
+    /* Phase 1: image travels to content area (no border yet) */
+    tl.to(hero, { left: innerLeft, top: innerTop, width: innerWidth, height: innerHeight, duration: 0.45, ease: 'power2.inOut' }, 0);
+    /* Phase 2: border expands outward in the image's sampled edge colour */
+    tl.to(hero,    { left: toRect.left, top: toRect.top, width: toRect.width, height: toRect.height, backgroundColor: lastHeroColor, duration: 0.3, ease: 'power2.out' }, 0.45)
+      .to(heroImg, { padding: PAD, duration: 0.3, ease: 'power2.out' }, 0.45);
   });
 }
 
@@ -534,10 +577,19 @@ function closeDetail() {
   const fromRect = detailImage.getBoundingClientRect();
   const mainImg  = document.getElementById('detailMainImg');
 
+  /* Close is the reverse two-phase sequence:
+     Phase 1 — grey border collapses inward, leaving just the image.
+     Phase 2 — image shrinks back to the original card position.     */
+  const PAD = 60;
+  const innerLeft   = fromRect.left   + PAD;
+  const innerTop    = fromRect.top    + PAD;
+  const innerWidth  = fromRect.width  - PAD * 2;
+  const innerHeight = fromRect.height - PAD * 2;
+
   const hero = document.createElement('div');
   hero.style.cssText = `position:fixed;left:${fromRect.left}px;top:${fromRect.top}px;`
     + `width:${fromRect.width}px;height:${fromRect.height}px;`
-    + `overflow:hidden;z-index:300;background:#E8E8E5;pointer-events:none;`;
+    + `overflow:hidden;z-index:300;background:${lastHeroColor};pointer-events:none;`;
   const heroImg = document.createElement('img');
   heroImg.src = mainImg ? mainImg.src : '';
   heroImg.style.cssText = 'width:100%;height:100%;object-fit:contain;padding:60px;display:block;';
@@ -561,10 +613,13 @@ function closeDetail() {
   if (lastClickedItem) {
     const toRect = lastClickedItem.getBoundingClientRect();
     const tl = gsap.timeline({
-      onComplete: () => { hero.remove(); isHovered = false; },
+      onComplete: () => { hero.remove(); },
     });
-    tl.to(hero,    { left: toRect.left, top: toRect.top, width: toRect.width, height: toRect.height, duration: 0.45, ease: 'power2.inOut' }, 0)
-      .to(heroImg, { padding: 0, duration: 0.45, ease: 'power2.inOut' }, 0);
+    /* Phase 1: grey border collapses inward */
+    tl.to(hero,    { left: innerLeft, top: innerTop, width: innerWidth, height: innerHeight, backgroundColor: 'transparent', duration: 0.25, ease: 'power2.in' }, 0)
+      .to(heroImg, { padding: 0, duration: 0.25, ease: 'power2.in' }, 0);
+    /* Phase 2: image travels back to card */
+    tl.to(hero, { left: toRect.left, top: toRect.top, width: toRect.width, height: toRect.height, duration: 0.4, ease: 'power2.inOut' }, 0.25);
   } else {
     gsap.to(hero, { opacity: 0, duration: 0.3,
       onComplete: () => { hero.remove(); },
