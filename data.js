@@ -48,9 +48,9 @@ const PIECES = [
     objectHistory: [
       { year: "c. 2020", event: "Manufactured — EOOS Studio, Denmark" },
       { year: "Unknown", event: "Original ownership — location unknown" },
-      { year: "2026",    event: "Acquired by OBJ.52" },
-      { year: "2026",    event: "Inspected, cleaned, conditioned" },
-      { year: "2026",    event: "Entered archive" }
+      { year: "2026", event: "Acquired by OBJ.52" },
+      { year: "2026", event: "Inspected, cleaned, conditioned" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "chair2",
@@ -101,9 +101,9 @@ const PIECES = [
     objectHistory: [
       { year: "c. 2013", event: "Manufactured — origin unknown" },
       { year: "2013–2025", event: "Family dining table, Albany, NY" },
-      { year: "2026",    event: "Acquired at estate sale — Albany, NY" },
-      { year: "2026",    event: "Full restoration" },
-      { year: "2026",    event: "Entered archive" }
+      { year: "2026", event: "Acquired at estate sale — Albany, NY" },
+      { year: "2026", event: "Full restoration" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "table",
@@ -152,10 +152,10 @@ const PIECES = [
 
     objectHistory: [
       { year: "Contemporary", event: "Manufactured — Montana, Denmark" },
-      { year: "Unknown",      event: "Warehouse clearance — Saratoga Springs, NY" },
-      { year: "2026",         event: "Acquired by OBJ.52" },
-      { year: "2026",         event: "Disassembled, reconfigured, 3D hardware fabricated" },
-      { year: "2026",         event: "Entered archive" }
+      { year: "Unknown", event: "Warehouse clearance — Saratoga Springs, NY" },
+      { year: "2026", event: "Acquired by OBJ.52" },
+      { year: "2026", event: "Disassembled, reconfigured, 3D hardware fabricated" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "chest",
@@ -202,11 +202,11 @@ const PIECES = [
     restorationMaterials: ["Danish oil", "0000 steel wool", "Metal polish", "220 grit paper"],
 
     objectHistory: [
-      { year: "c. 1960",  event: "Manufactured — origin unknown" },
+      { year: "c. 1960", event: "Manufactured — origin unknown" },
       { year: "1960–2025", event: "Private ownership — Troy, NY" },
-      { year: "2026",     event: "Acquired by OBJ.52 — Troy, NY" },
-      { year: "2026",     event: "Full restoration — 11 hours" },
-      { year: "2026",     event: "Sold — private collection" }
+      { year: "2026", event: "Acquired by OBJ.52 — Troy, NY" },
+      { year: "2026", event: "Full restoration — 11 hours" },
+      { year: "2026", event: "Sold — private collection" }
     ],
 
     folder: "coffeeTable",
@@ -253,11 +253,11 @@ const PIECES = [
     restorationMaterials: ["Paint stripper", "Hide glue", "Walnut stain", "Lacquer", "Olive bouclé fabric", "Steel springs", "Upholstery tacks"],
 
     objectHistory: [
-      { year: "c. 1955",  event: "Manufactured — origin unknown" },
-      { year: "Unknown",  event: "Original ownership — painted over" },
-      { year: "2026",     event: "Acquired by OBJ.52 — Hudson, NY" },
-      { year: "2026",     event: "Full restoration — 22 hours" },
-      { year: "2026",     event: "Entered archive" }
+      { year: "c. 1955", event: "Manufactured — origin unknown" },
+      { year: "Unknown", event: "Original ownership — painted over" },
+      { year: "2026", event: "Acquired by OBJ.52 — Hudson, NY" },
+      { year: "2026", event: "Full restoration — 22 hours" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "chair",
@@ -307,11 +307,11 @@ const PIECES = [
     restorationMaterials: ["Penetrating matte oil", "Steel primer", "Matte black powder coat", "Sandpaper 80–400", "Rubber feet"],
 
     objectHistory: [
-      { year: "c. 2015",  event: "Built by independent maker — Rhinebeck, NY" },
+      { year: "c. 2015", event: "Built by independent maker — Rhinebeck, NY" },
       { year: "2015–2025", event: "Studio use — maker's personal piece" },
-      { year: "2026",     event: "Acquired at studio sale — Rhinebeck, NY" },
-      { year: "2026",     event: "Restoration — 8 hours" },
-      { year: "2026",     event: "Entered archive" }
+      { year: "2026", event: "Acquired at studio sale — Rhinebeck, NY" },
+      { year: "2026", event: "Restoration — 8 hours" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "table2",
@@ -360,11 +360,11 @@ const PIECES = [
     restorationMaterials: ["Shellac", "Denatured alcohol", "Rust converter", "Clear metal sealer", "Rubber tips"],
 
     objectHistory: [
-      { year: "c. 1955",  event: "Manufactured — American craft, origin unknown" },
+      { year: "c. 1955", event: "Manufactured — American craft, origin unknown" },
       { year: "1955–2025", event: "Family ownership — Schenectady, NY" },
-      { year: "2026",     event: "Acquired at estate sale — Schenectady, NY" },
-      { year: "2026",     event: "Restoration — 13 hours total" },
-      { year: "2026",     event: "Entered archive — set of 2" }
+      { year: "2026", event: "Acquired at estate sale — Schenectady, NY" },
+      { year: "2026", event: "Restoration — 13 hours total" },
+      { year: "2026", event: "Entered archive — set of 2" }
     ],
 
     folder: "coffeetable2",
@@ -418,11 +418,11 @@ const PIECES = [
     restorationMaterials: ["Scandinavian oil finish", "Sandpaper 80–400", "Brass casting resin", "Interior liner", "Door track hardware"],
 
     objectHistory: [
-      { year: "c. 1958",  event: "Manufactured — American, origin unknown" },
+      { year: "c. 1958", event: "Manufactured — American, origin unknown" },
       { year: "1958–2025", event: "Private ownership — Kingston, NY" },
-      { year: "2026",     event: "Acquired by OBJ.52 — Kingston, NY" },
-      { year: "2026",     event: "Full restoration — 26 hours" },
-      { year: "2026",     event: "Entered archive" }
+      { year: "2026", event: "Acquired by OBJ.52 — Kingston, NY" },
+      { year: "2026", event: "Full restoration — 26 hours" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "crdnza",
@@ -439,7 +439,7 @@ const PIECES = [
     designation: "52 / 009",
     name: "THE OSLO",
     subtitle: "Media Cabinet · Mixed Walnut",
-    status: "ARCHIVED",
+    status: "SOLD",
     type: "REFORMATTED",
     era: "c. 1962",
     found: "Catskill, NY",
@@ -473,11 +473,11 @@ const PIECES = [
     restorationMaterials: ["Walnut stain", "Oil finish", "Steel bar stock", "Welding supplies", "Sandpaper 80–400"],
 
     objectHistory: [
-      { year: "c. 1962",  event: "Manufactured — origin unknown" },
+      { year: "c. 1962", event: "Manufactured — origin unknown" },
       { year: "1962–2025", event: "Private ownership — Catskill, NY" },
-      { year: "2026",     event: "Acquired by OBJ.52 — Catskill, NY" },
-      { year: "2026",     event: "Reimagined — 31 hours" },
-      { year: "2026",     event: "Sold — private collection" }
+      { year: "2026", event: "Acquired by OBJ.52 — Catskill, NY" },
+      { year: "2026", event: "Reimagined — 31 hours" },
+      { year: "2026", event: "Sold — private collection" }
     ],
 
     folder: "crdnza2",
@@ -527,11 +527,11 @@ const PIECES = [
     restorationMaterials: ["Natural oil finish", "320 grit paper", "Tack cloth", "Rubber feet"],
 
     objectHistory: [
-      { year: "c. 2018",  event: "Handbuilt — independent craftsperson, Woodstock, NY" },
+      { year: "c. 2018", event: "Handbuilt — independent craftsperson, Woodstock, NY" },
       { year: "2018–2025", event: "Studio storage — client order cancelled" },
-      { year: "2026",     event: "Acquired at studio closeout — Woodstock, NY" },
-      { year: "2026",     event: "Cleaned, oiled, maintained — 5 hours" },
-      { year: "2026",     event: "Entered archive" }
+      { year: "2026", event: "Acquired at studio closeout — Woodstock, NY" },
+      { year: "2026", event: "Cleaned, oiled, maintained — 5 hours" },
+      { year: "2026", event: "Entered archive" }
     ],
 
     folder: "bench",
@@ -540,6 +540,165 @@ const PIECES = [
       "KOB-BEN200-2_f0783850-ac7f-4ce1-ac1a-1a82542a2837_2000x.webp",
       "KOB-BEN200-3_a91c7dd1-46d6-4a18-8cf3-d6e7d53706b6_2000x.webp",
       "KOB-BEN200-4_51151ac8-4736-4dc9-b980-5fe88617e91e_2000x.webp"
+    ]
+  },
+
+  {
+    id: "011",
+    designation: "52 / 011",
+    name: "THE ASHTRAY",
+    subtitle: "Mid-Century Floor Stand · Magazine Holder",
+    status: "AVAILABLE",
+    type: "FOUND",
+    era: "c. 1960s",
+    found: "Estate Sale, Unknown Region",
+    materials: ["Spun Aluminum", "Turned Wood Post", "Cast Iron Base"],
+    dimensions: '6"W × 6"D × 26"H',
+    edition: "ONE OF ONE",
+    restored: "2026",
+    restorationTime: "2 hrs",
+    price: "$320",
+
+    story: "A floor-standing ashtray from the era when smoking was still considered a design problem worth solving elegantly. The magazine holder below it suggests an office or waiting room — somewhere people sat and read and smoked and thought. Both functions are obsolete now. The object isn't.",
+
+    restorationDesc: "Light cleaning throughout. The aluminum bowl was polished by hand to remove oxidation. The wood post was cleaned and waxed. The cast iron base was treated to halt surface rust without removing its patina. Restored to function, not to newness.",
+
+    preserved: [
+      "Original spun aluminum bowl",
+      "Turned wood post — all original",
+      "Cast iron weighted base",
+      "Magazine rack arms",
+      "Period surface patina"
+    ],
+    rebuilt: [
+      "Aluminum bowl — hand polished",
+      "Wood post — cleaned and waxed",
+      "Base — rust treatment and preservation"
+    ],
+
+    makersNote: "The design logic here is impeccable. Heavy base so it doesn't tip. Magazine holder so you have something to do while you wait. Removable bowl for cleaning. Someone thought this through.",
+
+    restorationMaterials: ["Aluminum polish", "Paste wax", "Rust converter", "Lint-free cloths"],
+
+    objectHistory: [
+      { year: "c. 1960s", event: "Manufactured — American or Scandinavian origin, unknown maker" },
+      { year: "1960s–2020s", event: "In use — office or waiting room, unknown location" },
+      { year: "2026", event: "Acquired at estate sale" },
+      { year: "2026", event: "Cleaned, polished, preserved — 2 hours" },
+      { year: "2026", event: "Entered archive" }
+    ],
+
+    folder: "ashtray",
+    images: [
+      "mid-century-ashtray-with-magazine-holder-1960s.jpg"
+    ]
+  },
+
+  {
+    id: "012",
+    designation: "52 / 012",
+    name: "THE BOUNCE",
+    subtitle: "Spring-Loaded Jump Shoes · George Pierce · c. 1965",
+    status: "AVAILABLE",
+    type: "FOUND",
+    era: "c. 1965",
+    found: "Unknown Provenance",
+    materials: ["Enameled Steel Shell", "Coil Spring Base", "Aluminum Platform", "Canvas Web Strap", "Steel Buckle"],
+    dimensions: '10"L × 5"W × 5"H (pair)',
+    edition: "ONE OF ONE",
+    restored: "2026",
+    restorationTime: "1 hr",
+    price: "$240",
+
+    story: "Spring-loaded exercise shoes from the era when fitness was still a novelty. You strapped them onto your feet and bounced. The idea was that the coil springs would absorb impact and let you jump longer, harder, and with less damage to your knees. Whether it worked is beside the point. Someone designed these very carefully — the dome foot cup, the buckle strap, the weighted platform. These are a pair of ideas that happened to also be shoes.",
+
+    restorationDesc: "Minimal intervention. The red enamel paint was touched up where it had chipped. The canvas straps were cleaned. The springs were inspected — full compression and extension, no fatigue. The aluminum platforms were wiped and left as found. These are display-ready and functional.",
+
+    preserved: [
+      "Original red enamel shell — both shoes",
+      "Coil spring assembly — original and functional",
+      "Canvas web straps — original",
+      "Steel buckles",
+      "Aluminum platform base"
+    ],
+    rebuilt: [
+      "Enamel touch-up — minor chips",
+      "Canvas strap cleaning",
+      "Spring inspection and cleaning"
+    ],
+
+    makersNote: "I don't know if anyone is going to bounce in these. But I didn't restore them for that. There is something about a pair of red coil-spring shoes from 1965 that doesn't need any explanation.",
+
+    restorationMaterials: ["Red touch-up enamel", "Degreaser", "Lint-free cloth"],
+
+    objectHistory: [
+      { year: "c. 1965", event: "Manufactured — George Pierce, origin unknown" },
+      { year: "1965–Unknown", event: "In use — unknown" },
+      { year: "2026", event: "Acquired by OBJ.52" },
+      { year: "2026", event: "Cleaned, inspected, minor touch-up — 1 hour" },
+      { year: "2026", event: "Entered archive" }
+    ],
+
+    folder: "jumpshoesgeorgepierce",
+    images: [
+      "Screenshot 2026-08-26 093932.png"
+    ]
+  },
+
+  {
+    id: "013",
+    designation: "52 / 013",
+    name: "THE STANLEY",
+    subtitle: "Machinist's Tool Chest · Industrial Steel",
+    status: "AVAILABLE",
+    type: "RESTORED",
+    era: "c. 1970s",
+    found: "Workshop Clearance, Unknown Region",
+    materials: ["Industrial Steel Body", "Chrome Drawer Pulls", "Ball-Bearing Drawer Slides", "Original Factory Paint"],
+    dimensions: '18"W × 9"D × 13"H',
+    edition: "ONE OF ONE",
+    restored: "2026",
+    restorationTime: "3 hrs",
+    price: "$480",
+
+    story: "A Stanley machinist's chest from the era when tool storage was considered part of the craft. Whoever owned this kept their tools the right way — organized, protected, serious. The drawers still slide on their original ball bearings. The Stanley name is stamped into the steel on the front. These things were built to last decades in working shops. This one did.",
+
+    restorationDesc: "Surface cleaning throughout. The exterior paint was cleaned and touched up where the steel showed through. Drawer slides were cleaned and lubricated — all drawers open and close smoothly. Chrome pulls were polished. The interior drawer liners were replaced with new felt. The chest closes flush.",
+
+    preserved: [
+      "Original steel body construction",
+      "Factory paint — original color",
+      "Ball-bearing drawer slides",
+      "Chrome drawer pulls — original",
+      "Stanley manufacturer's stamp"
+    ],
+    rebuilt: [
+      "Exterior paint — surface cleaning and touch-up",
+      "Drawer slides — cleaned and lubricated",
+      "Chrome pulls — polished",
+      "Interior drawer liners — replaced with felt"
+    ],
+
+    makersNote: "Stanley made these to be used hard for a long time. That's exactly what happened. I just cleaned it up and put it back in service.",
+
+    restorationMaterials: ["Industrial degreaser", "Touch-up paint", "Dry lubricant", "Metal polish", "Adhesive felt liner"],
+
+    objectHistory: [
+      { year: "c. 1970s", event: "Manufactured — Stanley Tools, USA" },
+      { year: "1970s–2020s", event: "In working shop use — location unknown" },
+      { year: "2026", event: "Acquired at workshop clearance" },
+      { year: "2026", event: "Cleaned, lubricated, relined — 3 hours" },
+      { year: "2026", event: "Entered archive" }
+    ],
+
+    folder: "stanleychest",
+    images: [
+      "174b44be-de97-40b9-a878-1248452de23f.avif",
+      "27fab2fc-8f82-46a0-a4f0-999f21dd71db.avif",
+      "6f2e8f9b-d03f-4401-b1cb-6ec217c0e175.avif",
+      "6f91541d-dd11-47b5-b5ce-c2b8be288452.avif",
+      "81aa075c-07eb-4e2a-820c-62b12152a60f.avif",
+      "999ddb8f-88c5-40fe-9d42-fd9762bfd108.avif"
     ]
   }
 

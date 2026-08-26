@@ -8,7 +8,6 @@ gsap.registerPlugin(Observer);
 const canvas      = document.getElementById('galleryCanvas');
 const col0El      = document.getElementById('col0');
 const col1El      = document.getElementById('col1');
-const filterBtns  = document.querySelectorAll('.g2-filter');
 const detailView  = document.getElementById('detailView');
 const detailClose = document.getElementById('detailClose');
 const detailImage = document.getElementById('detailImage');
@@ -118,10 +117,13 @@ function renderGallery(filter) {
     const pieces = groups[ci];
     if (!pieces || pieces.length === 0) return;
 
-    /* Render originals with random spacing (100–250px, steps of 10) */
+    /* Render originals with random spacing (100–250px, steps of 10) and random width */
+    /* Width: 50% full, 30% medium, 20% small */
+    const pickWidth = () => { const r = Math.random(); return r < 0.5 ? '100%' : r < 0.8 ? '75%' : '50%'; };
     const originals = pieces.map(p => {
       const item = buildItem(p);
       item.style.marginBottom = `${Math.floor(Math.random() * 16) * 10 + 100}px`;
+      item.style.width = pickWidth();
       return item;
     });
     originals.forEach(item => colEl.appendChild(item));
@@ -314,7 +316,7 @@ function initCart() {
     <div class="cart-items-list" id="cartItemsList"></div>
     <div class="cart-panel-footer">
       <div class="cart-count-line" id="cartCountLine"></div>
-      <a class="cart-checkout-btn" id="cartInquireAll" href="#">INQUIRE ABOUT ALL ITEMS</a>
+      <a class="cart-checkout-btn" id="cartInquireAll" href="#">CHECKOUT</a>
     </div>
   `;
   document.body.appendChild(panel);
@@ -389,9 +391,8 @@ function openDetail(piece, clickedItem) {
       </div>`
     : '';
 
-  const ctaTxt  = piece.status === 'AVAILABLE'    ? 'INQUIRE ABOUT THIS PIECE'   :
-                  piece.status === 'COMMISSIONED' ? 'COMMISSION A SIMILAR PIECE' :
-                  piece.status === 'ARCHIVED'     ? 'INQUIRE ABOUT SIMILAR'      : 'JOIN WAITLIST';
+  const ctaTxt  = piece.status === 'COMMISSIONED' ? 'COMMISSION A SIMILAR PIECE' :
+                  piece.status === 'ARCHIVED'     ? 'INQUIRE ABOUT SIMILAR'      : 'INQUIRE ABOUT THIS PIECE';
   const subject = encodeURIComponent(`Inquiry — ${piece.designation}: ${piece.name}`);
 
   const preservedHTML = piece.preserved.map(p => `<li>${p}</li>`).join('');
@@ -465,15 +466,16 @@ function openDetail(piece, clickedItem) {
     <div class="dt-pinned-bot">
       <div class="dt-price">${piece.price}</div>
       <a class="dt-cta" href="mailto:hello@obj52.com?subject=${subject}">${ctaTxt}</a>
-      <button class="dt-add-cart ${inCart ? 'in-cart' : ''}" id="dtAddCart">
-        ${inCart ? 'IN CART' : 'ADD TO CART'}
+      <button class="dt-add-cart ${piece.status === 'SOLD' ? 'sold-out' : inCart ? 'in-cart' : ''}" id="dtAddCart"
+        ${piece.status === 'SOLD' ? 'disabled' : ''}>
+        ${piece.status === 'SOLD' ? 'SOLD OUT' : inCart ? 'IN CART' : 'ADD TO CART'}
       </button>
     </div>
   `;
 
-  /* Add to cart */
+  /* Add to cart — only if not sold */
   const addCartBtn = document.getElementById('dtAddCart');
-  if (addCartBtn) {
+  if (addCartBtn && piece.status !== 'SOLD') {
     addCartBtn.addEventListener('click', () => {
       addToCart(piece);
       addCartBtn.textContent = 'IN CART';
@@ -645,15 +647,24 @@ function openMenu() {
   const card = document.createElement('div');
   card.className = 'g-item menu-card';
   card.id = 'menuCard';
+  const filters = ['ALL', 'FOUND', 'RESTORED', 'REFORMATTED', 'CUSTOM'];
+
   card.innerHTML = `
     <div class="menu-card-inner">
       <div class="menu-card-top">
         <span class="menu-card-label">OBJ.52</span>
         <button class="menu-card-close" id="menuCardClose">CLOSE</button>
       </div>
+      <div class="menu-card-section-label">FILTER</div>
+      <nav class="menu-card-filters">
+        ${filters.map(f => {
+          const val = f === 'ALL' ? 'all' : f;
+          return `<button class="menu-filter-btn ${currentFilter === val ? 'active' : ''}" data-filter="${val}">${f}</button>`;
+        }).join('')}
+      </nav>
+      <div class="menu-card-divider"></div>
       <nav class="menu-card-nav">
-        <a href="catalogue.html">CATALOGUE</a>
-        <a href="index.html">GALLERY</a>
+        <a href="restore.html">RESTORATION REQUEST</a>
         <a href="mailto:hello@obj52.com">CONTACT</a>
       </nav>
       <div class="menu-card-footer">OBJECTS / RESTORATION / DESIGN</div>
@@ -663,6 +674,15 @@ function openMenu() {
   /* Insert right before the first original item so it scrolls with the column */
   col.el.insertBefore(card, col.firstOriginal);
   document.getElementById('menuCardClose').addEventListener('click', closeMenu);
+
+  /* Filter buttons inside menu */
+  card.querySelectorAll('.menu-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentFilter = btn.dataset.filter;
+      closeMenu();
+      renderGallery(currentFilter);
+    });
+  });
 
   /* Center the card vertically in the viewport */
   requestAnimationFrame(() => {
@@ -680,17 +700,6 @@ function closeMenu() {
 }
 
 menuBtn.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); });
-
-/* ── FILTERS ──────────────────────────────── */
-
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.filter;
-    renderGallery(currentFilter);
-  });
-});
 
 /* ── INIT ─────────────────────────────────── */
 

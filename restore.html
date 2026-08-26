@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBJ.52 — Restoration Request</title>
+
+  <style>
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+  </style>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:     #0a0a0a;
+      --white:     #f5f5f2;
+      --gray-100:  #e8e8e5;
+      --gray-200:  #d0d0cc;
+      --gray-400:  #999994;
+      --gray-600:  #555550;
+      --gray-800:  #2a2a28;
+      --accent:    #c8b89a;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--black);
+      color: var(--gray-100);
+      font-family: 'Satoshi', -apple-system, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    .r-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      z-index: 50;
+      mix-blend-mode: normal;
+    }
+
+    .r-nav-logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--gray-100);
+      text-decoration: none;
+    }
+
+    .r-nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .r-nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .r-nav-link:hover { color: var(--gray-100); }
+    .r-nav-link.active { color: var(--gray-100); }
+
+    /* ── Layout ── */
+    .r-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Left panel ── */
+    .r-left {
+      padding: 120px 60px 60px;
+      border-right: 1px solid var(--gray-800);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .r-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .r-headline {
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 28px;
+    }
+
+    .r-body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--gray-400);
+      max-width: 380px;
+      margin-bottom: 40px;
+    }
+
+    .r-tiers {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .r-tier {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 0;
+      border-top: 1px solid var(--gray-800);
+    }
+
+    .r-tier-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      padding-top: 2px;
+    }
+
+    .r-tier-desc {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--gray-400);
+    }
+
+    .r-contact-note {
+      font-size: 11px;
+      color: var(--gray-600);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    .r-contact-note a {
+      color: var(--gray-400);
+      text-decoration: none;
+    }
+    .r-contact-note a:hover { color: var(--gray-100); }
+
+    /* ── Right panel (form) ── */
+    .r-right {
+      padding: 120px 60px 60px;
+      overflow-y: auto;
+    }
+
+    .r-form-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--gray-600);
+      margin-bottom: 32px;
+    }
+
+    .r-section {
+      margin-bottom: 40px;
+    }
+
+    .r-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-800);
+    }
+
+    .r-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .r-fields.single { grid-template-columns: 1fr; }
+
+    .r-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .r-field.span2 { grid-column: 1 / -1; }
+
+    .r-field label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray-600);
+    }
+
+    .r-field input,
+    .r-field textarea,
+    .r-field select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--gray-800);
+      color: var(--gray-100);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 10px 0;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .r-field input:focus,
+    .r-field textarea:focus,
+    .r-field select:focus {
+      border-bottom-color: var(--accent);
+    }
+    .r-field input::placeholder,
+    .r-field textarea::placeholder {
+      color: var(--gray-800);
+    }
+    .r-field select option { background: #1a1a18; }
+    .r-field textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.6;
+    }
+
+    /* Photo upload */
+    .r-upload-zone {
+      border: 1px dashed var(--gray-800);
+      border-radius: 3px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .r-upload-zone:hover {
+      border-color: var(--gray-600);
+      background: rgba(255,255,255,0.02);
+    }
+    .r-upload-zone.has-files {
+      border-color: var(--accent);
+      background: rgba(200,184,154,0.04);
+    }
+
+    .r-upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .r-upload-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: var(--gray-600);
+    }
+    .r-upload-text {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray-600);
+      margin-bottom: 6px;
+    }
+    .r-upload-sub {
+      font-size: 10px;
+      color: var(--gray-800);
+      letter-spacing: 0.06em;
+      line-height: 1.6;
+    }
+    .r-file-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .r-file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-400);
+      letter-spacing: 0.04em;
+      padding: 6px 0;
+      border-top: 1px solid var(--gray-800);
+    }
+    .r-file-remove {
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .r-file-remove:hover { color: var(--gray-100); }
+
+    /* Submit */
+    .r-submit-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-top: 32px;
+      border-top: 1px solid var(--gray-800);
+    }
+
+    .r-submit-btn {
+      background: var(--gray-100);
+      color: var(--black);
+      border: none;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      padding: 14px 32px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: opacity 0.15s;
+    }
+    .r-submit-btn:hover { opacity: 0.85; }
+    .r-submit-btn:active { opacity: 0.7; }
+
+    .r-submit-note {
+      font-size: 10px;
+      color: var(--gray-600);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* Success state */
+    .r-success {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 40px 0;
+    }
+    .r-success.visible { display: flex; }
+    .r-success-mark {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--accent);
+    }
+    .r-success h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .r-success p {
+      font-size: 13px;
+      color: var(--gray-400);
+      line-height: 1.7;
+      max-width: 400px;
+    }
+    .r-success-back {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      text-decoration: none;
+      margin-top: 8px;
+      transition: color 0.15s;
+    }
+    .r-success-back:hover { color: var(--gray-100); }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .r-page { grid-template-columns: 1fr; }
+      .r-left {
+        position: static;
+        height: auto;
+        padding: 100px 28px 40px;
+        border-right: none;
+        border-bottom: 1px solid var(--gray-800);
+      }
+      .r-right { padding: 40px 28px 60px; }
+      .r-fields { grid-template-columns: 1fr; }
+      .r-field.span2 { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="r-nav">
+    <a class="r-nav-logo" href="index.html">OBJ.52</a>
+    <div class="r-nav-links">
+      <a class="r-nav-link" href="index.html">ARCHIVE</a>
+      <a class="r-nav-link active" href="restore.html">RESTORE</a>
+    </div>
+  </nav>
+
+  <div class="r-page">
+
+    <!-- Left panel -->
+    <div class="r-left">
+      <div>
+        <div class="r-eyebrow">RESTORATION SERVICES</div>
+        <h1 class="r-headline">Bring something<br>worth keeping<br>back.</h1>
+        <p class="r-body">
+          If you have a piece that needs attention — a chair that belonged to someone, a table that's been in storage, something you found that you can't quite let go of — tell us about it. We'll assess it and get back to you.
+        </p>
+
+        <div class="r-tiers">
+          <div class="r-tier">
+            <div class="r-tier-label">FOUND</div>
+            <div class="r-tier-desc">Minimal intervention. Clean, inspect, preserve. For pieces that are already in good shape and just need care.</div>
+          </div>
+          <div class="r-tier">
+            <div class="r-tier-label">RESTORED</div>
+            <div class="r-tier-desc">Full restoration to original condition. Structural repair, refinishing, hardware replacement where needed.</div>
+          </div>
+          <div class="r-tier">
+            <div class="r-tier-label">REIMAGINED</div>
+            <div class="r-tier-desc">Restoration with redesign. New form factor, materials, or function while preserving the original bones.</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="r-contact-note">
+        You can also reach us directly at<br>
+        <a href="mailto:hello@obj52.com">hello@obj52.com</a>
+      </p>
+    </div>
+
+    <!-- Right panel / form -->
+    <div class="r-right">
+      <div class="r-form-title">RESTORATION REQUEST</div>
+
+      <form id="restoreForm" novalidate>
+
+        <!-- Contact -->
+        <div class="r-section">
+          <div class="r-section-label">YOUR INFO</div>
+          <div class="r-fields">
+            <div class="r-field">
+              <label>NAME *</label>
+              <input type="text" name="name" placeholder="First and last" required>
+            </div>
+            <div class="r-field">
+              <label>EMAIL *</label>
+              <input type="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="r-field">
+              <label>PHONE</label>
+              <input type="tel" name="phone" placeholder="Optional">
+            </div>
+            <div class="r-field">
+              <label>LOCATION</label>
+              <input type="text" name="location" placeholder="City, State">
+            </div>
+          </div>
+        </div>
+
+        <!-- Item -->
+        <div class="r-section">
+          <div class="r-section-label">THE PIECE</div>
+          <div class="r-fields">
+            <div class="r-field span2">
+              <label>WHAT IS IT? *</label>
+              <input type="text" name="item" placeholder="e.g. Mid-century walnut dresser, 1960s" required>
+            </div>
+            <div class="r-field">
+              <label>WHERE DID YOU GET IT?</label>
+              <input type="text" name="source" placeholder="Estate sale, inherited, marketplace…">
+            </div>
+            <div class="r-field">
+              <label>APPROXIMATE ERA</label>
+              <input type="text" name="era" placeholder="e.g. 1950s, unknown">
+            </div>
+            <div class="r-field span2">
+              <label>CURRENT CONDITION *</label>
+              <select name="condition" required>
+                <option value="" disabled selected>Select condition</option>
+                <option value="Good — minor wear only">Good — minor wear only</option>
+                <option value="Fair — visible damage but structurally sound">Fair — visible damage but structurally sound</option>
+                <option value="Poor — significant damage, may need structural work">Poor — significant damage, may need structural work</option>
+                <option value="Unknown — needs assessment">Unknown — needs assessment</option>
+              </select>
+            </div>
+            <div class="r-field span2">
+              <label>DESCRIBE THE DAMAGE OR ISSUES</label>
+              <textarea name="damage" placeholder="Scratches, broken joints, water damage, missing hardware, peeling veneer — be as specific as you can."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Request -->
+        <div class="r-section">
+          <div class="r-section-label">WHAT YOU WANT</div>
+          <div class="r-fields">
+            <div class="r-field span2">
+              <label>SERVICE TYPE</label>
+              <select name="service">
+                <option value="" disabled selected>What are you looking for?</option>
+                <option value="FOUND — Clean and preserve only">FOUND — Clean and preserve only</option>
+                <option value="RESTORED — Full restoration to original">RESTORED — Full restoration to original</option>
+                <option value="REIMAGINED — Restoration with redesign">REIMAGINED — Restoration with redesign</option>
+                <option value="Not sure — need your assessment">Not sure — need your assessment</option>
+              </select>
+            </div>
+            <div class="r-field span2">
+              <label>WHAT OUTCOME ARE YOU HOPING FOR?</label>
+              <textarea name="outcome" placeholder="Resell it, keep it, give it as a gift — tell us what this piece means to you and what you'd like it to become."></textarea>
+            </div>
+            <div class="r-field">
+              <label>BUDGET RANGE</label>
+              <select name="budget">
+                <option value="" disabled selected>Approximate budget</option>
+                <option value="Under $500">Under $500</option>
+                <option value="$500 – $1,000">$500 – $1,000</option>
+                <option value="$1,000 – $2,500">$1,000 – $2,500</option>
+                <option value="$2,500+">$2,500+</option>
+                <option value="Flexible / open to discussion">Flexible / open to discussion</option>
+              </select>
+            </div>
+            <div class="r-field">
+              <label>TIMELINE</label>
+              <select name="timeline">
+                <option value="" disabled selected>How urgent?</option>
+                <option value="No rush — whenever works">No rush — whenever works</option>
+                <option value="Within a few months">Within a few months</option>
+                <option value="Within 4–6 weeks">Within 4–6 weeks</option>
+                <option value="As soon as possible">As soon as possible</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photos -->
+        <div class="r-section">
+          <div class="r-section-label">PHOTOS</div>
+          <div class="r-upload-zone" id="uploadZone">
+            <input type="file" id="photoInput" name="photos" multiple accept="image/*,.heic,.heif">
+            <div class="r-upload-icon">&#8679;</div>
+            <div class="r-upload-text">ATTACH PHOTOS</div>
+            <div class="r-upload-sub">
+              Tap to select or drag and drop<br>
+              Overall, damage areas, any markings or stamps
+            </div>
+          </div>
+          <div class="r-file-list" id="fileList"></div>
+        </div>
+
+        <!-- Additional -->
+        <div class="r-section">
+          <div class="r-section-label">ANYTHING ELSE</div>
+          <div class="r-fields single">
+            <div class="r-field">
+              <label>ADDITIONAL NOTES</label>
+              <textarea name="notes" placeholder="History of the piece, sentimental value, specific concerns, questions — anything you want us to know."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="r-submit-row">
+          <button type="submit" class="r-submit-btn">SUBMIT REQUEST</button>
+          <p class="r-submit-note">
+            We respond to all requests within 2–3 business days. Photos you attach will be included in your email to us.
+          </p>
+        </div>
+
+      </form>
+
+      <!-- Success -->
+      <div class="r-success" id="successMsg">
+        <div class="r-success-mark">✓</div>
+        <h3>Request sent.</h3>
+        <p>We received your restoration request and will get back to you within 2–3 business days. If you have additional photos, you can send them directly to <a href="mailto:hello@obj52.com" style="color:var(--accent);text-decoration:none;">hello@obj52.com</a>.</p>
+        <a class="r-success-back" href="index.html">← BACK TO ARCHIVE</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Photo file picker ── */
+    const photoInput  = document.getElementById('photoInput');
+    const uploadZone  = document.getElementById('uploadZone');
+    const fileListEl  = document.getElementById('fileList');
+    let selectedFiles = [];
+
+    photoInput.addEventListener('change', () => {
+      const incoming = [...photoInput.files];
+      incoming.forEach(f => {
+        if (!selectedFiles.find(x => x.name === f.name && x.size === f.size)) {
+          selectedFiles.push(f);
+        }
+      });
+      renderFileList();
+      photoInput.value = '';
+    });
+
+    function renderFileList() {
+      fileListEl.innerHTML = '';
+      selectedFiles.forEach((f, i) => {
+        const row = document.createElement('div');
+        row.className = 'r-file-item';
+        const name = document.createElement('span');
+        name.textContent = f.name;
+        const btn = document.createElement('button');
+        btn.className = 'r-file-remove';
+        btn.textContent = '×';
+        btn.type = 'button';
+        btn.addEventListener('click', () => {
+          selectedFiles.splice(i, 1);
+          renderFileList();
+        });
+        row.appendChild(name);
+        row.appendChild(btn);
+        fileListEl.appendChild(row);
+      });
+      uploadZone.classList.toggle('has-files', selectedFiles.length > 0);
+    }
+
+    /* ── Form submit → mailto ── */
+    document.getElementById('restoreForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const get = name => (form.elements[name]?.value || '').trim();
+
+      const name       = get('name');
+      const email      = get('email');
+
+      if (!name || !email) {
+        alert('Please fill in your name and email.');
+        return;
+      }
+      if (!get('item') || !get('condition')) {
+        alert('Please describe the piece and its condition.');
+        return;
+      }
+
+      const fileNames = selectedFiles.length
+        ? selectedFiles.map(f => f.name).join(', ')
+        : 'None attached — will send separately';
+
+      const body = [
+        `NAME: ${name}`,
+        `EMAIL: ${email}`,
+        `PHONE: ${get('phone') || '—'}`,
+        `LOCATION: ${get('location') || '—'}`,
+        '',
+        '── THE PIECE ──────────────────',
+        `ITEM: ${get('item')}`,
+        `SOURCE: ${get('source') || '—'}`,
+        `ERA: ${get('era') || '—'}`,
+        `CONDITION: ${get('condition')}`,
+        `DAMAGE / ISSUES: ${get('damage') || '—'}`,
+        '',
+        '── REQUEST ─────────────────────',
+        `SERVICE: ${get('service') || '—'}`,
+        `OUTCOME: ${get('outcome') || '—'}`,
+        `BUDGET: ${get('budget') || '—'}`,
+        `TIMELINE: ${get('timeline') || '—'}`,
+        '',
+        '── PHOTOS ──────────────────────',
+        `FILES: ${fileNames}`,
+        '',
+        '── NOTES ───────────────────────',
+        get('notes') || '—',
+      ].join('\n');
+
+      const subject = encodeURIComponent(`Restoration Request — ${get('item')}`);
+      const bodyEnc = encodeURIComponent(body);
+
+      window.location.href = `mailto:hello@obj52.com?subject=${subject}&body=${bodyEnc}`;
+
+      /* Show success after brief delay (email client opens) */
+      setTimeout(() => {
+        document.getElementById('restoreForm').style.display = 'none';
+        document.getElementById('successMsg').classList.add('visible');
+      }, 800);
+    });
+  </script>
+</body>
+</html>

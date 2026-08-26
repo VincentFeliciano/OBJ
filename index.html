@@ -67,40 +67,12 @@
       white-space: nowrap;
     }
 
-    /* ─── LEFT SIDENAV ─────────────────────── */
-
-    .g2-sidenav {
-      position: fixed;
-      left: 22px;
-      top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      z-index: 10;
-    }
-
-    .g2-filter {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 9.5px;
-      letter-spacing: 0.08em;
-      color: var(--gray-400);
-      cursor: pointer;
-      text-align: left;
-      padding: 1px 0;
-      transition: color 0.14s;
-    }
-
-    .g2-filter.active { color: var(--black); font-weight: 700; }
-    .g2-filter:hover  { color: var(--black); }
-
-    /* ─── TOP RIGHT ────────────────────────── */
+    /* ─── TOP LEFT ─────────────────────────── */
 
     .g2-topcorner {
       position: fixed;
       top: 20px;
-      right: 22px;
+      left: 22px;
       z-index: 10;
       display: flex;
       align-items: center;
@@ -294,6 +266,14 @@
     .dt-add-cart:hover, .dt-add-cart.in-cart {
       background: var(--black);
       color: #fff;
+    }
+
+    .dt-add-cart.sold-out {
+      background: none;
+      color: var(--gray-400);
+      border-color: var(--gray-200);
+      cursor: not-allowed;
+      opacity: 0.6;
     }
 
     /* ─── CART BUTTON (top nav) ─────────────────── */
@@ -749,6 +729,46 @@
 
     .menu-card-nav a:hover { color: var(--gray-400); }
 
+    .menu-card-section-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      color: var(--gray-400);
+      margin-bottom: 10px;
+    }
+
+    .menu-card-filters {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 20px;
+    }
+
+    .menu-filter-btn {
+      background: none;
+      border: none;
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--gray-200);
+      cursor: pointer;
+      text-align: left;
+      padding: 3px 0;
+      transition: color 0.14s;
+      line-height: 1.1;
+    }
+
+    .menu-filter-btn:hover  { color: var(--gray-400); }
+    .menu-filter-btn.active { color: var(--black); }
+
+    .menu-card-divider {
+      height: 1px;
+      background: var(--gray-200);
+      margin: 16px 0;
+      opacity: 0.3;
+    }
+
     .menu-card-footer {
       font-family: var(--mono);
       font-size: 8px;
@@ -763,18 +783,8 @@
   <!-- Watermark -->
   <div class="bg-wordmark">OBJ.52</div>
 
-  <!-- Left filter nav -->
-  <nav class="g2-sidenav" aria-label="Filter by type">
-    <button class="g2-filter active" data-filter="all">ALL</button>
-    <button class="g2-filter" data-filter="FOUND">FOUND</button>
-    <button class="g2-filter" data-filter="RESTORED">RESTORED</button>
-    <button class="g2-filter" data-filter="REFORMATTED">REFORMATTED</button>
-    <button class="g2-filter" data-filter="CUSTOM">CUSTOM</button>
-  </nav>
-
-  <!-- Top right -->
+  <!-- Top left -->
   <div class="g2-topcorner">
-    <a class="g2-catalogue-link" href="catalogue.html">CATALOGUE</a>
     <button class="g2-menu-btn" id="menuBtn">MENU</button>
   </div>
 
