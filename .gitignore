@@ -1,0 +1,25 @@
+# Claude Code settings
+.claude/
+
+# Development reference images
+1.png
+2.png
+a.png
+b.png
+c.png
+d.png
+e.png
+ui.png
+UI1.png
+UI2.png
+MENU.png
+screenshot.png
+dupes.png
+card carousel.png
+
+# Development notes
+obj.52.txt
+strengths.txt
+
+# Media / large files
+*.mp4
