@@ -274,7 +274,7 @@ const PIECES = [
     designation: "52 / 006",
     name: "THE GEORGE",
     subtitle: "Coffee Table · Live-Edge Walnut",
-    status: "AVAILABLE",
+    status: "SOLD",
     type: "RESTORED",
     era: "c. 2015",
     found: "Rhinebeck, NY",
@@ -700,9 +700,7 @@ const PIECES = [
       "81aa075c-07eb-4e2a-820c-62b12152a60f.avif",
       "999ddb8f-88c5-40fe-9d42-fd9762bfd108.avif"
     ]
-  }
-
-  ,
+  },
 
   {
     id: "014",
