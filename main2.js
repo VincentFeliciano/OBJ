@@ -384,6 +384,8 @@ function renderComments(id, listEl) {
 function openDetail(piece, clickedItem) {
   lastClickedItem = clickedItem;
   currentPiece    = piece;
+  /* Hide card immediately on click so it's never visible during open or close */
+  if (clickedItem) clickedItem.style.opacity = '0';
 
   /* Image panel */
   detailImage.innerHTML = `<img src="${piece.folder}/${piece.images[0]}" alt="${piece.name}" id="detailMainImg">`;
@@ -590,6 +592,7 @@ function openDetail(piece, clickedItem) {
 }
 
 function closeDetail() {
+
   /* ── Hero close animation ────────────────────────────────────────
      Mirror of open: hero starts at detailImage's position and shrinks
      back to the original clicked item.                              */
@@ -637,7 +640,10 @@ function closeDetail() {
   if (lastClickedItem) {
     const toRect = lastClickedItem.getBoundingClientRect();
     const tl = gsap.timeline({
-      onComplete: () => { hero.remove(); },
+      onComplete: () => {
+        hero.remove();
+        lastClickedItem.style.opacity = '';
+      },
     });
     /* Phase 1: grey border collapses inward */
     tl.to(hero,    { left: innerLeft, top: innerTop, width: innerWidth, height: innerHeight, backgroundColor: 'transparent', duration: 0.25, ease: 'power2.in' }, 0)
