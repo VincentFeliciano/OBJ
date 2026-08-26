@@ -37,6 +37,8 @@ let hasDragged     = false;
 let menuOpen       = false;
 let lastClickedItem= null; /* remembered for the close reverse animation */
 let lastHeroColor  = '#E8E8E5'; /* edge-sampled color reused on close    */
+let currentPiece   = null; /* piece currently open in detail view        */
+let lbIndex        = 0;    /* current lightbox image index               */
 
 /* ── SHUFFLE ──────────────────────────────── */
 
@@ -381,6 +383,7 @@ function renderComments(id, listEl) {
 
 function openDetail(piece, clickedItem) {
   lastClickedItem = clickedItem;
+  currentPiece    = piece;
 
   /* Image panel */
   detailImage.innerHTML = `<img src="${piece.folder}/${piece.images[0]}" alt="${piece.name}" id="detailMainImg">`;
@@ -567,6 +570,15 @@ function openDetail(piece, clickedItem) {
         detailImage.style.background = lastHeroColor;
         gsap.set(detailImage, { opacity: 1 });
         gsap.to(detailText, { opacity: 1, duration: 0.25 });
+
+        /* Expand button — tap/click to open fullscreen lightbox */
+        const expandBtn = document.createElement('button');
+        expandBtn.className = 'lb-open-btn';
+        expandBtn.textContent = '⤢ VIEW';
+        expandBtn.addEventListener('click', () => openLightbox(0));
+        detailImage.appendChild(expandBtn);
+        detailImage.style.cursor = 'zoom-in';
+        detailImage.addEventListener('click', () => openLightbox(0));
       },
     });
     /* Phase 1: image travels to content area (no border yet) */
@@ -602,6 +614,11 @@ function closeDetail() {
   heroImg.style.cssText = 'width:100%;height:100%;object-fit:contain;padding:60px;display:block;';
   hero.appendChild(heroImg);
   document.body.appendChild(hero);
+
+  /* Clean up expand button and cursor */
+  const expandBtn = detailImage.querySelector('.lb-open-btn');
+  if (expandBtn) expandBtn.remove();
+  detailImage.style.cursor = '';
 
   /* Fade out text, hide detail view immediately */
   gsap.to(detailText, { opacity: 0, duration: 0.18 });
@@ -811,10 +828,74 @@ function closeAbout() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAbout(); });
 
+/* ── FULLSCREEN LIGHTBOX ──────────────────── */
+
+function initLightbox() {
+  const lb = document.createElement('div');
+  lb.className = 'img-lightbox';
+  lb.id = 'imgLightbox';
+  lb.innerHTML = `
+    <button class="lb-close" id="lbClose">CLOSE ×</button>
+    <button class="lb-arrow lb-prev" id="lbPrev">&#8592;</button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <button class="lb-arrow lb-next" id="lbNext">&#8594;</button>
+    <div class="lb-counter" id="lbCounter"></div>
+  `;
+  document.body.appendChild(lb);
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  document.getElementById('lbPrev').addEventListener('click', () => lbNav(-1));
+  document.getElementById('lbNext').addEventListener('click', () => lbNav(1));
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'Escape')     closeLightbox();
+  });
+}
+
+function lbNav(dir) {
+  if (!currentPiece) return;
+  const len = currentPiece.images.length;
+  lbIndex = (lbIndex + dir + len) % len;
+  updateLbImage();
+}
+
+function updateLbImage() {
+  const img = document.getElementById('lbImg');
+  const counter = document.getElementById('lbCounter');
+  const images = currentPiece.images;
+  gsap.to(img, { opacity: 0, duration: 0.12, onComplete: () => {
+    img.src = `${currentPiece.folder}/${images[lbIndex]}`;
+    gsap.to(img, { opacity: 1, duration: 0.18 });
+  }});
+  counter.textContent = images.length > 1 ? `${lbIndex + 1} / ${images.length}` : '';
+  document.getElementById('lbPrev').style.opacity = images.length > 1 ? '1' : '0';
+  document.getElementById('lbNext').style.opacity = images.length > 1 ? '1' : '0';
+}
+
+function openLightbox(startIndex) {
+  if (!currentPiece) return;
+  lbIndex = startIndex;
+  const img = document.getElementById('lbImg');
+  img.src = `${currentPiece.folder}/${currentPiece.images[lbIndex]}`;
+  const counter = document.getElementById('lbCounter');
+  counter.textContent = currentPiece.images.length > 1 ? `${lbIndex + 1} / ${currentPiece.images.length}` : '';
+  document.getElementById('lbPrev').style.opacity = currentPiece.images.length > 1 ? '1' : '0';
+  document.getElementById('lbNext').style.opacity = currentPiece.images.length > 1 ? '1' : '0';
+  document.getElementById('imgLightbox').classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('imgLightbox').classList.remove('open');
+}
+
 /* ── INIT ─────────────────────────────────── */
 
 initCart();
 initAbout();
+initLightbox();
 renderGallery('all');
 
 /* Re-render on orientation/resize so column count stays correct */

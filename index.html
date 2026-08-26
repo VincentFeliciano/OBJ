@@ -197,6 +197,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     .detail-image img {
@@ -252,14 +253,14 @@
       border: 1px solid var(--black);
       color: var(--black);
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.18em;
-      padding: 14px 20px;
+      padding: 11px 16px;
       text-align: center;
       cursor: pointer;
       border-radius: 2px;
-      margin-top: 8px;
+      margin-top: 6px;
       transition: background 0.14s, color 0.14s;
     }
 
@@ -623,7 +624,7 @@
     .dt-body {
       font-size: 14px;
       line-height: 1.75;
-      color: var(--gray-600);
+      color: #3a3a36;
       font-weight: 300;
       margin-bottom: 4px;
     }
@@ -637,7 +638,7 @@
       font-family: var(--mono);
       font-size: 12px;
       letter-spacing: 0.07em;
-      color: var(--gray-600);
+      color: #3a3a36;
       line-height: 1.9;
     }
 
@@ -667,7 +668,7 @@
 
     .dt-event {
       font-size: 13px;
-      color: var(--gray-600);
+      color: #3a3a36;
       line-height: 1.6;
     }
 
@@ -686,10 +687,10 @@
       background: var(--black);
       color: #fff;
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.18em;
-      padding: 14px 20px;
+      padding: 11px 16px;
       text-align: center;
       text-decoration: none;
       border-radius: 2px;
@@ -698,6 +699,90 @@
     }
 
     .dt-cta:hover { background: #1a1a1a; }
+
+    /* ─── EXPAND BUTTON (on detail image) ───────── */
+    .lb-open-btn {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      border: none;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 2px;
+      backdrop-filter: blur(4px);
+      transition: background 0.14s;
+      z-index: 5;
+    }
+    .lb-open-btn:hover { background: rgba(0,0,0,0.7); }
+
+    /* ─── FULLSCREEN LIGHTBOX ────────────────────── */
+    .img-lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.96);
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .img-lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lb-img {
+      max-width: 88vw;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+    }
+    .lb-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      color: #888;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      transition: color 0.14s;
+    }
+    .lb-close:hover { color: #fff; }
+    .lb-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 12px 20px;
+      transition: color 0.14s;
+      line-height: 1;
+    }
+    .lb-arrow:hover { color: #fff; }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
+    .lb-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: #555;
+    }
 
     /* Archive notes in detail view */
     .dt-comments-header {
@@ -953,11 +1038,11 @@
       .detail-view { flex-direction: column; }
 
       .detail-image {
-        flex: 0 0 38vh;
+        flex: 0 0 28vh;
         width: 100%;
       }
 
-      .detail-image img { padding: 20px; }
+      .detail-image img { padding: 16px; }
 
       .detail-close { top: 12px; right: 14px; }
 
