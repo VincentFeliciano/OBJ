@@ -403,7 +403,12 @@ function openDetail(piece, clickedItem) {
 
   const ctaTxt  = piece.status === 'COMMISSIONED' ? 'COMMISSION A SIMILAR PIECE' :
                   piece.status === 'ARCHIVED'     ? 'INQUIRE ABOUT SIMILAR'      : 'INQUIRE ABOUT THIS PIECE';
-  const subject = encodeURIComponent(`Inquiry — ${piece.designation}: ${piece.name}`);
+  const contactParams = new URLSearchParams({
+    subject:     `Inquiry — ${piece.designation}: ${piece.name}`,
+    name:        piece.name,
+    designation: piece.designation,
+  });
+  const contactHref = `contact.html?${contactParams.toString()}`;
 
   const preservedHTML = piece.preserved.map(p => `<li>${p}</li>`).join('');
   const rebuiltHTML   = piece.rebuilt.map(r => `<li>${r}</li>`).join('');
@@ -475,7 +480,7 @@ function openDetail(piece, clickedItem) {
     <!-- ── Pinned bottom: price + actions ── -->
     <div class="dt-pinned-bot">
       <div class="dt-price">${piece.price}</div>
-      <a class="dt-cta" href="mailto:hello@obj52.com?subject=${subject}">${ctaTxt}</a>
+      <a class="dt-cta" href="${contactHref}">${ctaTxt}</a>
       <button class="dt-add-cart ${piece.status === 'SOLD' ? 'sold-out' : inCart ? 'in-cart' : ''}" id="dtAddCart"
         ${piece.status === 'SOLD' ? 'disabled' : ''}>
         ${piece.status === 'SOLD' ? 'SOLD OUT' : inCart ? 'IN CART' : 'ADD TO CART'}
@@ -694,7 +699,7 @@ function openMenu() {
       <nav class="menu-card-nav">
         <button class="menu-about-btn" id="menuAboutBtn">ABOUT</button>
         <a href="restore.html">RESTORATION REQUEST</a>
-        <a href="mailto:hello@obj52.com">CONTACT</a>
+        <a href="contact.html">CONTACT</a>
       </nav>
       <div class="menu-card-footer">OBJECTS / RESTORATION / DESIGN</div>
     </div>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBJ.52 — Contact</title>
+
+  <style>
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+  </style>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:     #0a0a0a;
+      --white:     #f5f5f2;
+      --gray-100:  #e8e8e5;
+      --gray-200:  #d0d0cc;
+      --gray-400:  #999994;
+      --gray-600:  #555550;
+      --gray-800:  #2a2a28;
+      --accent:    #c8b89a;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--black);
+      color: var(--gray-100);
+      font-family: 'Satoshi', -apple-system, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    .c-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      z-index: 50;
+    }
+
+    .c-nav-logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--gray-100);
+      text-decoration: none;
+    }
+
+    .c-nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .c-nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .c-nav-link:hover { color: var(--gray-100); }
+    .c-nav-link.active { color: var(--gray-100); }
+
+    /* ── Layout ── */
+    .c-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Left panel ── */
+    .c-left {
+      padding: 120px 60px 60px;
+      border-right: 1px solid var(--gray-800);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .c-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .c-headline {
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 28px;
+    }
+
+    .c-body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--gray-400);
+      max-width: 360px;
+      margin-bottom: 48px;
+    }
+
+    .c-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+
+    .c-info-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 0;
+      border-top: 1px solid var(--gray-800);
+    }
+
+    .c-info-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      padding-top: 1px;
+    }
+
+    .c-info-value {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--gray-400);
+    }
+
+    .c-info-value a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .c-info-value a:hover { color: var(--gray-100); }
+
+    .c-note {
+      font-size: 11px;
+      color: var(--gray-600);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    /* ── Right panel ── */
+    .c-right {
+      padding: 120px 60px 60px;
+      overflow-y: auto;
+    }
+
+    .c-form-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--gray-600);
+      margin-bottom: 40px;
+    }
+
+    /* Item context banner (shown when arriving from an item) */
+    .c-item-context {
+      display: none;
+      background: var(--gray-800);
+      border: 1px solid #3a3a38;
+      border-radius: 3px;
+      padding: 14px 18px;
+      margin-bottom: 36px;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .c-item-context.visible { display: flex; }
+
+    .c-item-context-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .c-item-context-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-100);
+      line-height: 1.4;
+    }
+
+    .c-item-context-desig {
+      font-size: 10px;
+      color: var(--gray-600);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    /* Form fields */
+    .c-section {
+      margin-bottom: 36px;
+    }
+
+    .c-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-800);
+    }
+
+    .c-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .c-fields.single { grid-template-columns: 1fr; }
+
+    .c-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .c-field.span2 { grid-column: 1 / -1; }
+
+    .c-field label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gray-600);
+    }
+
+    .c-field input,
+    .c-field textarea,
+    .c-field select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--gray-800);
+      color: var(--gray-100);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 10px 0;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .c-field input:focus,
+    .c-field textarea:focus,
+    .c-field select:focus {
+      border-bottom-color: var(--accent);
+    }
+    .c-field input::placeholder,
+    .c-field textarea::placeholder {
+      color: var(--gray-800);
+    }
+    .c-field select option { background: #1a1a18; }
+    .c-field textarea {
+      resize: vertical;
+      min-height: 120px;
+      line-height: 1.6;
+    }
+
+    /* Subject field — slightly highlighted when pre-filled */
+    #fieldSubject.prefilled {
+      color: var(--accent);
+    }
+
+    /* Submit */
+    .c-submit-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 36px;
+    }
+
+    .c-submit-btn {
+      background: var(--gray-100);
+      color: var(--black);
+      border: none;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      padding: 14px 28px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .c-submit-btn:hover {
+      background: var(--white);
+    }
+
+    .c-submit-note {
+      font-size: 10px;
+      color: var(--gray-600);
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+    }
+
+    /* Success state */
+    .c-success {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      padding: 48px 0;
+    }
+    .c-success.visible { display: flex; }
+
+    .c-success-mark {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+    }
+
+    .c-success-title {
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
+
+    .c-success-body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--gray-400);
+      max-width: 380px;
+    }
+
+    .c-success-back {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--gray-400);
+      text-decoration: none;
+      margin-top: 8px;
+      transition: color 0.15s;
+    }
+    .c-success-back:hover { color: var(--gray-100); }
+
+    /* ── Mobile ── */
+    @media (max-width: 767px) {
+      .c-page { grid-template-columns: 1fr; }
+
+      .c-left {
+        position: static;
+        height: auto;
+        padding: 100px 28px 40px;
+        border-right: none;
+        border-bottom: 1px solid var(--gray-800);
+      }
+
+      .c-right {
+        padding: 40px 28px 60px;
+      }
+
+      .c-fields {
+        grid-template-columns: 1fr;
+      }
+      .c-field.span2 { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="c-nav">
+    <a class="c-nav-logo" href="index.html">OBJ.52</a>
+    <div class="c-nav-links">
+      <a class="c-nav-link" href="index.html">ARCHIVE</a>
+      <a class="c-nav-link" href="restore.html">RESTORE</a>
+      <a class="c-nav-link active" href="contact.html">CONTACT</a>
+    </div>
+  </nav>
+
+  <div class="c-page">
+
+    <!-- ── Left panel ── -->
+    <div class="c-left">
+      <div>
+        <p class="c-eyebrow">GET IN TOUCH</p>
+        <h1 class="c-headline">Let's talk<br>about it.</h1>
+        <p class="c-body">Whether you have a question about a piece, want to commission something, or just want to say hello — send a message and I'll get back to you within a day or two.</p>
+
+        <div class="c-info-list">
+          <div class="c-info-row">
+            <span class="c-info-label">EMAIL</span>
+            <span class="c-info-value"><a href="mailto:hello@obj52.com">hello@obj52.com</a></span>
+          </div>
+          <div class="c-info-row">
+            <span class="c-info-label">LOCATION</span>
+            <span class="c-info-value">Saratoga Springs, NY</span>
+          </div>
+          <div class="c-info-row">
+            <span class="c-info-label">RESPONSE</span>
+            <span class="c-info-value">1–2 business days</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="c-note">Looking to have a piece restored?<br>
+        <a href="restore.html" style="color:var(--gray-400);text-decoration:none;">Submit a restoration request →</a>
+      </p>
+    </div>
+
+    <!-- ── Right panel ── -->
+    <div class="c-right">
+
+      <!-- Item context banner (injected by JS when arriving from item) -->
+      <div class="c-item-context" id="itemContext">
+        <span class="c-item-context-label">RE:</span>
+        <div>
+          <div class="c-item-context-name" id="itemContextName"></div>
+          <div class="c-item-context-desig" id="itemContextDesig"></div>
+        </div>
+      </div>
+
+      <p class="c-form-title">SEND A MESSAGE</p>
+
+      <!-- Form -->
+      <form id="contactForm" novalidate>
+
+        <div class="c-section">
+          <p class="c-section-label">YOUR INFO</p>
+          <div class="c-fields">
+            <div class="c-field">
+              <label for="fieldName">NAME</label>
+              <input type="text" id="fieldName" name="name" placeholder="First Last" required>
+            </div>
+            <div class="c-field">
+              <label for="fieldEmail">EMAIL</label>
+              <input type="email" id="fieldEmail" name="email" placeholder="you@email.com" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="c-section">
+          <p class="c-section-label">MESSAGE</p>
+          <div class="c-fields single">
+            <div class="c-field">
+              <label for="fieldSubject">SUBJECT</label>
+              <input type="text" id="fieldSubject" name="subject" placeholder="What's on your mind?">
+            </div>
+            <div class="c-field span2">
+              <label for="fieldMessage">MESSAGE</label>
+              <textarea id="fieldMessage" name="message" placeholder="Tell me more..." required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="c-submit-row">
+          <button type="submit" class="c-submit-btn">SEND MESSAGE</button>
+          <p class="c-submit-note">Opens your email client<br>with everything filled in.</p>
+        </div>
+
+      </form>
+
+      <!-- Success state -->
+      <div class="c-success" id="successState">
+        <p class="c-success-mark">MESSAGE SENT</p>
+        <h2 class="c-success-title">Talk soon.</h2>
+        <p class="c-success-body">Your message has been sent. I'll be in touch within a couple of days.</p>
+        <a class="c-success-back" href="index.html">← Back to archive</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ── Read URL params and pre-fill subject ──────────────────────────────────
+    (function () {
+      const params  = new URLSearchParams(window.location.search);
+      const subject = params.get('subject');
+      const name    = params.get('name');
+      const desig   = params.get('designation');
+
+      const subjectField = document.getElementById('fieldSubject');
+
+      if (subject) {
+        subjectField.value = subject;
+        subjectField.classList.add('prefilled');
+        subjectField.addEventListener('input', () => subjectField.classList.remove('prefilled'));
+      }
+
+      // Show item context banner
+      if (name || desig) {
+        document.getElementById('itemContext').classList.add('visible');
+        if (name)  document.getElementById('itemContextName').textContent  = name;
+        if (desig) document.getElementById('itemContextDesig').textContent = desig;
+      }
+    })();
+
+    // ── Form submit → mailto ──────────────────────────────────────────────────
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name    = document.getElementById('fieldName').value.trim();
+      const email   = document.getElementById('fieldEmail').value.trim();
+      const subject = document.getElementById('fieldSubject').value.trim() || 'Inquiry via OBJ.52';
+      const message = document.getElementById('fieldMessage').value.trim();
+
+      if (!name || !email || !message) {
+        // Simple inline validation — highlight empty required fields
+        [['fieldName', name], ['fieldEmail', email], ['fieldMessage', message]].forEach(([id, val]) => {
+          const el = document.getElementById(id);
+          el.style.borderBottomColor = val ? '' : '#c0392b';
+        });
+        return;
+      }
+
+      const body = [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        ``,
+        message,
+      ].join('\n');
+
+      const mailto = `mailto:hello@obj52.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      // Show success after a short delay (email client takes a moment to open)
+      setTimeout(() => {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('itemContext').style.display = 'none';
+        document.querySelector('.c-form-title').style.display = 'none';
+        document.getElementById('successState').classList.add('visible');
+      }, 800);
+    });
+  </script>
+
+</body>
+</html>
