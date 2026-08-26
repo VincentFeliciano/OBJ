@@ -597,8 +597,8 @@ function openMenu() {
         <button class="menu-card-close" id="menuCardClose">CLOSE</button>
       </div>
       <nav class="menu-card-nav">
-        <a href="index.html">CATALOGUE</a>
-        <a href="index2.html">GALLERY</a>
+        <a href="catalogue.html">CATALOGUE</a>
+        <a href="index.html">GALLERY</a>
         <a href="mailto:hello@obj52.com">CONTACT</a>
       </nav>
       <div class="menu-card-footer">OBJECTS / RESTORATION / DESIGN</div>
