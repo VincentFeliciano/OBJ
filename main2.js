@@ -329,13 +329,17 @@ function initCart() {
   document.body.appendChild(panel);
   document.getElementById('cartPanelClose').addEventListener('click', closeCart);
 
-  /* Dynamically build the mailto href when clicked */
+  /* Route checkout to contact page with cart items pre-filled */
   document.getElementById('cartInquireAll').addEventListener('click', (e) => {
+    e.preventDefault();
     const items = getCart();
-    if (!items.length) { e.preventDefault(); return; }
-    const subject = encodeURIComponent(`Cart Inquiry — ${items.map(i => i.designation).join(', ')}`);
-    const body    = encodeURIComponent(`I'm interested in the following pieces:\n\n${items.map(i => `${i.designation}: ${i.name} — ${i.price}`).join('\n')}`);
-    window.location.href = `mailto:hello@obj52.com?subject=${subject}&body=${body}`;
+    if (!items.length) return;
+    const params = new URLSearchParams({
+      subject:     `Cart Inquiry — ${items.map(i => i.designation).join(', ')}`,
+      name:        items.map(i => i.name).join(', '),
+      designation: items.map(i => `${i.designation}: ${i.name} — ${i.price}`).join('\n'),
+    });
+    window.location.href = `contact.html?${params.toString()}`;
   });
 
   updateCartBadge();
@@ -680,7 +684,7 @@ function openMenu() {
   const card = document.createElement('div');
   card.className = 'g-item menu-card';
   card.id = 'menuCard';
-  const filters = ['ALL', 'FOUND', 'RESTORED', 'REFORMATTED', 'CUSTOM'];
+  const filters = ['ALL', 'FOUND', 'RESTORED', 'REFORMATTED'];
 
   card.innerHTML = `
     <div class="menu-card-inner">
@@ -818,7 +822,7 @@ function initAbout() {
 
       <div class="about-contact-line">
         INQUIRIES &amp; COMMISSIONS<br>
-        <a href="mailto:hello@obj52.com">hello@obj52.com</a>
+        <a href="contact.html">hello@obj52.com</a>
       </div>
     </div>
   `;
