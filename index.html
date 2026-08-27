@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OBJ.52 — Gallery</title>
+  <title>OBJ.52</title>
 
   <style>
     @font-face {
       font-family: 'Satoshi';
       src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
-           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff')  format('woff');
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
       font-weight: 300 900;
       font-style: normal;
       font-display: swap;
@@ -17,7 +17,7 @@
     @font-face {
       font-family: 'Satoshi';
       src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
-           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff')  format('woff');
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
       font-weight: 300 900;
       font-style: italic;
       font-display: swap;
@@ -28,13 +28,10 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:     #0A0A0A;
-      --white:     #FFFFFF;
-      --off-white: #F7F6F2;
-      --gray-100:  #EFEEEA;
-      --gray-200:  #DDDCD8;
-      --gray-400:  #A8A7A2;
-      --gray-600:  #6B6A65;
+      --black:    #0A0A0A;
+      --gray-100: #EFEEEA;
+      --gray-400: #A8A7A2;
+      --gray-600: #6B6A65;
       --font: 'Satoshi', system-ui, sans-serif;
       --mono: 'Satoshi', system-ui, sans-serif;
     }
@@ -48,1057 +45,202 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── BACKGROUND WATERMARK ─────────────── */
-
-    .bg-wordmark {
+    /* ── Splash wrapper ── */
+    .splash {
       position: fixed;
-      bottom: -0.1em;
-      left: -0.02em;
-      font-family: var(--font);
-      font-size: 5vw;
-      font-weight: 700;
-      letter-spacing: -0.04em;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    /* ── Eyebrow ── */
+    .splash-eyebrow {
+      font-family: var(--mono);
+      font-size: clamp(8px, 1vw, 10px);
+      letter-spacing: 0.22em;
+      color: var(--gray-400);
+      margin-bottom: clamp(20px, 3vh, 36px);
+      opacity: 0;
+      text-transform: uppercase;
+    }
+
+    /* ── Brand mark ── */
+    .splash-brand {
+      display: flex;
+      align-items: baseline;
       line-height: 1;
-      color: var(--black);
-      opacity: 0.25;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
       white-space: nowrap;
     }
 
-    /* ─── TOP LEFT ─────────────────────────── */
-
-    .g2-topcorner {
-      position: fixed;
-      top: 20px;
-      left: 22px;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .g2-catalogue-link {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.12em;
-      color: var(--gray-400);
-      text-decoration: none;
-      transition: color 0.14s;
-    }
-
-    .g2-catalogue-link:hover { color: var(--black); }
-
-    .g2-menu-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      color: var(--gray-400);
-    }
-
-    /* ─── GALLERY CANVAS ───────────────────── */
-
-    .gallery-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-      cursor: crosshair;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    /* ─── COLUMNS ──────────────────────────── */
-
-    .g-col {
-      position: absolute;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 72px;          /* ITEM_GAP — must match JS constant */
+    .splash-obj {
+      font-size: clamp(72px, 14vw, 200px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      display: inline-block;
       will-change: transform;
     }
 
-    #col0 { left: 17vw; width: 32vw; }
-    #col1 { left: 59vw; width: 29vw; }
-
-    /* ─── GALLERY ITEMS ────────────────────── */
-
-    .g-item {
-      flex: 0 0 auto;
-      /* aspect-ratio gives items a CSS-determined height immediately,
-         independent of image load state — same principle as the
-         main carousel cards. This prevents jitter on wrap. */
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      cursor: pointer;
-      transition: opacity 0.3s ease;
+    .splash-num {
+      font-size: clamp(72px, 14vw, 200px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      display: inline-block;
+      /* fixed width prevents layout shift while numbers scramble */
+      min-width: 2.1ch;
+      font-variant-numeric: tabular-nums;
+      will-change: contents;
     }
 
-    .g-item.hidden {
+    /* ── Enter button ── */
+    .splash-enter {
+      margin-top: clamp(32px, 5vh, 56px);
+      background: none;
+      border: none;
+      font-family: var(--mono);
+      font-size: clamp(9px, 1.1vw, 11px);
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 12px 0;
       opacity: 0;
-      pointer-events: none;
+      transition: color 0.2s;
+      text-transform: uppercase;
     }
 
-    .g-item img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    .splash-enter:hover { color: var(--black); }
+
+    /* Arrow nudge on hover */
+    .splash-enter .arr {
+      display: inline-block;
+      transition: transform 0.2s;
     }
+    .splash-enter:hover .arr { transform: translateX(5px); }
 
-    .g-item:hover img { transform: scale(1.03); }
-
-    /* ─── DETAIL VIEW (UI2) ────────────────── */
-
-    .detail-view {
+    /* ── Thin bottom line ── */
+    .splash-line {
       position: fixed;
-      inset: 0;
-      z-index: 200;
-      display: flex;
-      background: #fff;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.32s ease;
-    }
-
-    .detail-view.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    /* Close button */
-    .detail-close {
-      position: absolute;
-      top: 22px;
-      right: 24px;
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      color: var(--gray-400);
-      cursor: pointer;
-      z-index: 10;
-      transition: color 0.14s;
-      padding: 4px;
-    }
-
-    .detail-close:hover { color: var(--black); }
-
-    /* Image side */
-    .detail-image {
-      flex: 0 0 62%;
-      background: #E8E8E5;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .detail-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      display: block;
-      padding: 60px;
-    }
-
-    /* Text side */
-    .detail-text {
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ─── PINNED HEADER (name + subtitle + thumbs) ── */
-    .dt-pinned-top {
-      flex-shrink: 0;
-      padding: 36px 32px 18px;
-      border-bottom: 1px solid var(--gray-100);
-    }
-
-    /* ─── SCROLLABLE MIDDLE ─────────────────────── */
-    .dt-body-scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 32px 16px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--gray-200) transparent;
-    }
-
-    .dt-body-scroll::-webkit-scrollbar       { width: 4px; }
-    .dt-body-scroll::-webkit-scrollbar-track { background: transparent; }
-    .dt-body-scroll::-webkit-scrollbar-thumb { background: var(--gray-200); }
-
-    /* ─── PINNED FOOTER (price + buttons) ──────── */
-    .dt-pinned-bot {
-      flex-shrink: 0;
-      padding: 16px 32px 24px;
-      border-top: 1px solid var(--gray-100);
-      background: #fff;
-    }
-
-    /* ─── ADD TO CART BUTTON ────────────────────── */
-    .dt-add-cart {
-      display: block;
-      width: 100%;
-      background: none;
-      border: 1px solid var(--black);
-      color: var(--black);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      padding: 11px 16px;
-      text-align: center;
-      cursor: pointer;
-      border-radius: 2px;
-      margin-top: 6px;
-      transition: background 0.14s, color 0.14s;
-    }
-
-    .dt-add-cart:hover, .dt-add-cart.in-cart {
-      background: var(--black);
-      color: #fff;
-    }
-
-    .dt-add-cart.sold-out {
-      background: none;
-      color: var(--gray-400);
-      border-color: var(--gray-200);
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    /* ─── CART BUTTON (top nav) ─────────────────── */
-    .g2-cart-btn {
-      position: relative;
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--gray-600);
-      cursor: pointer;
-      padding: 0;
-      transition: color 0.14s;
-    }
-
-    .g2-cart-btn:hover { color: var(--black); }
-
-    .cart-badge {
-      position: absolute;
-      top: -6px;
-      right: -10px;
-      background: var(--black);
-      color: #fff;
-      font-size: 7px;
-      font-weight: 700;
-      min-width: 14px;
-      height: 14px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 3px;
-      letter-spacing: 0;
-    }
-
-    .cart-badge.hidden { display: none; }
-
-    /* ─── CART PANEL ────────────────────────────── */
-    .cart-panel {
-      position: fixed;
-      top: 0;
-      right: -400px;
-      width: 360px;
-      height: 100%;
-      background: #fff;
-      z-index: 500;
-      display: flex;
-      flex-direction: column;
-      box-shadow: -4px 0 32px rgba(0,0,0,0.1);
-      transition: right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .cart-panel.open { right: 0; }
-
-    .cart-panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 24px;
-      border-bottom: 1px solid var(--gray-100);
-      flex-shrink: 0;
-    }
-
-    .cart-panel-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      color: var(--black);
-    }
-
-    .cart-panel-close {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.14em;
-      color: var(--gray-400);
-      cursor: pointer;
-      transition: color 0.14s;
-    }
-
-    .cart-panel-close:hover { color: var(--black); }
-
-    .cart-items-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 24px;
-    }
-
-    .cart-empty-msg {
-      font-size: 13px;
-      color: var(--gray-400);
-      font-style: italic;
-      padding: 16px 0;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--gray-100);
-    }
-
-    .cart-item-info { flex: 1; }
-
-    .cart-item-desig {
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: 0.1em;
-      color: var(--gray-400);
-      margin-bottom: 3px;
-    }
-
-    .cart-item-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--black);
-      margin-bottom: 4px;
-    }
-
-    .cart-item-price {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--gray-600);
-    }
-
-    .cart-item-remove {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: 0.08em;
-      color: var(--gray-400);
-      cursor: pointer;
-      padding: 2px 0 0 14px;
-      flex-shrink: 0;
-      transition: color 0.14s;
-    }
-
-    .cart-item-remove:hover { color: var(--black); }
-
-    .cart-panel-footer {
-      flex-shrink: 0;
-      padding: 16px 24px 28px;
-      border-top: 1px solid var(--gray-100);
-    }
-
-    .cart-count-line {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--gray-600);
-      margin-bottom: 14px;
-    }
-
-    .cart-checkout-btn {
-      display: block;
-      width: 100%;
-      background: var(--black);
-      color: #fff;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      padding: 15px 20px;
-      text-align: center;
-      border: none;
-      border-radius: 2px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.14s;
-    }
-
-    .cart-checkout-btn:hover { background: #1a1a1a; }
-
-    /* ─── ABOUT PANEL ────────────────────────────── */
-    .about-panel {
-      position: fixed;
-      top: 0;
-      left: -520px;
-      width: 480px;
-      max-width: 100vw;
-      height: 100%;
-      background: var(--black);
-      color: var(--gray-100);
-      z-index: 500;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 4px 0 40px rgba(0,0,0,0.4);
-      transition: left 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .about-panel.open { left: 0; }
-
-    .about-panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 28px;
-      border-bottom: 1px solid #1e1e1e;
-      flex-shrink: 0;
-    }
-
-    .about-panel-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      color: var(--gray-100);
-    }
-
-    .about-panel-close {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.14em;
-      color: var(--gray-400);
-      cursor: pointer;
-      transition: color 0.14s;
-    }
-    .about-panel-close:hover { color: var(--gray-100); }
-
-    .about-panel-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 36px 28px 48px;
-    }
-
-    .about-eyebrow {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.16em;
-      color: var(--gray-600);
-      margin-bottom: 20px;
-    }
-
-    .about-headline {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 28px;
-      color: var(--gray-100);
-    }
-
-    .about-body p {
-      font-size: 13px;
-      line-height: 1.8;
-      color: var(--gray-400);
-      margin-bottom: 20px;
-    }
-
-    .about-body p:last-child { margin-bottom: 0; }
-
-    .about-divider {
-      height: 1px;
-      background: #1e1e1e;
-      margin: 28px 0;
-    }
-
-    .about-skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 28px;
-    }
-
-    .about-skill-tag {
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: 0.1em;
-      color: var(--gray-600);
-      border: 1px solid #1e1e1e;
-      padding: 5px 10px;
-      border-radius: 2px;
-    }
-
-    .about-contact-line {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      color: var(--gray-600);
-      line-height: 1.8;
-    }
-
-    .about-contact-line a {
-      color: var(--gray-400);
-      text-decoration: none;
-      transition: color 0.14s;
-    }
-    .about-contact-line a:hover { color: var(--gray-100); }
-
-    .about-portrait-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .about-portrait {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center top;
-      border: 1px solid #2a2a2a;
-      flex-shrink: 0;
-    }
-
-    .about-maker-name {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      color: var(--gray-100);
-    }
-
-    /* Text blocks */
-    .dt-name {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-bottom: 3px;
-      color: var(--black);
-    }
-
-    .dt-subtitle {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      color: var(--gray-400);
-      margin-bottom: 14px;
-    }
-
-    .dt-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      color: var(--gray-400);
-      margin-top: 20px;
-      margin-bottom: 5px;
-    }
-
-    .dt-body {
-      font-size: 14px;
-      line-height: 1.75;
-      color: #3a3a36;
-      font-weight: 300;
-      margin-bottom: 4px;
-    }
-
-    .dt-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .dt-list li {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.07em;
-      color: #3a3a36;
-      line-height: 1.9;
-    }
-
-    .dt-value {
-      font-family: var(--mono);
-      font-size: 13px;
-      letter-spacing: 0.05em;
-      color: var(--black);
-      line-height: 1.8;
-    }
-
-    .dt-timeline-row {
-      display: flex;
-      gap: 14px;
-      padding: 3px 0;
-    }
-
-    .dt-year {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      color: var(--gray-400);
-      flex-shrink: 0;
-      min-width: 72px;
-      padding-top: 1px;
-    }
-
-    .dt-event {
-      font-size: 13px;
-      color: #3a3a36;
-      line-height: 1.6;
-    }
-
-    .dt-price {
-      font-family: var(--mono);
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 14px;
-      color: var(--black);
-    }
-
-    .dt-cta {
-      display: block;
-      width: 100%;
-      background: var(--black);
-      color: #fff;
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      padding: 11px 16px;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: background 0.14s;
-      margin-bottom: 0;
-    }
-
-    .dt-cta:hover { background: #1a1a1a; }
-
-    /* ─── EXPAND BUTTON (on detail image) ───────── */
-    .lb-open-btn {
-      position: absolute;
-      bottom: 14px;
-      right: 14px;
-      background: rgba(0,0,0,0.45);
-      color: #fff;
-      border: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.12em;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 2px;
-      backdrop-filter: blur(4px);
-      transition: background 0.14s;
-      z-index: 5;
-    }
-    .lb-open-btn:hover { background: rgba(0,0,0,0.7); }
-
-    /* ─── FULLSCREEN LIGHTBOX ────────────────────── */
-    .img-lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.96);
-      z-index: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s ease;
-    }
-    .img-lightbox.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .lb-img {
-      max-width: 88vw;
-      max-height: 88vh;
-      object-fit: contain;
-      display: block;
-    }
-    .lb-close {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      background: none;
-      border: none;
-      color: #888;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      cursor: pointer;
-      transition: color 0.14s;
-    }
-    .lb-close:hover { color: #fff; }
-    .lb-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: #666;
-      font-size: 28px;
-      cursor: pointer;
-      padding: 12px 20px;
-      transition: color 0.14s;
-      line-height: 1;
-    }
-    .lb-arrow:hover { color: #fff; }
-    .lb-prev { left: 12px; }
-    .lb-next { right: 12px; }
-    .lb-counter {
-      position: absolute;
-      bottom: 20px;
+      bottom: 28px;
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      color: #555;
-    }
-
-    /* Archive notes in detail view */
-    .dt-comments-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-
-    .dt-views {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--gray-400);
-    }
-
-    .dt-no-comments {
-      font-size: 13px;
-      color: var(--gray-400);
-      font-style: italic;
-      padding: 8px 0;
-    }
-
-    .dt-comment-item { padding: 10px 0; border-bottom: 1px solid var(--gray-100); }
-
-    .dt-comment-meta {
-      display: flex; gap: 10px; align-items: baseline; margin-bottom: 4px;
-    }
-
-    .dt-comment-name {
-      font-family: var(--mono); font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.1em; color: var(--black);
-    }
-
-    .dt-comment-date {
-      font-family: var(--mono); font-size: 7.5px; color: var(--gray-400);
-    }
-
-    .dt-comment-text {
-      font-size: 11.5px; line-height: 1.65; color: var(--gray-600);
-      font-weight: 300; margin: 0;
-    }
-
-    .dt-comment-form { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-
-    .dt-input, .dt-textarea {
-      width: 100%; background: #F7F6F2; border: 1px solid var(--gray-200);
-      border-radius: 3px; font-family: var(--font); font-size: 11.5px;
-      color: var(--black); padding: 9px 12px; outline: none; resize: none;
-      transition: border-color 0.14s;
-    }
-
-    .dt-input:focus, .dt-textarea:focus { border-color: var(--black); }
-    .dt-input::placeholder, .dt-textarea::placeholder { color: var(--gray-400); }
-    .dt-textarea { min-height: 70px; }
-
-    .dt-submit {
-      align-self: flex-end; background: none; border: 1px solid var(--black);
-      color: var(--black); font-family: var(--mono); font-size: 8.5px;
-      font-weight: 700; letter-spacing: 0.16em; padding: 9px 18px;
-      cursor: pointer; border-radius: 2px; transition: background 0.14s, color 0.14s;
-    }
-
-    .dt-submit:hover { background: var(--black); color: #fff; }
-
-    /* ─── IMAGE THUMBNAILS ──────────────────── */
-
-    .dt-thumbs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 14px 0 24px;
-    }
-
-    .dt-thumb {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      overflow: hidden;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.16s, opacity 0.16s;
-      flex-shrink: 0;
-    }
-
-    .dt-thumb:hover  { opacity: 0.8; }
-    .dt-thumb.active { border-color: var(--black); }
-
-    .dt-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-      display: block;
-    }
-
-    /* ─── MENU BUTTON ───────────────────────── */
-
-    .g2-menu-btn {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      color: var(--gray-600);
-      cursor: pointer;
-      padding: 0;
-      transition: color 0.14s;
-    }
-
-    .g2-menu-btn:hover { color: var(--black); }
-
-    /* ─── MENU CARD (scrolls in col1) ───────── */
-
-    .menu-card { aspect-ratio: 3 / 4; }
-
-    .menu-card-inner {
-      width: 100%;
-      height: 100%;
-      background: var(--gray-100);
-      display: flex;
-      flex-direction: column;
-      padding: 22px 20px 20px;
-    }
-
-    .menu-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 16px;
-    }
-
-    .menu-card-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      color: var(--gray-600);
-    }
-
-    .menu-card-close {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 0.14em;
-      color: var(--gray-600);
-      cursor: pointer;
-      padding: 0;
-      transition: color 0.14s;
-    }
-
-    .menu-card-close:hover { color: var(--black); }
-
-    .menu-card-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      flex: 1;
-    }
-
-    .menu-card-nav a {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      line-height: 1.25;
-      color: var(--black);
-      text-decoration: none;
-      transition: color 0.14s;
-    }
-
-    .menu-card-nav a:hover { color: var(--gray-400); }
-
-    .menu-about-btn {
-      background: none;
-      border: none;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: var(--black);
-      text-decoration: none;
-      display: block;
-      padding: 4px 0;
-      line-height: 1.15;
-      cursor: pointer;
-      text-align: left;
-      width: 100%;
-      transition: color 0.14s;
-    }
-
-    .menu-about-btn:hover { color: var(--gray-400); }
-
-    .menu-card-section-label {
-      font-family: var(--mono);
       font-size: 8px;
-      letter-spacing: 0.14em;
-      color: var(--gray-600);
-      margin-bottom: 6px;
-    }
-
-    .menu-card-filters {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      margin-bottom: 12px;
-    }
-
-    .menu-filter-btn {
-      background: none;
-      border: none;
-      font-family: var(--mono);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
+      letter-spacing: 0.18em;
       color: var(--gray-400);
-      cursor: pointer;
-      text-align: left;
-      padding: 2px 0;
-      transition: color 0.14s;
-      line-height: 1.1;
+      opacity: 0;
     }
 
-    .menu-filter-btn:hover  { color: var(--gray-600); }
-    .menu-filter-btn.active { color: var(--black); }
-
-    .menu-card-divider {
-      height: 1px;
-      background: var(--gray-200);
-      margin: 10px 0;
-      opacity: 0.5;
-    }
-
-    .menu-card-footer {
-      font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: 0.1em;
-      color: var(--gray-600);
-      margin-top: auto;
-    }
-    /* ══════════════════════════════════════════
-       MOBILE  (≤ 767px)
-       ══════════════════════════════════════════ */
-    @media (max-width: 767px) {
-
-      /* Single column — centred, nearly full width */
-      #col0 { left: 5vw; width: 90vw; }
-      #col1 { display: none; }
-
-      /* Tighter top-left buttons */
-      .g2-topcorner { top: 14px; left: 14px; gap: 10px; }
-
-      /* ── Detail view: stacked (image top, text scrolls below) ── */
-      .detail-view { flex-direction: column; }
-
-      .detail-image {
-        flex: 0 0 28vh;
-        width: 100%;
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .splash-obj,
+      .splash-num {
+        font-size: clamp(52px, 18vw, 100px);
       }
-
-      .detail-image img { padding: 16px; }
-
-      .detail-close { top: 12px; right: 14px; }
-
-      .detail-text {
-        flex: 1;
-        min-height: 0;
-      }
-
-      .dt-pinned-top  { padding: 16px 18px 12px; }
-      .dt-body-scroll { padding: 14px 18px 10px; }
-      .dt-pinned-bot  { padding: 12px 18px 18px; }
-
-      /* Thumbnails in detail — smaller on mobile */
-      .modal-thumbs, .dt-thumbs { gap: 6px; }
-      .dt-thumb { width: 44px; height: 44px; }
-
-      /* Cart panel — full width on mobile */
-      .cart-panel { width: 100%; right: -100%; }
-
-      /* About panel — full width on mobile */
-      .about-panel { width: 100%; left: -100%; }
-
-      /* Menu card — taller, wider */
-      .menu-card { aspect-ratio: auto; min-height: 65vh; }
-
-      /* Wordmark smaller */
-      .bg-wordmark { font-size: clamp(60px, 22vw, 120px); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Watermark -->
-  <div class="bg-wordmark">OBJ.52</div>
+  <div class="splash" id="splash">
+    <p class="splash-eyebrow" id="splashEyebrow">An archive of things worth keeping</p>
 
-  <!-- Top left -->
-  <div class="g2-topcorner">
-    <button class="g2-menu-btn" id="menuBtn">MENU</button>
+    <div class="splash-brand">
+      <span class="splash-obj" id="splashObj">OBJ.</span>
+      <span class="splash-num" id="splashNum">00</span>
+    </div>
+
+    <button class="splash-enter" id="splashEnter">
+      ENTER ARCHIVE <span class="arr">→</span>
+    </button>
   </div>
 
-  <!-- Gallery -->
-  <div class="gallery-canvas" id="galleryCanvas">
-    <div class="g-col" id="col0"></div>
-    <div class="g-col" id="col1"></div>
-  </div>
-
-  <!-- Detail view (UI2) -->
-  <div class="detail-view" id="detailView" role="dialog" aria-modal="true">
-    <button class="detail-close" id="detailClose">CLOSE</button>
-    <div class="detail-image" id="detailImage"></div>
-    <div class="detail-text" id="detailText"></div>
-  </div>
+  <p class="splash-line" id="splashLine">SARATOGA SPRINGS, NY &nbsp;·&nbsp; OBJECTS / RESTORATION / DESIGN</p>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Observer.min.js"></script>
-  <script src="data.js"></script>
-  <script src="main2.js"></script>
+  <script>
+    const objEl    = document.getElementById('splashObj');
+    const numEl    = document.getElementById('splashNum');
+    const enterBtn = document.getElementById('splashEnter');
+    const eyebrow  = document.getElementById('splashEyebrow');
+    const line     = document.getElementById('splashLine');
+
+    /* ── Start OBJ. off-screen left ── */
+    gsap.set(objEl, { x: '-110vw' });
+    gsap.set(numEl, { opacity: 0 });
+
+    /* ── Number scramble state ── */
+    const counter = { val: 0 };
+
+    const tl = gsap.timeline({ delay: 0.15 });
+
+    /* Phase 1: OBJ. races in from the left */
+    tl.to(objEl, {
+      x: 0,
+      duration: 1.3,
+      ease: 'power3.out',
+    }, 0);
+
+    /* Phase 1 simultaneous: numbers flash in and scramble */
+    tl.to(numEl, { opacity: 1, duration: 0.08 }, 0);
+
+    tl.to(counter, {
+      val: 52,
+      duration: 1.9,
+      ease: 'power4.out',
+      onUpdate() {
+        const p = tl.progress();          /* timeline progress 0→1 */
+        const v = counter.val;
+        if (p < 0.72) {
+          /* fast random phase — numbers race past */
+          numEl.textContent = String(Math.floor(Math.random() * 99) + 1).padStart(2, '0');
+        } else if (p < 0.92) {
+          /* settling phase — show nearby values */
+          const spread = Math.floor((1 - (p - 0.72) / 0.2) * 12);
+          const shown  = Math.max(1, Math.round(v) + Math.floor((Math.random() - 0.5) * spread));
+          numEl.textContent = String(Math.min(shown, 99)).padStart(2, '0');
+        } else {
+          /* lock in */
+          numEl.textContent = String(Math.round(v)).padStart(2, '0');
+        }
+      },
+      onComplete() {
+        numEl.textContent = '52';
+      }
+    }, 0);
+
+    /* Phase 2: eyebrow fades in as brand settles */
+    tl.to(eyebrow, { opacity: 1, duration: 0.55, ease: 'power2.out' }, 1.55);
+
+    /* Phase 3: enter button appears */
+    tl.to(enterBtn, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 1.85);
+
+    /* Phase 4: footer line */
+    tl.to(line, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 2.1);
+
+    /* ── Enter gallery ── */
+    enterBtn.addEventListener('click', () => {
+      gsap.to('#splash', {
+        opacity: 0,
+        duration: 0.45,
+        ease: 'power2.in',
+        onComplete: () => {
+          window.location.href = 'gallery.html';
+        }
+      });
+      gsap.to('.splash-line', { opacity: 0, duration: 0.3 });
+    });
+
+    /* Allow keyboard Enter too */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && enterBtn.style.opacity !== '0') enterBtn.click();
+    });
+  </script>
+
 </body>
 </html>
