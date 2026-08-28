@@ -70,54 +70,51 @@
     .text-panel {
       flex: 1;
       min-width: 0;
-      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 0 5vw;
+      /* bottom padding lifts the group above dead-center */
+      padding: 0 5vw 16vh;
     }
 
     .brand {
-      font-size: clamp(90px, 14vw, 220px);
+      font-size: clamp(52px, 8vw, 180px);
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
       color: var(--black);
       opacity: 0;
-      margin-bottom: 18px;
+      margin-bottom: clamp(12px, 1.4vh, 22px);
     }
 
     .tagline {
-      font-size: clamp(11px, 1.2vw, 15px);
+      font-size: clamp(9px, 0.75vw, 13px);
       font-weight: 700;
       letter-spacing: 0.24em;
       color: var(--black);
       opacity: 0;
-      margin-bottom: 40px;
+      margin-bottom: clamp(24px, 3vh, 44px);
     }
 
     .body-line {
-      font-size: clamp(13px, 1.25vw, 17px);
+      font-size: clamp(11px, 0.85vw, 15px);
       letter-spacing: 0.1em;
       line-height: 1.75;
       color: var(--gray-600);
       opacity: 0;
     }
 
-    /* ── Enter Gallery — pinned to bottom of text panel ── */
+    /* ── Enter Gallery — in flow below body text ── */
     .enter-wrap {
-      position: absolute;
-      bottom: calc(8vh + env(safe-area-inset-bottom, 0px));
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: clamp(28px, 3.5vh, 52px);
       opacity: 0;
       white-space: nowrap;
     }
 
     .enter {
-      font-size: clamp(18px, 1.9vw, 27px);
+      font-size: clamp(14px, 1.2vw, 22px);
       font-weight: 500;
       letter-spacing: 0.02em;
       color: var(--black);
@@ -142,37 +139,29 @@
         z-index: 1;
         height: 100vh;
         justify-content: center;
-        padding: 0 32px 20vh;
+        padding: 0 8vw 18vh;
         background: rgba(255, 255, 255, 0.55);
       }
 
       .brand {
-        font-size: clamp(55px, 15vw, 90px);
+        font-size: clamp(52px, 13vw, 90px);
         font-weight: 900;
-        text-align: center;
       }
 
       .tagline {
+        font-size: clamp(9px, 2.8vw, 13px);
         color: #000;
         font-weight: 900;
       }
 
       .body-line {
+        font-size: clamp(11px, 3vw, 15px);
         color: #000;
         font-weight: 700;
       }
 
-      .enter-wrap {
-        position: relative;
-        bottom: auto;
-        left: auto;
-        transform: none;
-        margin-top: 36px;
-        white-space: nowrap;
-      }
-
       .enter {
-        font-size: clamp(22px, 5.5vw, 32px);
+        font-size: clamp(20px, 5vw, 28px);
         font-weight: 700;
       }
     }
