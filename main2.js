@@ -257,6 +257,17 @@ function addToCart(piece) {
     saveCart(cart);
   }
   updateCartBadge();
+
+  /* Flash piece name on cart button */
+  const btn = document.getElementById('cartBtn');
+  if (btn) {
+    btn.innerHTML = `${piece.name} ADDED TO CART`;
+    clearTimeout(btn._resetTimer);
+    btn._resetTimer = setTimeout(() => {
+      const n = getCart().length;
+      btn.innerHTML = `CART <span class="cart-badge${n === 0 ? ' hidden' : ''}" id="cartBadge">${n}</span>`;
+    }, 3000);
+  }
 }
 function removeFromCart(id) {
   saveCart(getCart().filter(i => i.id !== id));
@@ -308,7 +319,7 @@ function initCart() {
   btn.id = 'cartBtn';
   btn.innerHTML = `CART <span class="cart-badge hidden" id="cartBadge">0</span>`;
   btn.addEventListener('click', openCart);
-  document.querySelector('.g2-topcorner').prepend(btn);
+  document.getElementById('topLeft').appendChild(btn);
 
   /* Cart panel */
   const panel = document.createElement('div');

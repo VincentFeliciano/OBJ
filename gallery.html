@@ -86,6 +86,13 @@
       gap: 14px;
     }
 
+    .g2-topcorner-right {
+      position: fixed;
+      top: 20px;
+      right: 22px;
+      z-index: 10;
+    }
+
     .g2-catalogue-link {
       font-family: var(--mono);
       font-size: 9px;
@@ -1074,6 +1081,7 @@
 
       /* Tighter top-left buttons */
       .g2-topcorner { top: 14px; left: 14px; gap: 10px; }
+      .g2-topcorner-right { top: 14px; right: 14px; }
 
       /* ── Detail view: stacked (image top, text scrolls below) ── */
       .detail-view { flex-direction: column; }
@@ -1124,7 +1132,8 @@
   <div class="bg-wordmark">OBJ.52</div>
 
   <!-- Top left -->
-  <div class="g2-topcorner">
+  <div class="g2-topcorner" id="topLeft"></div>
+  <div class="g2-topcorner-right">
     <button class="g2-menu-btn" id="menuBtn">MENU</button>
   </div>
 
