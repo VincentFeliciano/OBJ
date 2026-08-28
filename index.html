@@ -190,27 +190,52 @@
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script>
-  /* ── Video alternation: randomly pick first, crossfade on end ── */
-  const vids = [document.getElementById('vid0'), document.getElementById('vid1')];
-  let cur = Math.random() < 0.5 ? 0 : 1;
+  /* ── Shuffled video queue — crossfades through all 6 clips ── */
+  const SRCS = [
+    'video1.mp4','video1a.mp4','video1b.mp4',
+    'video1c.mp4','video1d.mp4','video1e.mp4'
+  ];
 
-  function startVideo(idx) {
-    const active = vids[idx];
-    const inactive = vids[1 - idx];
-    active.currentTime = 0;
-    active.play();
-    gsap.to(active,   { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
-    gsap.to(inactive, { opacity: 0, duration: 0.8, ease: 'power2.inOut' });
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 
-  vids.forEach((v, i) => {
-    v.addEventListener('ended', () => {
-      cur = 1 - cur;
-      startVideo(cur);
-    });
-  });
+  let queue = shuffle(SRCS), qi = 0;
+  function nextSrc() {
+    const src = queue[qi++];
+    if (qi >= queue.length) { queue = shuffle(SRCS); qi = 0; }
+    return src;
+  }
 
-  startVideo(cur);
+  const vids = [document.getElementById('vid0'), document.getElementById('vid1')];
+  let active = 0;
+
+  /* Load first two */
+  vids[0].src = nextSrc(); vids[0].load();
+  vids[1].src = nextSrc(); vids[1].load();
+  gsap.set(vids[0], { opacity: 1 });
+  gsap.set(vids[1], { opacity: 0 });
+  vids[0].play();
+
+  function switchVideo() {
+    const next = 1 - active;
+    gsap.to(vids[active], { opacity: 0, duration: 0.8, ease: 'power2.inOut' });
+    gsap.to(vids[next],   { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
+    vids[next].currentTime = 0;
+    vids[next].play();
+    active = next;
+    /* preload next clip into the now-inactive element */
+    vids[1 - active].src = nextSrc();
+    vids[1 - active].load();
+  }
+
+  vids[0].addEventListener('ended', switchVideo);
+  vids[1].addEventListener('ended', switchVideo);
 
   const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
