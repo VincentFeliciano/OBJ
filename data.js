@@ -707,7 +707,7 @@ const PIECES = [
     designation: "52 / 014",
     name: "THE JOCKEY",
     subtitle: "Cast Aluminum Lawn Jockey · Full Restoration · 4 ft",
-    status: "AVAILABLE",
+    status: "SOLD",
     type: "RESTORED",
     era: "c. 1960s",
     found: "Saratoga Springs, NY",
