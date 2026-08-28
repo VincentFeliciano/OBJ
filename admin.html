@@ -442,7 +442,7 @@
     <h2>OBJ.52 — ADMIN</h2>
     <input type="text"     id="loginUser" placeholder="USERNAME" autocomplete="username">
     <input type="password" id="loginPass" placeholder="PASSWORD" autocomplete="current-password">
-    <input type="password" id="loginToken" placeholder="GITHUB TOKEN (for publishing)" autocomplete="off">
+    <input type="text" id="loginToken" placeholder="GITHUB TOKEN (for publishing)" autocomplete="off" style="font-size:10px;letter-spacing:0.02em;">
     <button id="loginBtn">ENTER</button>
     <span id="loginError"></span>
   </div>
@@ -503,7 +503,10 @@
 
   <div class="admin-header">
     <h1>OBJ.52 — ADMIN</h1>
-    <span>ARCHIVE MANAGEMENT</span>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <span>ARCHIVE MANAGEMENT</span>
+      <button id="logoutBtn" style="font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--muted);background:none;border:1px solid var(--border);padding:5px 12px;cursor:pointer;font-family:inherit;transition:color 0.15s,border-color 0.15s;">LOG OUT</button>
+    </div>
   </div>
 
   <nav class="tab-nav">
@@ -714,6 +717,16 @@
   <div class="flash" id="flash">COPIED</div>
 
   <script>
+    /* ── Logout ── */
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('obj52_auth');
+      sessionStorage.removeItem('obj52_token');
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('loginUser').value = '';
+      document.getElementById('loginPass').value = '';
+      document.getElementById('loginToken').value = '';
+    });
+
     /* ── Tabs ── */
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
