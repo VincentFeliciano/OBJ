@@ -59,7 +59,6 @@ const PIECES = [
       "EOOS_E005-oak-oil-leather-sif95_side.webp",
       "EOOS_E005-oak-oil-leather-sif95_back.webp"
     ],
-    stripePriceId: "price_1U9TPyBXCX8QBL7iOxlqnae8",
     paymentLink: "https://buy.stripe.com/aFa00i2XBeUodfO6oI5Rm00"
   },
 
@@ -113,7 +112,6 @@ const PIECES = [
       "c35_6pers_natur_2013_3_aae56cf3-0fb9-4fee-8038-944451ec057a.webp",
       "c35_6pers_natur_2013_5_aa7adf3b-c0e1-46e5-a3c6-b215117b8e37.webp"
     ],
-    stripePriceId: "price_1U9TPzBXCX8QBL7iapjShvpy",
     paymentLink: "https://buy.stripe.com/eVq5kC8hV7rWa3C4gA5Rm01"
   },
 
@@ -166,7 +164,6 @@ const PIECES = [
     images: [
       "Montana_Selection_CLASSIFY_Organiser_Parsley_Perspective_83660474-fdbf-4148-a273-1f59a43dc167.webp"
     ],
-    stripePriceId: "price_1U9TQ0BXCX8QBL7igH7gTmoX",
     paymentLink: "https://buy.stripe.com/4gM14m55JeUo3Fe9AU5Rm02"
   },
 
@@ -219,7 +216,6 @@ const PIECES = [
     images: [
       "AK_2530_valn_d.webp"
     ],
-    stripePriceId: "price_1U9TQ1BXCX8QBL7ierN3dpST",
     paymentLink: "https://buy.stripe.com/eVq7sKeGj7rW7Vu9AU5Rm03"
   },
 
@@ -275,7 +271,6 @@ const PIECES = [
       "Zach_Chair_Green-Profile_2000x.webp",
       "Zach_Chair_Green-Rear_2000x.webp"
     ],
-    stripePriceId: "price_1U9TQ2BXCX8QBL7irMMTXV3h",
     paymentLink: "https://buy.stripe.com/cNicN42XBdQkb7GfZi5Rm04"
   },
 
@@ -330,7 +325,6 @@ const PIECES = [
       "GeorgeCoffeeTable-Face_400x.webp",
       "GeorgeCoffee_NW_Det_400x.webp"
     ],
-    stripePriceId: "price_1U9TQ2BXCX8QBL7iE26LgCRX",
     paymentLink: "https://buy.stripe.com/8x26oG2XB13ygs05kE5Rm05"
   },
 
@@ -387,7 +381,6 @@ const PIECES = [
       "GIB-200-CW-B_400x.jpg",
       "GIB-200-WN2_400x.jpg"
     ],
-    stripePriceId: "price_1U9TQ3BXCX8QBL7ierczwmKd",
     paymentLink: "https://buy.stripe.com/00waEW1Tx3bG8Zy5kE5Rm06"
   },
 
@@ -446,7 +439,6 @@ const PIECES = [
       "LewisTV_MW_Det2_1c38f2ab-cb9c-4a7b-a281-ee2523336c1c_2000x.webp",
       "LewisTVCabinet_6_449f2f97-c5ef-4ec7-965a-3897fe562ba0_2000x.webp"
     ],
-    stripePriceId: "price_1U9TQ4BXCX8QBL7ijeTSaNuj",
     paymentLink: "https://buy.stripe.com/5kQfZg55J3bGcbK5kE5Rm07"
   },
 
@@ -503,7 +495,6 @@ const PIECES = [
       "OsloTVDetial_400x.webp",
       "OsloTVOpen_400x.webp"
     ],
-    stripePriceId: "price_1U9TQ5BXCX8QBL7iaoz5Dhyy",
     paymentLink: "https://buy.stripe.com/7sY00i69N7rWdfOfZi5Rm08"
   },
 
@@ -559,7 +550,6 @@ const PIECES = [
       "KOB-BEN200-3_a91c7dd1-46d6-4a18-8cf3-d6e7d53706b6_2000x.webp",
       "KOB-BEN200-4_51151ac8-4736-4dc9-b980-5fe88617e91e_2000x.webp"
     ],
-    stripePriceId: "price_1U9TQ6BXCX8QBL7ijAM0Dby4",
     paymentLink: "https://buy.stripe.com/4gMdR81Tx3bG7VucN65Rm09"
   },
 
@@ -612,7 +602,6 @@ const PIECES = [
     images: [
       "mid-century-ashtray-with-magazine-holder-1960s.jpg"
     ],
-    stripePriceId: "price_1U9TQ7BXCX8QBL7iELjAl18y",
     paymentLink: "https://buy.stripe.com/bJe3cu2XB3bG0t2fZi5Rm0a"
   },
 
@@ -665,7 +654,6 @@ const PIECES = [
     images: [
       "Screenshot 2026-08-26 093932.png"
     ],
-    stripePriceId: "price_1U9TQ7BXCX8QBL7ipYQEjVHF",
     paymentLink: "https://buy.stripe.com/14AaEW7dR13yejS7sM5Rm0b"
   },
 
@@ -724,7 +712,6 @@ const PIECES = [
       "81aa075c-07eb-4e2a-820c-62b12152a60f.avif",
       "999ddb8f-88c5-40fe-9d42-fd9762bfd108.avif"
     ],
-    stripePriceId: "price_1U9TQ8BXCX8QBL7iIHLxXkRg",
     paymentLink: "https://buy.stripe.com/7sY6oG69NaE83FefZi5Rm0c"
   },
 
