@@ -706,23 +706,10 @@ function openMenu() {
         <a href="contact.html">CONTACT</a>
       </nav>
       <div class="social-icons">
-        <a href="#" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5"/>
-            <circle cx="12" cy="12" r="5"/>
-            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-          </svg>
-        </a>
-        <a href="#" aria-label="TikTok">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1-.07z"/>
-          </svg>
-        </a>
-        <a href="#" aria-label="YouTube">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.51 3.5 12 3.5 12 3.5s-7.51 0-9.38.55A3.02 3.02 0 00.5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 002.12 2.14C4.49 20.5 12 20.5 12 20.5s7.51 0 9.38-.55a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/>
-          </svg>
-        </a>
+        <a href="#" aria-label="Instagram"><img src="instagram.png" alt="Instagram"></a>
+        <a href="#" aria-label="Facebook"><img src="facebook.png" alt="Facebook"></a>
+        <a href="#" aria-label="YouTube"><img src="youtube.png" alt="YouTube"></a>
+        <a href="#" aria-label="LinkedIn"><img src="linkedin.png" alt="LinkedIn"></a>
       </div>
       <div class="menu-card-footer">OBJECTS / RESTORATION / DESIGN</div>
     </div>
@@ -845,23 +832,10 @@ function initAbout() {
       </div>
 
       <div class="social-icons">
-        <a href="#" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5"/>
-            <circle cx="12" cy="12" r="5"/>
-            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-          </svg>
-        </a>
-        <a href="#" aria-label="TikTok">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1-.07z"/>
-          </svg>
-        </a>
-        <a href="#" aria-label="YouTube">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.51 3.5 12 3.5 12 3.5s-7.51 0-9.38.55A3.02 3.02 0 00.5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 002.12 2.14C4.49 20.5 12 20.5 12 20.5s7.51 0 9.38-.55a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/>
-          </svg>
-        </a>
+        <a href="#" aria-label="Instagram"><img src="instagram.png" alt="Instagram"></a>
+        <a href="#" aria-label="Facebook"><img src="facebook.png" alt="Facebook"></a>
+        <a href="#" aria-label="YouTube"><img src="youtube.png" alt="YouTube"></a>
+        <a href="#" aria-label="LinkedIn"><img src="linkedin.png" alt="LinkedIn"></a>
       </div>
     </div>
   `;
