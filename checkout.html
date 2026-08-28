@@ -140,6 +140,15 @@
 
 <script>
   function getCart() {
+    /* Check URL param first (passed from gallery to work across all browsers/protocols) */
+    try {
+      const param = new URLSearchParams(window.location.search).get('cart');
+      if (param) {
+        const cart = JSON.parse(decodeURIComponent(param));
+        if (Array.isArray(cart) && cart.length) return cart;
+      }
+    } catch {}
+    /* Fall back to localStorage */
     try { return JSON.parse(localStorage.getItem('obj52_cart') || '[]'); } catch { return []; }
   }
 

@@ -345,7 +345,7 @@ function initCart() {
     e.preventDefault();
     const items = getCart();
     if (!items.length) return;
-    window.location.href = 'checkout.html';
+    window.location.href = 'checkout.html?cart=' + encodeURIComponent(JSON.stringify(items));
   });
 
   updateCartBadge();
