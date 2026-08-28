@@ -492,11 +492,10 @@
       }
 
       document.getElementById('loginBtn').addEventListener('click', attempt);
-      document.getElementById('loginToken').addEventListener('keydown', e => {
-        if (e.key === 'Enter') attempt();
-      });
-      document.getElementById('loginPass').addEventListener('keydown', e => {
-        if (e.key === 'Enter') attempt();
+      ['loginUser', 'loginPass', 'loginToken'].forEach(id => {
+        document.getElementById(id).addEventListener('keydown', e => {
+          if (e.key === 'Enter') attempt();
+        });
       });
     })();
   </script>
