@@ -21,8 +21,7 @@ card carousel.png
 obj.52.txt
 strengths.txt
 
-# Admin tools (local only)
-admin.html
+# Admin server tools (local only)
 admin-server.js
 start-admin.bat
 

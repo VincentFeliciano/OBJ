@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBJ.52 — Admin</title>
+
+  <style>
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+
+  <style>
+    /* ── Login overlay ── */
+    #loginOverlay {
+      position: fixed;
+      inset: 0;
+      background: #0f0f0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+      gap: 12px;
+    }
+    #loginOverlay h2 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #c8b89a;
+      margin-bottom: 8px;
+    }
+    #loginOverlay input {
+      display: block;
+      width: 260px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #e8e8e5;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #loginOverlay input:focus { border-color: #c8b89a; }
+    #loginOverlay button {
+      width: 260px;
+      padding: 10px;
+      background: #c8b89a;
+      border: none;
+      color: #0f0f0f;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    #loginError {
+      font-size: 10px;
+      color: #9a4a4a;
+      letter-spacing: 0.06em;
+      height: 16px;
+    }
+  </style>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f0f;
+      --surface:  #1a1a1a;
+      --border:   #2a2a2a;
+      --muted:    #555;
+      --text:     #e8e8e5;
+      --dim:      #888;
+      --accent:   #c8b89a;
+      --green:    #4a9a6a;
+      --red:      #9a4a4a;
+      --yellow:   #9a8a4a;
+      --blue:     #4a6a9a;
+    }
+
+    body {
+      font-family: 'Satoshi', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+    .admin-header h1 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+    .admin-header span {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Tabs ── */
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      padding: 12px 24px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+
+    .tab-panel { display: none; padding: 28px; }
+    .tab-panel.active { display: block; }
+
+    /* ── Archive tab ── */
+    .archive-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .archive-toolbar p {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .piece-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .piece-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .piece-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .piece-table tr:hover td { background: var(--surface); }
+
+    .thumb {
+      width: 52px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 2px;
+      display: block;
+      background: var(--border);
+    }
+
+    .piece-name {
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    .piece-desig {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+    }
+    .status-AVAILABLE  { background: rgba(74,154,106,0.15); color: #6dba8a; }
+    .status-SOLD       { background: rgba(154,74,74,0.15);  color: #ba6d6d; }
+    .status-ARCHIVED   { background: rgba(85,85,85,0.15);   color: var(--muted); }
+    .status-COMMISSIONED { background: rgba(74,106,154,0.15); color: #6d8aba; }
+
+    .status-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 5px 8px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .status-select:focus { outline: none; border-color: var(--accent); }
+
+    .price-cell { font-weight: 600; color: var(--accent); }
+    .type-cell  { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); }
+
+    /* ── Export output ── */
+    .export-area {
+      margin-top: 24px;
+      display: none;
+    }
+    .export-area.visible { display: block; }
+    .export-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .export-header p {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .export-code {
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px;
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 11px;
+      color: #c8d8b8;
+      white-space: pre;
+      overflow: auto;
+      max-height: 400px;
+      line-height: 1.5;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 9px 18px;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.8; }
+    .btn:active { opacity: 0.6; }
+    .btn-primary { background: var(--accent); color: #0f0f0f; }
+    .btn-outline { background: none; border: 1px solid var(--border); color: var(--text); }
+    .btn-green   { background: var(--green); color: #fff; }
+    .btn-sm { padding: 6px 12px; font-size: 9px; }
+
+    /* ── Add Piece tab ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 900px;
+    }
+    .form-grid .span2 { grid-column: 1 / -1; }
+
+    .form-section {
+      max-width: 900px;
+      margin-bottom: 32px;
+    }
+    .form-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      padding: 9px 12px;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus { border-color: var(--accent); }
+    .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .field .hint {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* history rows */
+    .history-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 32px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .history-row input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 2px;
+      outline: none;
+      width: 100%;
+    }
+    .history-row input:focus { border-color: var(--accent); }
+    .remove-row-btn {
+      width: 28px;
+      height: 28px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .remove-row-btn:hover { color: var(--text); border-color: var(--muted); }
+
+    .add-row-btn {
+      background: none;
+      border: 1px dashed var(--border);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 7px 14px;
+      cursor: pointer;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .add-row-btn:hover { color: var(--text); border-color: var(--muted); }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin-top: 32px;
+    }
+
+    .preview-area {
+      margin-top: 24px;
+      max-width: 900px;
+      display: none;
+    }
+    .preview-area.visible { display: block; }
+    .preview-area .export-header {
+      margin-bottom: 10px;
+    }
+
+    /* flash */
+    .flash {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 10px 18px;
+      border-radius: 2px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 999;
+    }
+    .flash.show { opacity: 1; }
+
+    /* next ID display */
+    #nextIdDisplay {
+      font-weight: 700;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Login screen ── -->
+  <div id="loginOverlay">
+    <h2>OBJ.52 — ADMIN</h2>
+    <input type="text"     id="loginUser" placeholder="USERNAME" autocomplete="username">
+    <input type="password" id="loginPass" placeholder="PASSWORD" autocomplete="current-password">
+    <button id="loginBtn">ENTER</button>
+    <span id="loginError"></span>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    /* ═══════════════════════════════════════════════
+       ADMIN CREDENTIALS — change username and password here
+       ═══════════════════════════════════════════════ */
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'admin';
+    /* ═══════════════════════════════════════════════ */
+
+    (function() {
+      const overlay = document.getElementById('loginOverlay');
+
+      /* Stay logged in for the session */
+      if (sessionStorage.getItem('obj52_auth') === '1') {
+        overlay.style.display = 'none';
+        return;
+      }
+
+      function attempt() {
+        const u = document.getElementById('loginUser').value.trim();
+        const p = document.getElementById('loginPass').value;
+        if (u === ADMIN_USER && p === ADMIN_PASS) {
+          sessionStorage.setItem('obj52_auth', '1');
+          overlay.style.display = 'none';
+        } else {
+          const err = document.getElementById('loginError');
+          err.textContent = 'INCORRECT CREDENTIALS';
+          setTimeout(() => { err.textContent = ''; }, 2000);
+        }
+      }
+
+      document.getElementById('loginBtn').addEventListener('click', attempt);
+      document.getElementById('loginPass').addEventListener('keydown', e => {
+        if (e.key === 'Enter') attempt();
+      });
+    })();
+  </script>
+
+  <div class="admin-header">
+    <h1>OBJ.52 — ADMIN</h1>
+    <span>ARCHIVE MANAGEMENT</span>
+  </div>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="archive">ARCHIVE</button>
+    <button class="tab-btn" data-tab="add">ADD PIECE</button>
+  </nav>
+
+  <!-- ══════════════════════════════════ ARCHIVE TAB ══ -->
+  <div id="tab-archive" class="tab-panel active">
+    <div class="archive-toolbar">
+      <p>
+        <span id="pieceCount">0</span> PIECES IN ARCHIVE &nbsp;·&nbsp;
+        NEXT ID: <span id="nextIdDisplay">—</span>
+      </p>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="btn btn-outline btn-sm" id="cancelChangesBtn" style="display:none">CANCEL</button>
+        <button class="btn btn-primary" id="exportBtn">GENERATE data.js</button>
+        <button class="btn btn-green" id="publishBtn" style="display:none">SAVE &amp; PUBLISH</button>
+      </div>
+    </div>
+
+    <table class="piece-table" id="pieceTable">
+      <thead>
+        <tr>
+          <th style="width:60px"></th>
+          <th>PIECE</th>
+          <th>TYPE</th>
+          <th>PRICE</th>
+          <th>STATUS</th>
+          <th style="width:80px">IMAGES</th>
+        </tr>
+      </thead>
+      <tbody id="pieceTableBody"></tbody>
+    </table>
+
+    <div class="export-area" id="exportArea">
+      <div class="export-header">
+        <p id="exportAreaLabel">COPY THE CONTENT BELOW AND REPLACE YOUR data.js FILE</p>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-outline btn-sm" id="downloadBtn">DOWNLOAD</button>
+          <button class="btn btn-green btn-sm" id="copyExportBtn">COPY TO CLIPBOARD</button>
+        </div>
+      </div>
+      <div class="export-code" id="exportCode"></div>
+    </div>
+
+    <!-- Git output (server mode only) -->
+    <div class="export-area" id="gitOutput" style="margin-top:16px;">
+      <div class="export-header">
+        <p id="gitStatusMsg">—</p>
+      </div>
+      <div class="export-code" id="gitLog" style="max-height:160px;"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ ADD PIECE TAB ══ -->
+  <div id="tab-add" class="tab-panel">
+
+    <div class="form-section">
+      <div class="form-section-title">IDENTITY</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>NAME *</label>
+          <input type="text" id="f-name" placeholder="THE CABINET">
+          <span class="hint">Will be uppercased automatically.</span>
+        </div>
+        <div class="field">
+          <label>SUBTITLE *</label>
+          <input type="text" id="f-subtitle" placeholder="Walnut Sideboard · 1960s">
+        </div>
+        <div class="field">
+          <label>TYPE *</label>
+          <select id="f-type">
+            <option value="FOUND">FOUND</option>
+            <option value="RESTORED" selected>RESTORED</option>
+            <option value="REFORMATTED">REFORMATTED</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>STATUS *</label>
+          <select id="f-status">
+            <option value="AVAILABLE" selected>AVAILABLE</option>
+            <option value="SOLD">SOLD</option>
+            <option value="ARCHIVED">ARCHIVED</option>
+            <option value="COMMISSIONED">COMMISSIONED</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>PRICE *</label>
+          <input type="text" id="f-price" placeholder="$1,200">
+        </div>
+        <div class="field">
+          <label>EDITION</label>
+          <input type="text" id="f-edition" placeholder="ONE OF ONE" value="ONE OF ONE">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">PROVENANCE</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>ERA *</label>
+          <input type="text" id="f-era" placeholder="c. 1960s">
+        </div>
+        <div class="field">
+          <label>FOUND AT *</label>
+          <input type="text" id="f-found" placeholder="Estate Sale, Hudson, NY">
+        </div>
+        <div class="field">
+          <label>YEAR RESTORED</label>
+          <input type="text" id="f-restored" placeholder="2026" value="2026">
+        </div>
+        <div class="field">
+          <label>RESTORATION TIME</label>
+          <input type="text" id="f-restorationTime" placeholder="6 hrs">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">PHYSICAL</div>
+      <div class="form-grid">
+        <div class="field span2">
+          <label>MATERIALS *</label>
+          <textarea id="f-materials" placeholder="One material per line:&#10;Solid Walnut&#10;Brass Hardware&#10;Original Glass"></textarea>
+        </div>
+        <div class="field">
+          <label>DIMENSIONS</label>
+          <input type="text" id="f-dimensions" placeholder='48"W × 18"D × 32"H'>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">NARRATIVE</div>
+      <div class="form-grid">
+        <div class="field span2">
+          <label>STORY *</label>
+          <textarea id="f-story" style="min-height:100px" placeholder="The story of this piece — where it came from, what it meant, why it matters."></textarea>
+        </div>
+        <div class="field span2">
+          <label>RESTORATION DESCRIPTION *</label>
+          <textarea id="f-restorationDesc" style="min-height:100px" placeholder="What was done during restoration. Be specific and honest."></textarea>
+        </div>
+        <div class="field span2">
+          <label>MAKER'S NOTE *</label>
+          <textarea id="f-makersNote" placeholder="A brief personal note. One or two sentences."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">LISTS</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>PRESERVED</label>
+          <textarea id="f-preserved" placeholder="One item per line:&#10;Original veneer&#10;Brass hardware"></textarea>
+        </div>
+        <div class="field">
+          <label>REBUILT</label>
+          <textarea id="f-rebuilt" placeholder="One item per line:&#10;Drawer slides replaced&#10;Surface refinished"></textarea>
+        </div>
+        <div class="field span2">
+          <label>RESTORATION MATERIALS</label>
+          <textarea id="f-restorationMaterials" placeholder="One item per line:&#10;Danish oil&#10;320 grit paper"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">OBJECT HISTORY</div>
+      <div id="historyRows"></div>
+      <button class="add-row-btn" id="addHistoryRow">+ ADD YEAR</button>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">IMAGES</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>FOLDER NAME *</label>
+          <input type="text" id="f-folder" placeholder="cabinet">
+          <span class="hint">Folder must exist in the project directory.</span>
+        </div>
+        <div class="field">
+          <label>IMAGE FILES *</label>
+          <textarea id="f-images" placeholder="One filename per line:&#10;front.jpg&#10;side.webp&#10;detail.jpg"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" id="generateBtn">GENERATE ENTRY</button>
+      <button class="btn btn-outline" id="clearFormBtn">CLEAR FORM</button>
+      <span id="formMsg" style="font-size:11px;color:var(--muted);letter-spacing:0.06em;"></span>
+    </div>
+
+    <div class="preview-area" id="previewArea">
+      <div class="export-header">
+        <p>PASTE THIS ENTRY INTO data.js BEFORE THE CLOSING <code style="color:var(--accent)">];</code></p>
+        <button class="btn btn-green btn-sm" id="copyEntryBtn">COPY ENTRY</button>
+      </div>
+      <div class="export-code" id="previewCode"></div>
+    </div>
+
+  </div>
+
+  <div class="flash" id="flash">COPIED</div>
+
+  <script>
+    /* ── Tabs ── */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* ── Flash helper ── */
+    function flash(msg = 'COPIED') {
+      const el = document.getElementById('flash');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 1800);
+    }
+
+    /* ── Work with a mutable copy of PIECES ── */
+    let workingPieces = PIECES.map(p => Object.assign({}, p));
+
+    /* ── Next ID ── */
+    function getNextId() {
+      const max = workingPieces.reduce((m, p) => Math.max(m, parseInt(p.id) || 0), 0);
+      return String(max + 1).padStart(3, '0');
+    }
+
+    /* ── Build archive table ── */
+    function buildTable() {
+      const tbody = document.getElementById('pieceTableBody');
+      tbody.innerHTML = '';
+      workingPieces.forEach((piece, i) => {
+        const tr = document.createElement('tr');
+        const imgSrc = piece.folder && piece.images && piece.images[0]
+          ? `${piece.folder}/${piece.images[0]}` : '';
+
+        tr.innerHTML = `
+          <td>
+            ${imgSrc ? `<img class="thumb" src="${imgSrc}" alt="${piece.name}" onerror="this.style.display='none'">` : '<div class="thumb"></div>'}
+          </td>
+          <td>
+            <div class="piece-name">${piece.name}</div>
+            <div class="piece-desig">${piece.designation}</div>
+          </td>
+          <td class="type-cell">${piece.type}</td>
+          <td class="price-cell">${piece.price}</td>
+          <td>
+            <select class="status-select" data-idx="${i}">
+              <option value="AVAILABLE"   ${piece.status==='AVAILABLE'  ?'selected':''}>AVAILABLE</option>
+              <option value="SOLD"        ${piece.status==='SOLD'       ?'selected':''}>SOLD</option>
+              <option value="ARCHIVED"    ${piece.status==='ARCHIVED'   ?'selected':''}>ARCHIVED</option>
+              <option value="COMMISSIONED"${piece.status==='COMMISSIONED'?'selected':''}>COMMISSIONED</option>
+            </select>
+          </td>
+          <td style="color:var(--dim);font-size:11px;">${piece.images ? piece.images.length : 0}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      /* Status change handlers */
+      tbody.querySelectorAll('.status-select').forEach(sel => {
+        sel.addEventListener('change', () => {
+          const idx = parseInt(sel.dataset.idx);
+          workingPieces[idx].status = sel.value;
+          document.getElementById('cancelChangesBtn').style.display = '';
+          /* hide export if open */
+          document.getElementById('exportArea').classList.remove('visible');
+        });
+      });
+
+      document.getElementById('pieceCount').textContent = workingPieces.length;
+      document.getElementById('nextIdDisplay').textContent = '52 / ' + getNextId();
+    }
+
+    buildTable();
+
+    /* Cancel changes */
+    document.getElementById('cancelChangesBtn').addEventListener('click', () => {
+      workingPieces = PIECES.map(p => Object.assign({}, p));
+      buildTable();
+      document.getElementById('cancelChangesBtn').style.display = 'none';
+      document.getElementById('exportArea').classList.remove('visible');
+    });
+
+    /* ── Serialiser ── */
+    function esc(s) {
+      return String(s || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    }
+
+    function serializeArr(arr) {
+      return `[${(arr || []).map(s => `"${esc(s)}"`).join(', ')}]`;
+    }
+
+    function serializeMultiArr(arr) {
+      if (!arr || arr.length === 0) return '[]';
+      return `[\n      ${(arr).map(s => `"${esc(s)}"`).join(',\n      ')}\n    ]`;
+    }
+
+    function serializeHistory(arr) {
+      if (!arr || arr.length === 0) return '[]';
+      return `[\n      ${arr.map(h => `{ year: "${esc(h.year)}", event: "${esc(h.event)}" }`).join(',\n      ')}\n    ]`;
+    }
+
+    function serializePiece(p) {
+      return `  {
+    id: "${esc(p.id)}",
+    designation: "${esc(p.designation)}",
+    name: "${esc(p.name)}",
+    subtitle: "${esc(p.subtitle)}",
+    status: "${esc(p.status)}",
+    type: "${esc(p.type)}",
+    era: "${esc(p.era)}",
+    found: "${esc(p.found)}",
+    materials: ${serializeArr(p.materials)},
+    dimensions: '${String(p.dimensions || '').replace(/'/g, "\\'")}',
+    edition: "${esc(p.edition)}",
+    restored: "${esc(p.restored)}",
+    restorationTime: "${esc(p.restorationTime)}",
+    price: "${esc(p.price)}",
+
+    story: "${esc(p.story)}",
+
+    restorationDesc: "${esc(p.restorationDesc)}",
+
+    preserved: ${serializeMultiArr(p.preserved)},
+    rebuilt: ${serializeMultiArr(p.rebuilt)},
+
+    makersNote: "${esc(p.makersNote)}",
+
+    restorationMaterials: ${serializeArr(p.restorationMaterials)},
+
+    objectHistory: ${serializeHistory(p.objectHistory)},
+
+    folder: "${esc(p.folder)}",
+    images: ${serializeMultiArr(p.images)}
+  }`;
+    }
+
+    function serializeDataJs(pieces) {
+      const entries = pieces.map(serializePiece).join(',\n\n');
+      return `/* =========================================\n   OBJ.52 — data.js\n\n   HOW TO ADD A NEW PIECE:\n   Copy an entry, paste before the closing ];\n   Update all fields. Save. Done.\n\n   STATUS: AVAILABLE | SOLD | ARCHIVED | COMMISSIONED\n   ========================================= */\n\nconst PIECES = [\n${entries}\n\n  /* ── ADD NEW PIECES ABOVE THIS LINE ─── */\n];\n`;
+    }
+
+    /* ── Detect server mode ── */
+    const isServer = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    if (isServer) {
+      document.getElementById('publishBtn').style.display = '';
+      document.getElementById('exportAreaLabel').textContent = 'PREVIEW — data.js will be saved and pushed when you click SAVE & PUBLISH';
+    }
+
+    /* ── Export button ── */
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const code = serializeDataJs(workingPieces);
+      document.getElementById('exportCode').textContent = code;
+      const area = document.getElementById('exportArea');
+      area.classList.add('visible');
+      area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    /* ── Publish button (server mode only) ── */
+    document.getElementById('publishBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('publishBtn');
+      const gitOut = document.getElementById('gitOutput');
+      const gitLog = document.getElementById('gitLog');
+      const gitMsg = document.getElementById('gitStatusMsg');
+
+      btn.textContent = 'PUBLISHING…';
+      btn.disabled = true;
+      gitOut.classList.add('visible');
+      gitMsg.textContent = 'Saving data.js and pushing to GitHub…';
+      gitLog.textContent = '';
+
+      try {
+        const content = serializeDataJs(workingPieces);
+        const res = await fetch('/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content }),
+        });
+        const data = await res.json();
+        const out = [data.stdout, data.stderr].filter(Boolean).join('\n').trim();
+        gitLog.textContent = out || '(no output)';
+
+        if (data.upToDate) {
+          gitMsg.textContent = '✓ No changes — already up to date.';
+        } else if (data.ok) {
+          gitMsg.textContent = '✓ Published to GitHub.';
+          flash('PUBLISHED');
+        } else {
+          gitMsg.textContent = '✕ Git error — see output below.';
+        }
+      } catch (e) {
+        gitMsg.textContent = '✕ Could not reach server. Is admin-server.js running?';
+        gitLog.textContent = e.message;
+      }
+
+      btn.textContent = 'SAVE & PUBLISH';
+      btn.disabled = false;
+      gitOut.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.getElementById('copyExportBtn').addEventListener('click', () => {
+      const code = document.getElementById('exportCode').textContent;
+      navigator.clipboard.writeText(code).then(() => flash('COPIED'));
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const code = document.getElementById('exportCode').textContent;
+      const blob = new Blob([code], { type: 'text/javascript' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'data.js';
+      a.click();
+    });
+
+    /* ── History rows ── */
+    let historyRowCount = 0;
+
+    function addHistoryRow(year = '', event = '') {
+      historyRowCount++;
+      const id = historyRowCount;
+      const div = document.createElement('div');
+      div.className = 'history-row';
+      div.dataset.rowId = id;
+      div.innerHTML = `
+        <input type="text" placeholder="c. 1960s" value="${esc(year)}" data-field="year">
+        <input type="text" placeholder="Event description" value="${esc(event)}" data-field="event">
+        <button class="remove-row-btn" title="Remove">×</button>
+      `;
+      div.querySelector('.remove-row-btn').addEventListener('click', () => div.remove());
+      document.getElementById('historyRows').appendChild(div);
+    }
+
+    document.getElementById('addHistoryRow').addEventListener('click', () => addHistoryRow());
+
+    /* Seed one row */
+    addHistoryRow('2026', 'Entered archive');
+
+    /* ── Get history from DOM ── */
+    function getHistoryFromDOM() {
+      return [...document.querySelectorAll('.history-row')].map(row => ({
+        year:  row.querySelector('[data-field="year"]').value.trim(),
+        event: row.querySelector('[data-field="event"]').value.trim()
+      })).filter(h => h.year || h.event);
+    }
+
+    /* ── Lines helper ── */
+    function lines(str) {
+      return str.split('\n').map(s => s.trim()).filter(Boolean);
+    }
+
+    /* ── Generate entry ── */
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      const msg = document.getElementById('formMsg');
+      const name = document.getElementById('f-name').value.trim().toUpperCase();
+      const folder = document.getElementById('f-folder').value.trim();
+      const images = lines(document.getElementById('f-images').value);
+
+      if (!name) { msg.textContent = '✕ Name is required.'; return; }
+      if (!folder) { msg.textContent = '✕ Folder is required.'; return; }
+      if (images.length === 0) { msg.textContent = '✕ At least one image filename is required.'; return; }
+      msg.textContent = '';
+
+      const nextId = getNextId();
+      const piece = {
+        id: nextId,
+        designation: `52 / ${nextId}`,
+        name: name,
+        subtitle:          document.getElementById('f-subtitle').value.trim(),
+        status:            document.getElementById('f-status').value,
+        type:              document.getElementById('f-type').value,
+        era:               document.getElementById('f-era').value.trim(),
+        found:             document.getElementById('f-found').value.trim(),
+        materials:         lines(document.getElementById('f-materials').value),
+        dimensions:        document.getElementById('f-dimensions').value.trim(),
+        edition:           document.getElementById('f-edition').value.trim() || 'ONE OF ONE',
+        restored:          document.getElementById('f-restored').value.trim(),
+        restorationTime:   document.getElementById('f-restorationTime').value.trim(),
+        price:             document.getElementById('f-price').value.trim(),
+        story:             document.getElementById('f-story').value.trim(),
+        restorationDesc:   document.getElementById('f-restorationDesc').value.trim(),
+        preserved:         lines(document.getElementById('f-preserved').value),
+        rebuilt:           lines(document.getElementById('f-rebuilt').value),
+        makersNote:        document.getElementById('f-makersNote').value.trim(),
+        restorationMaterials: lines(document.getElementById('f-restorationMaterials').value),
+        objectHistory:     getHistoryFromDOM(),
+        folder:            folder,
+        images:            images
+      };
+
+      const entry = ',\n\n' + serializePiece(piece) + '\n\n  /* ── ADD NEW PIECES ABOVE THIS LINE ─── */';
+      document.getElementById('previewCode').textContent = serializePiece(piece);
+      const area = document.getElementById('previewArea');
+      area.classList.add('visible');
+      area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.getElementById('copyEntryBtn').addEventListener('click', () => {
+      const code = document.getElementById('previewCode').textContent;
+      navigator.clipboard.writeText(code).then(() => flash('ENTRY COPIED'));
+    });
+
+    /* ── Clear form ── */
+    document.getElementById('clearFormBtn').addEventListener('click', () => {
+      ['f-name','f-subtitle','f-era','f-found','f-materials','f-dimensions',
+       'f-restored','f-restorationTime','f-price','f-story','f-restorationDesc',
+       'f-makersNote','f-restorationMaterials','f-preserved','f-rebuilt',
+       'f-folder','f-images'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = el.defaultValue || '';
+      });
+      document.getElementById('f-type').value = 'RESTORED';
+      document.getElementById('f-status').value = 'AVAILABLE';
+      document.getElementById('f-edition').value = 'ONE OF ONE';
+      document.getElementById('f-restored').value = '2026';
+      document.getElementById('historyRows').innerHTML = '';
+      historyRowCount = 0;
+      addHistoryRow('2026', 'Entered archive');
+      document.getElementById('previewArea').classList.remove('visible');
+      document.getElementById('formMsg').textContent = '';
+    });
+  </script>
+</body>
+</html>
