@@ -224,18 +224,24 @@
 
   function switchVideo() {
     const next = 1 - active;
-    gsap.to(vids[active], { opacity: 0, duration: 0.8, ease: 'power2.inOut' });
-    gsap.to(vids[next],   { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
+    const prev = active;
+    active = next;
+
+    gsap.to(vids[prev], { opacity: 0, duration: 0.8, ease: 'power2.inOut' });
+    gsap.to(vids[next], { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
     vids[next].currentTime = 0;
     vids[next].play();
-    active = next;
-    /* preload next clip into the now-inactive element */
-    vids[1 - active].src = nextSrc();
-    vids[1 - active].load();
+
+    /* preload next clip into the inactive element after a safe delay */
+    setTimeout(() => {
+      vids[prev].src = nextSrc();
+      vids[prev].load();
+    }, 1200);
   }
 
-  vids[0].addEventListener('ended', switchVideo);
-  vids[1].addEventListener('ended', switchVideo);
+  /* Only fire when the currently active element ends */
+  vids[0].addEventListener('ended', () => { if (active === 0) switchVideo(); });
+  vids[1].addEventListener('ended', () => { if (active === 1) switchVideo(); });
 
   const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
