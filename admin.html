@@ -936,7 +936,10 @@
         flash('PUBLISHED');
       } catch (e) {
         gitMsg.textContent = '✕ Publish failed.';
-        gitLog.textContent = e.message;
+        const hint = e.message.includes('not accessible')
+          ? e.message + '\n\nFix: use a classic token (github.com → Settings → Developer Settings → Tokens (classic)) with the "repo" scope checked.'
+          : e.message;
+        gitLog.textContent = hint;
       }
 
       btn.textContent = 'SAVE & PUBLISH';
