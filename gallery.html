@@ -1138,7 +1138,7 @@
     _ds.src = 'data.js?v=' + Date.now();
     _ds.onload = () => {
       const _ms = document.createElement('script');
-      _ms.src = 'main2.js';
+      _ms.src = 'main2.js?v=' + Date.now();
       document.body.appendChild(_ms);
     };
     document.body.appendChild(_ds);
