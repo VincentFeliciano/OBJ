@@ -272,7 +272,7 @@ function cartBtnHTML() {
   } else {
     lines = names.join('<br>') + '<br>ARE IN YOUR CART';
   }
-  return `${lines}<span class="cart-btn-cta">CLICK HERE TO CHECKOUT →</span>`;
+  return `${lines}<span class="cart-btn-cta">CLICK HERE TO VIEW CART</span>`;
 }
 function updateCartBadge() {
   const btn = document.getElementById('cartBtn');
@@ -317,11 +317,6 @@ function initCart() {
   btn.id = 'cartBtn';
   btn.textContent = 'CART';
   btn.addEventListener('click', (e) => {
-    if (e.target.classList.contains('cart-btn-cta')) {
-      e.stopPropagation();
-      if (getCart().length) window.location.href = 'checkout.html';
-      return;
-    }
     openCart();
   });
   document.getElementById('topLeft').appendChild(btn);
