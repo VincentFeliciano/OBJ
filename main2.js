@@ -485,16 +485,18 @@ function openDetail(piece, clickedItem) {
     <div class="dt-pinned-bot">
       <div class="dt-price">${piece.price}</div>
       <a class="dt-cta" href="${contactHref}">${ctaTxt}</a>
-      <button class="dt-add-cart ${piece.status === 'SOLD' ? 'sold-out' : inCart ? 'in-cart' : ''}" id="dtAddCart"
-        ${piece.status === 'SOLD' ? 'disabled' : ''}>
-        ${piece.status === 'SOLD' ? 'SOLD OUT' : inCart ? 'IN CART' : 'ADD TO CART'}
-      </button>
+      ${(function() {
+        if (piece.status === 'SOLD')        return `<button class="dt-add-cart sold-out" id="dtAddCart" disabled>SOLD OUT</button>`;
+        if (piece.status === 'ARCHIVED')    return `<button class="dt-add-cart sold-out" id="dtAddCart" disabled>ARCHIVED</button>`;
+        if (piece.status === 'COMMISSIONED')return `<button class="dt-add-cart sold-out" id="dtAddCart" disabled>COMMISSIONED</button>`;
+        return `<button class="dt-add-cart ${inCart ? 'in-cart' : ''}" id="dtAddCart">${inCart ? 'IN CART' : 'ADD TO CART'}</button>`;
+      })()}
     </div>
   `;
 
-  /* Add to cart — only if not sold */
+  /* Add to cart — only if AVAILABLE */
   const addCartBtn = document.getElementById('dtAddCart');
-  if (addCartBtn && piece.status !== 'SOLD') {
+  if (addCartBtn && piece.status === 'AVAILABLE') {
     addCartBtn.addEventListener('click', () => {
       addToCart(piece);
       addCartBtn.textContent = 'IN CART';
