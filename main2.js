@@ -257,28 +257,22 @@ function addToCart(piece) {
     saveCart(cart);
   }
   updateCartBadge();
-
-  /* Flash piece name on cart button */
-  const btn = document.getElementById('cartBtn');
-  if (btn) {
-    btn.innerHTML = `${piece.name} ADDED TO CART`;
-    clearTimeout(btn._resetTimer);
-    btn._resetTimer = setTimeout(() => {
-      const n = getCart().length;
-      btn.innerHTML = `CART <span class="cart-badge${n === 0 ? ' hidden' : ''}" id="cartBadge">${n}</span>`;
-    }, 3000);
-  }
 }
 function removeFromCart(id) {
   saveCart(getCart().filter(i => i.id !== id));
   updateCartBadge();
 }
+function cartBtnText() {
+  const cart = getCart();
+  if (!cart.length) return 'CART';
+  const names = cart.map(i => i.name);
+  if (names.length === 1) return `${names[0]} IS IN YOUR CART`;
+  if (names.length === 2) return `${names[0]} AND ${names[1]} ARE IN YOUR CART`;
+  return `${names.slice(0, -1).join(', ')} AND ${names[names.length - 1]} ARE IN YOUR CART`;
+}
 function updateCartBadge() {
-  const badge = document.getElementById('cartBadge');
-  if (!badge) return;
-  const n = getCart().length;
-  badge.textContent = n;
-  badge.classList.toggle('hidden', n === 0);
+  const btn = document.getElementById('cartBtn');
+  if (btn) btn.textContent = cartBtnText();
 }
 function renderCartPanel() {
   const list = document.getElementById('cartItemsList');
@@ -317,7 +311,7 @@ function initCart() {
   const btn = document.createElement('button');
   btn.className = 'g2-cart-btn';
   btn.id = 'cartBtn';
-  btn.innerHTML = `CART <span class="cart-badge hidden" id="cartBadge">0</span>`;
+  btn.textContent = 'CART';
   btn.addEventListener('click', openCart);
   document.getElementById('topLeft').appendChild(btn);
 
