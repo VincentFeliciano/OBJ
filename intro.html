@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OBJ.52</title>
   <meta name="description" content="OBJ.52 — A restoration and design studio. Found objects, restored furniture, and one-of-one pieces from Saratoga Springs, NY.">
-  <meta property="og:title" content="OBJ.52">
-  <meta property="og:description" content="An archive of things worth keeping. Found objects and restored furniture, one piece at a time.">
-  <meta property="og:image" content="https://vincentfeliciano.github.io/OBJ/ARTIST.jpeg">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <style>
@@ -45,15 +40,14 @@
       display: flex;
       height: 100vh;
       width: 100vw;
-      overflow: hidden;
     }
 
-    /* ── Left: video — starts full-width, GSAP animates to 46vw ── */
+    /* ── Left: video ── */
     .video-panel {
-      flex-shrink: 0;
-      width: 100vw;
+      flex: 0 0 46%;
       position: relative;
       overflow: hidden;
+      opacity: 0;
     }
 
     .video-panel video {
@@ -62,24 +56,20 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 32%;
     }
 
     /* ── Right: text ── */
     .text-panel {
       flex: 1;
-      min-width: 0;
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 5vw;
+      padding: 0 7vw 0 6vw;
     }
 
     .brand {
-      font-size: clamp(90px, 14vw, 220px);
+      font-size: clamp(52px, 7.5vw, 124px);
       font-weight: 700;
       letter-spacing: -0.04em;
       line-height: 1;
@@ -89,7 +79,8 @@
     }
 
     .tagline {
-      font-size: clamp(11px, 1.2vw, 15px);
+      font-family: var(--font);
+      font-size: clamp(8px, 0.85vw, 11px);
       font-weight: 700;
       letter-spacing: 0.24em;
       color: var(--black);
@@ -98,7 +89,7 @@
     }
 
     .body-line {
-      font-size: clamp(13px, 1.25vw, 17px);
+      font-size: clamp(10px, 0.9vw, 12px);
       letter-spacing: 0.1em;
       line-height: 1.75;
       color: var(--gray-600);
@@ -109,14 +100,13 @@
     .enter-wrap {
       position: absolute;
       bottom: 8vh;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 6vw;
       opacity: 0;
-      white-space: nowrap;
     }
 
     .enter {
-      font-size: clamp(18px, 1.9vw, 27px);
+      font-family: var(--font);
+      font-size: clamp(14px, 1.4vw, 20px);
       font-weight: 500;
       letter-spacing: 0.02em;
       color: var(--black);
@@ -125,32 +115,12 @@
     }
     .enter:hover { color: var(--gray-400); }
 
-    /* ── Mobile: text overlays the full-screen video ── */
+    /* ── Mobile: stack panels ── */
     @media (max-width: 680px) {
-      .layout { position: relative; }
-
-      .video-panel {
-        position: absolute;
-        inset: 0;
-        width: 100vw !important;
-        height: 100vh;
-      }
-
-      .text-panel {
-        position: relative;
-        z-index: 1;
-        height: 100vh;
-        justify-content: center;
-        padding: 40px 32px;
-        background: rgba(255, 255, 255, 0.55);
-      }
-
-      .enter-wrap {
-        position: absolute;
-        bottom: 8vh;
-        left: 50%;
-        transform: translateX(-50%);
-      }
+      .layout { flex-direction: column; overflow-y: auto; }
+      .video-panel { flex: 0 0 50vh; }
+      .text-panel { justify-content: flex-start; padding: 40px 28px 100px; }
+      .enter-wrap { position: relative; bottom: auto; left: auto; margin-top: 48px; }
     }
   </style>
 </head>
@@ -158,14 +128,17 @@
 
 <div class="layout">
 
+  <!-- Left: video -->
   <div class="video-panel" id="videoPanel">
     <video autoplay muted loop playsinline src="video1.mp4"></video>
   </div>
 
-  <div class="text-panel" id="textPanel">
-    <div class="brand"     id="brand">OBJ.52</div>
-    <div class="tagline"   id="tagline">SOME THINGS ARE WORTH THE TROUBLE</div>
-    <div class="body-line" id="line1">Objects selected for their integrity. Restored to last another generation.</div>
+  <!-- Right: text -->
+  <div class="text-panel">
+    <div class="brand"   id="brand">OBJ.52</div>
+    <div class="tagline" id="tagline">SOME THINGS ARE WORTH THE TROUBLE</div>
+    <div class="body-line" id="line1">Objects selected for their integrity.</div>
+    <div class="body-line" id="line2">Restored to last another generation.</div>
 
     <div class="enter-wrap" id="enterWrap">
       <a class="enter" href="gallery.html">Enter Gallery</a>
@@ -178,14 +151,12 @@
 <script>
   const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
-  /* Video holds full-screen briefly, then slides left */
-  tl.to('#videoPanel', { width: '46vw', duration: 1.3, ease: 'power3.inOut' }, 0.6)
-
-  /* Text fades in line by line as video settles */
-    .to('#brand',     { opacity: 1, duration: 0.7 }, '-=0.5')
-    .to('#tagline',   { opacity: 1, duration: 0.6 }, '+=0.2')
-    .to('#line1',     { opacity: 1, duration: 0.6 }, '+=0.25')
-    .to('#enterWrap', { opacity: 1, duration: 0.7 }, '+=0.35');
+  tl.to('#videoPanel', { opacity: 1, duration: 1.4 })
+    .to('#brand',      { opacity: 1, duration: 0.7 }, '-=0.4')
+    .to('#tagline',    { opacity: 1, duration: 0.6 }, '+=0.2')
+    .to('#line1',      { opacity: 1, duration: 0.6 }, '+=0.25')
+    .to('#line2',      { opacity: 1, duration: 0.6 }, '+=0.18')
+    .to('#enterWrap',  { opacity: 1, duration: 0.7 }, '+=0.35');
 </script>
 
 </body>
