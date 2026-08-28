@@ -538,6 +538,7 @@ function openDetail(piece, clickedItem) {
      2. Measure detailImage's final rect in a rAF (after layout).
      3. Animate a hero div from the clicked item's position to that rect.
      4. On complete: remove hero, reveal panels.                        */
+  history.pushState({ detail: piece.id }, '');
   document.body.style.overflow = 'hidden';
   detailView.style.transition  = 'none';
   detailView.style.opacity     = '1';
@@ -668,9 +669,10 @@ function closeDetail() {
   }
 }
 
-detailClose.addEventListener('click', closeDetail);
-detailView.addEventListener('click', e => { if (e.target === detailView) closeDetail(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+detailClose.addEventListener('click', () => { history.back(); });
+detailView.addEventListener('click', e => { if (e.target === detailView) history.back(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && detailView.classList.contains('open')) history.back(); });
+window.addEventListener('popstate', () => { if (detailView.classList.contains('open')) closeDetail(); });
 
 /* ── MENU CARD ────────────────────────────── */
 
