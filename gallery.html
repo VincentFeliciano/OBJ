@@ -1141,7 +1141,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Observer.min.js"></script>
-  <script src="data.js"></script>
-  <script src="main2.js"></script>
+  <script>
+    const _ds = document.createElement('script');
+    _ds.src = 'data.js?v=' + Date.now();
+    _ds.onload = () => {
+      const _ms = document.createElement('script');
+      _ms.src = 'main2.js';
+      document.body.appendChild(_ms);
+    };
+    document.body.appendChild(_ds);
+  </script>
 </body>
 </html>
