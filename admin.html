@@ -455,6 +455,18 @@
     const ADMIN_PASS = 'admin';
     /* ═══════════════════════════════════════════════ */
 
+    /* ═══════════════════════════════════════════════
+       GITHUB CONFIG — paste your Personal Access Token below
+       Token needs: Contents → Read and Write on the OBJ repo
+       Generate at: github.com → Settings → Developer Settings
+                    → Fine-grained tokens
+       ═══════════════════════════════════════════════ */
+    const GITHUB_TOKEN  = 'PASTE_YOUR_TOKEN_HERE';
+    const GITHUB_REPO   = 'VincentFeliciano/OBJ';
+    const GITHUB_BRANCH = 'main';
+    const GITHUB_FILE   = 'data.js';
+    /* ═══════════════════════════════════════════════ */
+
     (function() {
       const overlay = document.getElementById('loginOverlay');
 
@@ -840,12 +852,9 @@
       return `/* =========================================\n   OBJ.52 — data.js\n\n   HOW TO ADD A NEW PIECE:\n   Copy an entry, paste before the closing ];\n   Update all fields. Save. Done.\n\n   STATUS: AVAILABLE | SOLD | ARCHIVED | COMMISSIONED\n   ========================================= */\n\nconst PIECES = [\n${entries}\n\n  /* ── ADD NEW PIECES ABOVE THIS LINE ─── */\n];\n`;
     }
 
-    /* ── Detect server mode ── */
-    const isServer = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    if (isServer) {
-      document.getElementById('publishBtn').style.display = '';
-      document.getElementById('exportAreaLabel').textContent = 'PREVIEW — data.js will be saved and pushed when you click SAVE & PUBLISH';
-    }
+    /* ── Always show publish button ── */
+    document.getElementById('publishBtn').style.display = '';
+    document.getElementById('exportAreaLabel').textContent = 'PREVIEW — click SAVE & PUBLISH to replace data.js on GitHub';
 
     /* ── Export button ── */
     document.getElementById('exportBtn').addEventListener('click', () => {
@@ -856,40 +865,72 @@
       area.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    /* ── Publish button (server mode only) ── */
+    /* ── GitHub API publish ── */
+    async function publishToGitHub(content) {
+      const apiBase = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+      const headers = {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      };
+
+      /* Get current file SHA */
+      const getRes = await fetch(`${apiBase}?ref=${GITHUB_BRANCH}`, { headers });
+      if (!getRes.ok) throw new Error(`Could not read existing file: ${getRes.status}`);
+      const { sha } = await getRes.json();
+
+      /* Base64-encode the new content (handles Unicode safely) */
+      const bytes = new TextEncoder().encode(content);
+      let binary = '';
+      bytes.forEach(b => binary += String.fromCharCode(b));
+      const encoded = btoa(binary);
+
+      /* Replace file */
+      const putRes = await fetch(apiBase, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({
+          message: 'Update archive via OBJ.52 admin panel',
+          content: encoded,
+          sha,
+          branch: GITHUB_BRANCH,
+        }),
+      });
+
+      if (!putRes.ok) {
+        const err = await putRes.json();
+        throw new Error(err.message || `GitHub API error: ${putRes.status}`);
+      }
+      return await putRes.json();
+    }
+
     document.getElementById('publishBtn').addEventListener('click', async () => {
-      const btn = document.getElementById('publishBtn');
+      const btn    = document.getElementById('publishBtn');
       const gitOut = document.getElementById('gitOutput');
       const gitLog = document.getElementById('gitLog');
       const gitMsg = document.getElementById('gitStatusMsg');
 
+      if (GITHUB_TOKEN === 'PASTE_YOUR_TOKEN_HERE') {
+        gitOut.classList.add('visible');
+        gitMsg.textContent = '✕ Add your GitHub token to the GITHUB_TOKEN constant in admin.html first.';
+        gitLog.textContent = '';
+        return;
+      }
+
       btn.textContent = 'PUBLISHING…';
       btn.disabled = true;
       gitOut.classList.add('visible');
-      gitMsg.textContent = 'Saving data.js and pushing to GitHub…';
+      gitMsg.textContent = 'Replacing data.js on GitHub…';
       gitLog.textContent = '';
 
       try {
         const content = serializeDataJs(workingPieces);
-        const res = await fetch('/publish', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content }),
-        });
-        const data = await res.json();
-        const out = [data.stdout, data.stderr].filter(Boolean).join('\n').trim();
-        gitLog.textContent = out || '(no output)';
-
-        if (data.upToDate) {
-          gitMsg.textContent = '✓ No changes — already up to date.';
-        } else if (data.ok) {
-          gitMsg.textContent = '✓ Published to GitHub.';
-          flash('PUBLISHED');
-        } else {
-          gitMsg.textContent = '✕ Git error — see output below.';
-        }
+        const result  = await publishToGitHub(content);
+        gitMsg.textContent = '✓ data.js replaced and pushed to GitHub.';
+        gitLog.textContent = `Commit: ${result.commit?.sha?.slice(0,7) || '—'}\n${result.commit?.message || ''}`;
+        flash('PUBLISHED');
       } catch (e) {
-        gitMsg.textContent = '✕ Could not reach server. Is admin-server.js running?';
+        gitMsg.textContent = '✕ Publish failed.';
         gitLog.textContent = e.message;
       }
 
