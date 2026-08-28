@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBJ.52 — Checkout</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #0A0A0A;
+      --off:      #F7F6F2;
+      --gray-100: #EFEEEA;
+      --gray-200: #DDDCD8;
+      --gray-400: #A8A7A2;
+      --gray-600: #6B6A65;
+      --font: 'Satoshi', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--off);
+      color: var(--black);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .co-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--gray-200);
+      background: #fff;
+    }
+
+    .co-logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .co-back {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.14s;
+    }
+    .co-back:hover { color: var(--black); }
+
+    /* ── Layout ── */
+    .co-body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 52px 40px 80px;
+    }
+
+    .co-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--gray-600);
+      margin-bottom: 32px;
+    }
+
+    /* ── Empty state ── */
+    .co-empty {
+      text-align: center;
+      padding: 80px 0;
+    }
+    .co-empty p {
+      font-size: 14px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+    .co-empty a {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 2px;
+    }
+
+    /* ── Item rows ── */
+    .co-items { margin-bottom: 40px; }
+
+    .co-item {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .co-item-img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      background: var(--gray-100);
+      display: block;
+      border-radius: 2px;
+    }
+
+    .co-item-info {}
+    .co-item-desig {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--gray-400);
+      margin-bottom: 4px;
+    }
+    .co-item-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 2px;
+    }
+    .co-item-price {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-600);
+      letter-spacing: 0.02em;
+    }
+
+    .co-item-action { text-align: right; }
+
+    .co-pay-btn {
+      display: inline-block;
+      background: var(--black);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      padding: 11px 20px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.14s;
+      white-space: nowrap;
+    }
+    .co-pay-btn:hover { background: #1a1a1a; }
+
+    .co-contact-btn {
+      display: inline-block;
+      background: none;
+      color: var(--gray-600);
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      padding: 10px 20px;
+      border: 1px solid var(--gray-200);
+      border-radius: 2px;
+      text-decoration: none;
+      transition: color 0.14s, border-color 0.14s;
+      white-space: nowrap;
+    }
+    .co-contact-btn:hover { color: var(--black); border-color: var(--black); }
+
+    /* ── Summary ── */
+    .co-summary {
+      border-top: 1px solid var(--black);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .co-summary-left {}
+    .co-total-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--gray-400);
+      margin-bottom: 6px;
+    }
+    .co-total-amount {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .co-summary-note {
+      font-size: 11px;
+      color: var(--gray-400);
+      line-height: 1.7;
+      max-width: 320px;
+    }
+
+    /* ── Stripe badge ── */
+    .co-stripe-note {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--gray-400);
+      letter-spacing: 0.06em;
+    }
+    .co-stripe-note svg { flex-shrink: 0; opacity: 0.5; }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .co-header { padding: 18px 20px; }
+      .co-body   { padding: 36px 20px 60px; }
+      .co-item   { grid-template-columns: 56px 1fr; grid-template-rows: auto auto; }
+      .co-item-action { grid-column: 1 / -1; text-align: left; }
+      .co-pay-btn, .co-contact-btn { width: 100%; text-align: center; display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="co-header">
+    <a class="co-logo" href="gallery.html">OBJ.52</a>
+    <a class="co-back" href="gallery.html">← BACK TO GALLERY</a>
+  </header>
+
+  <main class="co-body">
+    <div class="co-title">CHECKOUT</div>
+    <div id="coContent"></div>
+  </main>
+
+  <script>
+    const STRIPE_KEY = 'pk_test_51U9T9DBKP6r2twJH60iy1mWQ85fUf3IPzdYnCapujY38fME22w9KwIm4BDeapJc3Mi0dXWMzpWFek1khAnxN8wSz00SNgGebAI';
+
+    function getCart() {
+      try { return JSON.parse(localStorage.getItem('obj52_cart') || '[]'); }
+      catch { return []; }
+    }
+
+    /* Load data.js dynamically with cache-bust, then render */
+    const s = document.createElement('script');
+    s.src = 'data.js?v=' + Date.now();
+    s.onload = render;
+    document.head.appendChild(s);
+
+    function render() {
+      const cart  = getCart();
+      const el    = document.getElementById('coContent');
+
+      if (!cart.length) {
+        el.innerHTML = `
+          <div class="co-empty">
+            <p>Your cart is empty.</p>
+            <a href="gallery.html">BROWSE THE ARCHIVE</a>
+          </div>`;
+        return;
+      }
+
+      /* Enrich cart items with piece data */
+      const items = cart.map(ci => {
+        const piece = (typeof PIECES !== 'undefined' ? PIECES : []).find(p => p.id === ci.id);
+        return { ...ci, piece };
+      });
+
+      /* Total */
+      const total = items.reduce((sum, item) => {
+        const num = parseFloat((item.price || '').replace(/[^0-9.]/g, ''));
+        return sum + (isNaN(num) ? 0 : num);
+      }, 0);
+
+      const itemsHTML = items.map(item => {
+        const p = item.piece;
+        const imgSrc = p && p.folder && p.images && p.images[0]
+          ? `${p.folder}/${p.images[0]}` : '';
+        const contactParams = new URLSearchParams({
+          subject:     `Inquiry — ${item.designation}: ${item.name}`,
+          name:        item.name,
+          designation: item.designation,
+        });
+        const actionHTML = p && p.paymentLink
+          ? `<a class="co-pay-btn" href="${p.paymentLink}" target="_blank" rel="noopener">PAY WITH STRIPE →</a>`
+          : `<a class="co-contact-btn" href="contact.html?${contactParams}">INQUIRE →</a>`;
+
+        return `
+          <div class="co-item">
+            ${imgSrc ? `<img class="co-item-img" src="${imgSrc}" alt="${item.name}">` : '<div class="co-item-img"></div>'}
+            <div class="co-item-info">
+              <div class="co-item-desig">${item.designation}</div>
+              <div class="co-item-name">${item.name}</div>
+              <div class="co-item-price">${item.price}</div>
+            </div>
+            <div class="co-item-action">${actionHTML}</div>
+          </div>`;
+      }).join('');
+
+      const summaryNote = items.some(i => !i.piece || !i.piece.paymentLink)
+        ? '<p class="co-summary-note">Items without a payment link will go through direct inquiry. We\'ll confirm availability and send a secure payment link within 24 hours.</p>'
+        : '<p class="co-summary-note">Each item checks out separately through Stripe\'s secure hosted payment page. You\'ll receive a confirmation email after purchase.</p>';
+
+      el.innerHTML = `
+        <div class="co-items">${itemsHTML}</div>
+        <div class="co-summary">
+          <div class="co-summary-left">
+            <div class="co-total-label">ESTIMATED TOTAL</div>
+            <div class="co-total-amount">$${total.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
+          </div>
+          ${summaryNote}
+        </div>
+        <div class="co-stripe-note">
+          <svg width="40" height="16" viewBox="0 0 60 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="19" font-family="system-ui,sans-serif" font-size="18" font-weight="700" fill="#635bff">stripe</text>
+          </svg>
+          Payments are processed securely by Stripe. OBJ.52 does not store card details.
+        </div>`;
+    }
+  </script>
+</body>
+</html>

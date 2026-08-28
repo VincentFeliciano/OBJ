@@ -58,7 +58,8 @@ const PIECES = [
       "EOOS_E005-oak-oil-leather-sif95_front.webp",
       "EOOS_E005-oak-oil-leather-sif95_side.webp",
       "EOOS_E005-oak-oil-leather-sif95_back.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -110,7 +111,8 @@ const PIECES = [
     images: [
       "c35_6pers_natur_2013_3_aae56cf3-0fb9-4fee-8038-944451ec057a.webp",
       "c35_6pers_natur_2013_5_aa7adf3b-c0e1-46e5-a3c6-b215117b8e37.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -161,7 +163,8 @@ const PIECES = [
     folder: "chest",
     images: [
       "Montana_Selection_CLASSIFY_Organiser_Parsley_Perspective_83660474-fdbf-4148-a273-1f59a43dc167.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -212,7 +215,8 @@ const PIECES = [
     folder: "coffeeTable",
     images: [
       "AK_2530_valn_d.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -266,7 +270,8 @@ const PIECES = [
       "Zach_Chair_Green-ZCH-1100-OG-Front_2000x.webp",
       "Zach_Chair_Green-Profile_2000x.webp",
       "Zach_Chair_Green-Rear_2000x.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -319,7 +324,8 @@ const PIECES = [
       "GeorgeCoffeeTable-Three_Qtr_2000x.webp",
       "GeorgeCoffeeTable-Face_400x.webp",
       "GeorgeCoffee_NW_Det_400x.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -374,7 +380,8 @@ const PIECES = [
       "GIB-200-CW-A_400x.jpg",
       "GIB-200-CW-B_400x.jpg",
       "GIB-200-WN2_400x.jpg"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -431,7 +438,8 @@ const PIECES = [
       "LewisTV_MW_Det1_927ccc0c-bf3e-4979-88d0-463abf2e8c49_2000x.webp",
       "LewisTV_MW_Det2_1c38f2ab-cb9c-4a7b-a281-ee2523336c1c_2000x.webp",
       "LewisTVCabinet_6_449f2f97-c5ef-4ec7-965a-3897fe562ba0_2000x.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -486,7 +494,8 @@ const PIECES = [
       "OsloTV2_400x.webp",
       "OsloTVDetial_400x.webp",
       "OsloTVOpen_400x.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -540,7 +549,8 @@ const PIECES = [
       "KOB-BEN200-2_f0783850-ac7f-4ce1-ac1a-1a82542a2837_2000x.webp",
       "KOB-BEN200-3_a91c7dd1-46d6-4a18-8cf3-d6e7d53706b6_2000x.webp",
       "KOB-BEN200-4_51151ac8-4736-4dc9-b980-5fe88617e91e_2000x.webp"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -591,7 +601,8 @@ const PIECES = [
     folder: "ashtray",
     images: [
       "mid-century-ashtray-with-magazine-holder-1960s.jpg"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -642,7 +653,8 @@ const PIECES = [
     folder: "jumpshoesgeorgepierce",
     images: [
       "Screenshot 2026-08-26 093932.png"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -699,7 +711,8 @@ const PIECES = [
       "6f91541d-dd11-47b5-b5ce-c2b8be288452.avif",
       "81aa075c-07eb-4e2a-820c-62b12152a60f.avif",
       "999ddb8f-88c5-40fe-9d42-fd9762bfd108.avif"
-    ]
+    ],
+    paymentLink: ""
   },
 
   {
@@ -754,7 +767,8 @@ const PIECES = [
       "IMG_3296.jpeg",
       "IMG_3297.jpeg",
       "IMG_3298.jpeg"
-    ]
+    ],
+    paymentLink: ""
   }
 
   /* ── ADD NEW PIECES ABOVE THIS LINE ─── */

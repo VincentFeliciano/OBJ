@@ -329,17 +329,12 @@ function initCart() {
   document.body.appendChild(panel);
   document.getElementById('cartPanelClose').addEventListener('click', closeCart);
 
-  /* Route checkout to contact page with cart items pre-filled */
+  /* Route checkout to checkout page */
   document.getElementById('cartInquireAll').addEventListener('click', (e) => {
     e.preventDefault();
     const items = getCart();
     if (!items.length) return;
-    const params = new URLSearchParams({
-      subject:     `Cart Inquiry — ${items.map(i => i.designation).join(', ')}`,
-      name:        items.map(i => i.name).join(', '),
-      designation: items.map(i => `${i.designation}: ${i.name} — ${i.price}`).join('\n'),
-    });
-    window.location.href = `contact.html?${params.toString()}`;
+    window.location.href = 'checkout.html';
   });
 
   updateCartBadge();

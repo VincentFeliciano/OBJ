@@ -535,6 +535,7 @@
           <th>TYPE</th>
           <th>PRICE</th>
           <th>STATUS</th>
+          <th>STRIPE LINK</th>
           <th style="width:80px">IMAGES</th>
         </tr>
       </thead>
@@ -694,6 +695,11 @@
           <label>IMAGE FILES *</label>
           <textarea id="f-images" placeholder="One filename per line:&#10;front.jpg&#10;side.webp&#10;detail.jpg"></textarea>
         </div>
+        <div class="field span2">
+          <label>STRIPE PAYMENT LINK</label>
+          <input type="text" id="f-paymentLink" placeholder="https://buy.stripe.com/…">
+          <span class="hint">Create a Payment Link in your Stripe dashboard, paste the URL here.</span>
+        </div>
       </div>
     </div>
 
@@ -780,6 +786,12 @@
               <option value="COMMISSIONED"${piece.status==='COMMISSIONED'?'selected':''}>COMMISSIONED</option>
             </select>
           </td>
+          <td>
+            <input class="status-select payment-link-input" data-idx="${i}" type="text"
+              placeholder="https://buy.stripe.com/…"
+              value="${piece.paymentLink || ''}"
+              style="width:180px;font-size:10px;letter-spacing:0.02em;">
+          </td>
           <td style="color:var(--dim);font-size:11px;">${piece.images ? piece.images.length : 0}</td>
         `;
         tbody.appendChild(tr);
@@ -791,7 +803,16 @@
           const idx = parseInt(sel.dataset.idx);
           workingPieces[idx].status = sel.value;
           document.getElementById('cancelChangesBtn').style.display = '';
-          /* hide export if open */
+          document.getElementById('exportArea').classList.remove('visible');
+        });
+      });
+
+      /* Payment link handlers */
+      tbody.querySelectorAll('.payment-link-input').forEach(input => {
+        input.addEventListener('input', () => {
+          const idx = parseInt(input.dataset.idx);
+          workingPieces[idx].paymentLink = input.value.trim();
+          document.getElementById('cancelChangesBtn').style.display = '';
           document.getElementById('exportArea').classList.remove('visible');
         });
       });
@@ -860,7 +881,8 @@
     objectHistory: ${serializeHistory(p.objectHistory)},
 
     folder: "${esc(p.folder)}",
-    images: ${serializeMultiArr(p.images)}
+    images: ${serializeMultiArr(p.images)},
+    paymentLink: "${esc(p.paymentLink || '')}"
   }`;
     }
 
@@ -1045,7 +1067,8 @@
         restorationMaterials: lines(document.getElementById('f-restorationMaterials').value),
         objectHistory:     getHistoryFromDOM(),
         folder:            folder,
-        images:            images
+        images:            images,
+        paymentLink:       document.getElementById('f-paymentLink').value.trim()
       };
 
       const entry = ',\n\n' + serializePiece(piece) + '\n\n  /* ── ADD NEW PIECES ABOVE THIS LINE ─── */';
@@ -1065,7 +1088,7 @@
       ['f-name','f-subtitle','f-era','f-found','f-materials','f-dimensions',
        'f-restored','f-restorationTime','f-price','f-story','f-restorationDesc',
        'f-makersNote','f-restorationMaterials','f-preserved','f-rebuilt',
-       'f-folder','f-images'].forEach(id => {
+       'f-folder','f-images','f-paymentLink'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = el.defaultValue || '';
       });
