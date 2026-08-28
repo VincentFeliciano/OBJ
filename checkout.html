@@ -35,7 +35,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Header ── */
     .co-header {
       display: flex;
       align-items: center;
@@ -44,288 +43,224 @@
       border-bottom: 1px solid var(--gray-200);
       background: #fff;
     }
-
-    .co-logo {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--black);
-      text-decoration: none;
-    }
-
-    .co-back {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--gray-400);
-      text-decoration: none;
-      transition: color 0.14s;
-    }
+    .co-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; color: var(--black); text-decoration: none; }
+    .co-back { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; color: var(--gray-400); text-decoration: none; transition: color 0.14s; }
     .co-back:hover { color: var(--black); }
 
-    /* ── Layout ── */
-    .co-body {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 52px 40px 80px;
-    }
+    .co-body { max-width: 760px; margin: 0 auto; padding: 52px 40px 80px; }
 
-    .co-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      color: var(--gray-600);
+    .co-title { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--gray-600); margin-bottom: 32px; }
+
+    /* Success banner */
+    .co-success {
+      background: #f0faf4;
+      border: 1px solid #b2dfca;
+      border-radius: 4px;
+      padding: 24px 28px;
       margin-bottom: 32px;
+      display: none;
     }
+    .co-success h2 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #1a6b3a; }
+    .co-success p  { font-size: 13px; color: #2d7a4a; line-height: 1.6; }
 
-    /* ── Empty state ── */
-    .co-empty {
-      text-align: center;
-      padding: 80px 0;
-    }
-    .co-empty p {
-      font-size: 14px;
-      color: var(--gray-400);
-      margin-bottom: 24px;
-      letter-spacing: 0.04em;
-    }
-    .co-empty a {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      color: var(--black);
-      text-decoration: none;
-      border-bottom: 1px solid var(--black);
-      padding-bottom: 2px;
-    }
+    /* Empty */
+    .co-empty { text-align: center; padding: 80px 0; }
+    .co-empty p { font-size: 14px; color: var(--gray-400); margin-bottom: 24px; letter-spacing: 0.04em; }
+    .co-empty a { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 2px; }
 
-    /* ── Item rows ── */
-    .co-items { margin-bottom: 40px; }
-
+    /* Items */
     .co-item {
       display: grid;
-      grid-template-columns: 72px 1fr auto;
+      grid-template-columns: 72px 1fr;
       gap: 20px;
       align-items: center;
-      padding: 20px 0;
+      padding: 18px 0;
       border-bottom: 1px solid var(--gray-200);
     }
+    .co-item-img { width: 72px; height: 72px; object-fit: cover; background: var(--gray-100); display: block; border-radius: 2px; }
+    .co-item-desig { font-size: 9px; font-weight: 600; letter-spacing: 0.14em; color: var(--gray-400); margin-bottom: 4px; }
+    .co-item-name  { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .co-item-price { font-size: 13px; font-weight: 500; color: var(--gray-600); }
+    .co-item-warn  { font-size: 10px; color: #b07a00; letter-spacing: 0.06em; margin-top: 4px; }
 
-    .co-item-img {
-      width: 72px;
-      height: 72px;
-      object-fit: cover;
-      background: var(--gray-100);
-      display: block;
-      border-radius: 2px;
-    }
-
-    .co-item-info {}
-    .co-item-desig {
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: var(--gray-400);
-      margin-bottom: 4px;
-    }
-    .co-item-name {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      margin-bottom: 2px;
-    }
-    .co-item-price {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--gray-600);
-      letter-spacing: 0.02em;
-    }
-
-    .co-item-action { text-align: right; }
-
-    .co-pay-btn {
-      display: inline-block;
-      background: var(--black);
-      color: #fff;
-      font-family: var(--font);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      padding: 11px 20px;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: background 0.14s;
-      white-space: nowrap;
-    }
-    .co-pay-btn:hover { background: #1a1a1a; }
-
-    .co-contact-btn {
-      display: inline-block;
-      background: none;
-      color: var(--gray-600);
-      font-family: var(--font);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      padding: 10px 20px;
-      border: 1px solid var(--gray-200);
-      border-radius: 2px;
-      text-decoration: none;
-      transition: color 0.14s, border-color 0.14s;
-      white-space: nowrap;
-    }
-    .co-contact-btn:hover { color: var(--black); border-color: var(--black); }
-
-    /* ── Summary ── */
+    /* Summary */
     .co-summary {
       border-top: 1px solid var(--black);
-      padding-top: 20px;
+      padding-top: 24px;
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: flex-end;
       flex-wrap: wrap;
       gap: 20px;
     }
+    .co-total-label  { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; color: var(--gray-400); margin-bottom: 6px; }
+    .co-total-amount { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; }
 
-    .co-summary-left {}
-    .co-total-label {
-      font-size: 9px;
+    .co-checkout-btn {
+      background: var(--black);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.18em;
-      color: var(--gray-400);
-      margin-bottom: 6px;
+      padding: 16px 36px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.14s;
+      white-space: nowrap;
     }
-    .co-total-amount {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+    .co-checkout-btn:hover { background: #1a1a1a; }
+    .co-checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .co-summary-note {
+    .co-note {
+      margin-top: 20px;
       font-size: 11px;
       color: var(--gray-400);
       line-height: 1.7;
-      max-width: 320px;
     }
 
-    /* ── Stripe badge ── */
-    .co-stripe-note {
-      margin-top: 40px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .co-stripe-badge {
+      margin-top: 12px;
       font-size: 10px;
       color: var(--gray-400);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
     }
-    .co-stripe-note svg { flex-shrink: 0; opacity: 0.5; }
 
-    /* Mobile */
     @media (max-width: 600px) {
       .co-header { padding: 18px 20px; }
       .co-body   { padding: 36px 20px 60px; }
-      .co-item   { grid-template-columns: 56px 1fr; grid-template-rows: auto auto; }
-      .co-item-action { grid-column: 1 / -1; text-align: left; }
-      .co-pay-btn, .co-contact-btn { width: 100%; text-align: center; display: block; }
+      .co-summary { flex-direction: column; align-items: stretch; }
+      .co-checkout-btn { width: 100%; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <header class="co-header">
-    <a class="co-logo" href="gallery.html">OBJ.52</a>
-    <a class="co-back" href="gallery.html">← BACK TO GALLERY</a>
-  </header>
+<header class="co-header">
+  <a class="co-logo" href="gallery.html">OBJ.52</a>
+  <a class="co-back" href="gallery.html">← BACK TO GALLERY</a>
+</header>
 
-  <main class="co-body">
-    <div class="co-title">CHECKOUT</div>
-    <div id="coContent"></div>
-  </main>
+<main class="co-body">
+  <div class="co-title">CHECKOUT</div>
 
-  <script>
-    const STRIPE_KEY = 'pk_test_51U9T9DBKP6r2twJH60iy1mWQ85fUf3IPzdYnCapujY38fME22w9KwIm4BDeapJc3Mi0dXWMzpWFek1khAnxN8wSz00SNgGebAI';
+  <div class="co-success" id="successBanner">
+    <h2>Order confirmed.</h2>
+    <p>Thank you for your purchase. You'll receive a confirmation email from Stripe shortly.<br>
+    We'll be in touch within 24 hours to arrange pickup or delivery.</p>
+  </div>
 
-    function getCart() {
-      try { return JSON.parse(localStorage.getItem('obj52_cart') || '[]'); }
-      catch { return []; }
-    }
+  <div id="coContent"></div>
+</main>
 
-    /* Load data.js dynamically with cache-bust, then render */
-    const s = document.createElement('script');
-    s.src = 'data.js?v=' + Date.now();
-    s.onload = render;
-    document.head.appendChild(s);
+<script>
+  /* ── Vercel function URL — update this after deploying to Vercel ── */
+  const CHECKOUT_API = 'https://obj-52.vercel.app/api/checkout';
 
-    function render() {
-      const cart  = getCart();
-      const el    = document.getElementById('coContent');
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem('obj52_cart') || '[]'); } catch { return []; }
+  }
+  function clearCart() { localStorage.removeItem('obj52_cart'); }
 
-      if (!cart.length) {
-        el.innerHTML = `
-          <div class="co-empty">
-            <p>Your cart is empty.</p>
-            <a href="gallery.html">BROWSE THE ARCHIVE</a>
-          </div>`;
-        return;
-      }
+  /* Show success banner if redirected back from Stripe */
+  if (new URLSearchParams(location.search).get('success') === '1') {
+    document.getElementById('successBanner').style.display = 'block';
+    clearCart();
+    history.replaceState(null, '', location.pathname);
+  }
 
-      /* Enrich cart items with piece data */
-      const items = cart.map(ci => {
-        const piece = (typeof PIECES !== 'undefined' ? PIECES : []).find(p => p.id === ci.id);
-        return { ...ci, piece };
-      });
+  /* Load data.js then render */
+  const s = document.createElement('script');
+  s.src = 'data.js?v=' + Date.now();
+  s.onload = render;
+  document.head.appendChild(s);
 
-      /* Total */
-      const total = items.reduce((sum, item) => {
-        const num = parseFloat((item.price || '').replace(/[^0-9.]/g, ''));
-        return sum + (isNaN(num) ? 0 : num);
-      }, 0);
+  function render() {
+    const cart = getCart();
+    const el   = document.getElementById('coContent');
 
-      const itemsHTML = items.map(item => {
-        const p = item.piece;
-        const imgSrc = p && p.folder && p.images && p.images[0]
-          ? `${p.folder}/${p.images[0]}` : '';
-        const contactParams = new URLSearchParams({
-          subject:     `Inquiry — ${item.designation}: ${item.name}`,
-          name:        item.name,
-          designation: item.designation,
-        });
-        const actionHTML = p && p.paymentLink
-          ? `<a class="co-pay-btn" href="${p.paymentLink}" target="_blank" rel="noopener">PAY WITH STRIPE →</a>`
-          : `<a class="co-contact-btn" href="contact.html?${contactParams}">INQUIRE →</a>`;
-
-        return `
-          <div class="co-item">
-            ${imgSrc ? `<img class="co-item-img" src="${imgSrc}" alt="${item.name}">` : '<div class="co-item-img"></div>'}
-            <div class="co-item-info">
-              <div class="co-item-desig">${item.designation}</div>
-              <div class="co-item-name">${item.name}</div>
-              <div class="co-item-price">${item.price}</div>
-            </div>
-            <div class="co-item-action">${actionHTML}</div>
-          </div>`;
-      }).join('');
-
-      const summaryNote = items.some(i => !i.piece || !i.piece.paymentLink)
-        ? '<p class="co-summary-note">Items without a payment link will go through direct inquiry. We\'ll confirm availability and send a secure payment link within 24 hours.</p>'
-        : '<p class="co-summary-note">Each item checks out separately through Stripe\'s secure hosted payment page. You\'ll receive a confirmation email after purchase.</p>';
-
+    if (!cart.length) {
       el.innerHTML = `
-        <div class="co-items">${itemsHTML}</div>
-        <div class="co-summary">
-          <div class="co-summary-left">
-            <div class="co-total-label">ESTIMATED TOTAL</div>
-            <div class="co-total-amount">$${total.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-          </div>
-          ${summaryNote}
-        </div>
-        <div class="co-stripe-note">
-          <svg width="40" height="16" viewBox="0 0 60 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <text x="0" y="19" font-family="system-ui,sans-serif" font-size="18" font-weight="700" fill="#635bff">stripe</text>
-          </svg>
-          Payments are processed securely by Stripe. OBJ.52 does not store card details.
+        <div class="co-empty">
+          <p>Your cart is empty.</p>
+          <a href="gallery.html">BROWSE THE ARCHIVE</a>
         </div>`;
+      return;
     }
-  </script>
+
+    const pieces = typeof PIECES !== 'undefined' ? PIECES : [];
+    const items  = cart.map(ci => ({ ...ci, piece: pieces.find(p => p.id === ci.id) }));
+
+    const total = items.reduce((sum, item) => {
+      const n = parseFloat((item.price || '').replace(/[^0-9.]/g, ''));
+      return sum + (isNaN(n) ? 0 : n);
+    }, 0);
+
+    const hasAllPriceIds = items.every(i => i.piece && i.piece.stripePriceId);
+
+    const itemsHTML = items.map(item => {
+      const p = item.piece;
+      const imgSrc = p && p.folder && p.images && p.images[0] ? `${p.folder}/${p.images[0]}` : '';
+      const warn = (!p || !p.stripePriceId) ? '<div class="co-item-warn">⚠ Checkout not available — contact us to purchase this item.</div>' : '';
+      return `
+        <div class="co-item">
+          ${imgSrc ? `<img class="co-item-img" src="${imgSrc}" alt="${item.name}">` : '<div class="co-item-img"></div>'}
+          <div>
+            <div class="co-item-desig">${item.designation}</div>
+            <div class="co-item-name">${item.name}</div>
+            <div class="co-item-price">${item.price}</div>
+            ${warn}
+          </div>
+        </div>`;
+    }).join('');
+
+    el.innerHTML = `
+      ${itemsHTML}
+      <div class="co-summary">
+        <div>
+          <div class="co-total-label">TOTAL</div>
+          <div class="co-total-amount">$${total.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
+        </div>
+        <button class="co-checkout-btn" id="checkoutBtn" ${!hasAllPriceIds ? 'disabled' : ''}>
+          CHECKOUT WITH STRIPE →
+        </button>
+      </div>
+      <p class="co-note">Each piece is one-of-one. Purchasing removes it from the archive. We'll contact you within 24 hours to arrange delivery or local pickup from Saratoga Springs, NY.</p>
+      <p class="co-stripe-badge">Payments secured by Stripe · OBJ.52 does not store card details</p>
+    `;
+
+    document.getElementById('checkoutBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('checkoutBtn');
+      btn.disabled = true;
+      btn.textContent = 'REDIRECTING…';
+
+      const lineItems = items
+        .filter(i => i.piece && i.piece.stripePriceId)
+        .map(i => ({ priceId: i.piece.stripePriceId }));
+
+      try {
+        const res  = await fetch(CHECKOUT_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: lineItems }),
+        });
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert('Checkout error: ' + (data.error || 'Unknown error'));
+          btn.disabled = false;
+          btn.textContent = 'CHECKOUT WITH STRIPE →';
+        }
+      } catch (e) {
+        alert('Could not connect to checkout. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'CHECKOUT WITH STRIPE →';
+      }
+    });
+  }
+</script>
 </body>
 </html>
