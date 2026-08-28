@@ -27,4 +27,4 @@ admin-server.js
 start-admin.bat
 
 # Media / large files
-*.mp4
+# mp4s tracked for GitHub Pages hosting
