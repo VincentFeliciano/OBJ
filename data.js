@@ -220,7 +220,7 @@ const PIECES = [
     designation: "52 / 005",
     name: "THE ZACH",
     subtitle: "Z-Chair · Walnut Frame",
-    status: "AVAILABLE",
+    status: "SOLD",
     type: "RESTORED",
     era: "c. 1950s",
     found: "Hudson, NY",
