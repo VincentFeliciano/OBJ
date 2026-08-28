@@ -442,6 +442,7 @@
     <h2>OBJ.52 — ADMIN</h2>
     <input type="text"     id="loginUser" placeholder="USERNAME" autocomplete="username">
     <input type="password" id="loginPass" placeholder="PASSWORD" autocomplete="current-password">
+    <input type="password" id="loginToken" placeholder="GITHUB TOKEN (for publishing)" autocomplete="off">
     <button id="loginBtn">ENTER</button>
     <span id="loginError"></span>
   </div>
@@ -456,16 +457,15 @@
     /* ═══════════════════════════════════════════════ */
 
     /* ═══════════════════════════════════════════════
-       GITHUB CONFIG — paste your Personal Access Token below
-       Token needs: Contents → Read and Write on the OBJ repo
-       Generate at: github.com → Settings → Developer Settings
-                    → Fine-grained tokens
+       GITHUB CONFIG — token is entered at login, never stored in code
        ═══════════════════════════════════════════════ */
-    const GITHUB_TOKEN  = 'PASTE_YOUR_TOKEN_HERE';
     const GITHUB_REPO   = 'VincentFeliciano/OBJ';
     const GITHUB_BRANCH = 'main';
     const GITHUB_FILE   = 'data.js';
     /* ═══════════════════════════════════════════════ */
+
+    /* Token lives only in sessionStorage — cleared when tab closes */
+    function getToken() { return sessionStorage.getItem('obj52_token') || ''; }
 
     (function() {
       const overlay = document.getElementById('loginOverlay');
@@ -479,8 +479,10 @@
       function attempt() {
         const u = document.getElementById('loginUser').value.trim();
         const p = document.getElementById('loginPass').value;
+        const t = document.getElementById('loginToken').value.trim();
         if (u === ADMIN_USER && p === ADMIN_PASS) {
           sessionStorage.setItem('obj52_auth', '1');
+          if (t) sessionStorage.setItem('obj52_token', t);
           overlay.style.display = 'none';
         } else {
           const err = document.getElementById('loginError');
@@ -490,6 +492,9 @@
       }
 
       document.getElementById('loginBtn').addEventListener('click', attempt);
+      document.getElementById('loginToken').addEventListener('keydown', e => {
+        if (e.key === 'Enter') attempt();
+      });
       document.getElementById('loginPass').addEventListener('keydown', e => {
         if (e.key === 'Enter') attempt();
       });
@@ -869,7 +874,7 @@
     async function publishToGitHub(content) {
       const apiBase = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
       const headers = {
-        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Authorization': `Bearer ${getToken()}`,
         'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json',
       };
@@ -910,9 +915,9 @@
       const gitLog = document.getElementById('gitLog');
       const gitMsg = document.getElementById('gitStatusMsg');
 
-      if (GITHUB_TOKEN === 'PASTE_YOUR_TOKEN_HERE') {
+      if (!getToken()) {
         gitOut.classList.add('visible');
-        gitMsg.textContent = '✕ Add your GitHub token to the GITHUB_TOKEN constant in admin.html first.';
+        gitMsg.textContent = '✕ No GitHub token — log out and log back in with your token.';
         gitLog.textContent = '';
         return;
       }
