@@ -253,7 +253,7 @@ function isInCart(id) {
 function addToCart(piece) {
   const cart = getCart();
   if (!isInCart(piece.id)) {
-    cart.push({ id: piece.id, designation: piece.designation, name: piece.name, price: piece.price });
+    cart.push({ id: piece.id, designation: piece.designation, name: piece.name, price: piece.price, paymentLink: piece.paymentLink || '' });
     saveCart(cart);
   }
   updateCartBadge();

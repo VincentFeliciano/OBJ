@@ -143,14 +143,9 @@
     try { return JSON.parse(localStorage.getItem('obj52_cart') || '[]'); } catch { return []; }
   }
 
-  const s = document.createElement('script');
-  s.src = 'data.js?v=' + Date.now();
-  s.onload = render;
-  document.head.appendChild(s);
-
-  function render() {
-    const cart  = getCart();
-    const el    = document.getElementById('coContent');
+  function render(pieces) {
+    const cart = getCart();
+    const el   = document.getElementById('coContent');
 
     if (!cart.length) {
       el.innerHTML = `
@@ -161,24 +156,25 @@
       return;
     }
 
-    const pieces = typeof PIECES !== 'undefined' ? PIECES : [];
-    const items  = cart.map(ci => ({ ...ci, piece: pieces.find(p => p.id === ci.id) }));
-
-    const total = items.reduce((sum, item) => {
+    const total = cart.reduce((sum, item) => {
       const n = parseFloat((item.price || '').replace(/[^0-9.]/g, ''));
       return sum + (isNaN(n) ? 0 : n);
     }, 0);
 
-    const itemsHTML = items.map(item => {
-      const p = item.piece;
+    const itemsHTML = cart.map(item => {
+      /* Prefer image from PIECES if data.js loaded, otherwise blank placeholder */
+      const p = pieces && pieces.find(p => p.id === item.id);
       const imgSrc = p && p.folder && p.images && p.images[0] ? `${p.folder}/${p.images[0]}` : '';
+
+      /* paymentLink stored in cart at add-time; fall back to PIECES lookup */
+      const link = item.paymentLink || (p && p.paymentLink) || '';
       const contactParams = new URLSearchParams({
         subject:     `Inquiry — ${item.designation}: ${item.name}`,
         name:        item.name,
         designation: item.designation,
       });
-      const actionHTML = p && p.paymentLink
-        ? `<a class="co-pay-btn" href="${p.paymentLink}" target="_blank" rel="noopener">PAY WITH STRIPE →</a>`
+      const actionHTML = link
+        ? `<a class="co-pay-btn" href="${link}" target="_blank" rel="noopener">PAY WITH STRIPE →</a>`
         : `<a class="co-contact-btn" href="contact.html?${contactParams}">INQUIRE →</a>`;
 
       return `
@@ -205,6 +201,15 @@
       <p class="co-stripe-badge">Payments secured by Stripe · OBJ.52 does not store card details</p>
     `;
   }
+
+  /* Render immediately from cart data — no dependency on data.js */
+  render(null);
+
+  /* Then load data.js to add images (progressive enhancement) */
+  const s = document.createElement('script');
+  s.src = 'data.js?v=' + Date.now();
+  s.onload = () => render(typeof PIECES !== 'undefined' ? PIECES : null);
+  document.head.appendChild(s);
 </script>
 </body>
 </html>
