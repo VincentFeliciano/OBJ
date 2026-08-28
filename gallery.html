@@ -1026,6 +1026,30 @@
       color: var(--gray-600);
       margin-top: auto;
     }
+
+    /* ─── SOCIAL ICONS ───────────────────────── */
+    .social-icons {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      opacity: 0.5;
+      margin-top: 20px;
+    }
+
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-100);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .social-icons a:hover { opacity: 0.8; }
+
+    .social-icons svg {
+      width: 20px;
+      height: 20px;
+    }
     /* ══════════════════════════════════════════
        MOBILE  (≤ 767px)
        ══════════════════════════════════════════ */
@@ -1076,6 +1100,7 @@
       .bg-wordmark {
         font-size: clamp(60px, 22vw, 120px);
         opacity: 0.5;
+        z-index: 200;
       }
     }
   </style>
