@@ -382,7 +382,7 @@ const PIECES = [
     designation: "52 / 008",
     name: "THE LEWIS",
     subtitle: "Media Cabinet · Solid Walnut",
-    status: "AVAILABLE",
+    status: "ARCHIVED",
     type: "RESTORED",
     era: "c. 1958",
     found: "Kingston, NY",
