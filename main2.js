@@ -262,17 +262,21 @@ function removeFromCart(id) {
   saveCart(getCart().filter(i => i.id !== id));
   updateCartBadge();
 }
-function cartBtnText() {
+function cartBtnHTML() {
   const cart = getCart();
   if (!cart.length) return 'CART';
   const names = cart.map(i => i.name);
-  if (names.length === 1) return `${names[0]} IS IN YOUR CART`;
-  if (names.length === 2) return `${names[0]} AND ${names[1]} ARE IN YOUR CART`;
-  return `${names.slice(0, -1).join(', ')} AND ${names[names.length - 1]} ARE IN YOUR CART`;
+  let lines;
+  if (names.length === 1) {
+    lines = `${names[0]}<br>IS IN YOUR CART`;
+  } else {
+    lines = names.join('<br>') + '<br>ARE IN YOUR CART';
+  }
+  return `${lines}<span class="cart-btn-cta">CLICK HERE TO CHECKOUT →</span>`;
 }
 function updateCartBadge() {
   const btn = document.getElementById('cartBtn');
-  if (btn) btn.textContent = cartBtnText();
+  if (btn) btn.innerHTML = cartBtnHTML();
 }
 function renderCartPanel() {
   const list = document.getElementById('cartItemsList');
@@ -312,7 +316,14 @@ function initCart() {
   btn.className = 'g2-cart-btn';
   btn.id = 'cartBtn';
   btn.textContent = 'CART';
-  btn.addEventListener('click', openCart);
+  btn.addEventListener('click', (e) => {
+    if (e.target.classList.contains('cart-btn-cta')) {
+      e.stopPropagation();
+      if (getCart().length) window.location.href = 'checkout.html';
+      return;
+    }
+    openCart();
+  });
   document.getElementById('topLeft').appendChild(btn);
 
   /* Cart panel */
