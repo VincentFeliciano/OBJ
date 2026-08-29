@@ -558,7 +558,7 @@ const PIECES = [
     designation: "52 / 011",
     name: "THE ASHTRAY",
     subtitle: "Mid-Century Floor Stand · Magazine Holder",
-    status: "AVAILABLE",
+    status: "SOLD",
     type: "FOUND",
     era: "c. 1960s",
     found: "Estate Sale, Unknown Region",
