@@ -503,7 +503,7 @@ const PIECES = [
     designation: "52 / 010",
     name: "THE BENCH",
     subtitle: "Entry Bench · Solid Cherry",
-    status: "AVAILABLE",
+    status: "SOLD",
     type: "FOUND",
     era: "c. 2018",
     found: "Woodstock, NY",
